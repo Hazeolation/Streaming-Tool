@@ -435,3 +435,6 @@ yarn-error.log
 yarn-debug.log
 package-lock.json
 yarn.lock
+
+# Database
+*.db
