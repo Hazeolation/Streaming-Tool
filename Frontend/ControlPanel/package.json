@@ -1,0 +1,14 @@
+{
+  "name": "dsb-streaming-tool-control-panel",
+  "version": "1.0.0",
+  "description": "The control panel for the streamers of the Deutsche Splatoon Bundesliga",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hazeolation",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.8.3"
+  }
+}
