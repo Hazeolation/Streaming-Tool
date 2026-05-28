@@ -6,13 +6,15 @@
             (ngModelChange)="
                 stateService.update({
                     teamAlphaName: $event
-                })">
+                })"
+            maxLength="13">
         <input
             [ngModel]="state().teamBravoName"
             (ngModelChange)="
                 stateService.update({
                     teamBravoName: $event
-                })">
+                })"
+            maxLength="13">
     </section>
     <section>
         <h2>Swap Sides</h2>
@@ -75,5 +77,20 @@
                 })">
             Commentator Box
         </button>
-    </section> 
+    </section>
+    <section>
+        <h2>Overlays</h2>
+        <button onClick="window.open('/overlay/commentator-box', '_blank', 'noopener');">
+            Commentator Box
+        </button>
+        <button onClick="window.open('/overlay/info-box', '_blank', 'noopener');">
+            Infobox
+        </button>
+        <button onClick="window.open('/overlay/map-screen', '_blank', 'noopener');">
+            Map Screen
+        </button>
+        <button onClick="window.open('/overlay/score-box', '_blank', 'noopener');">
+            Score Box
+        </button>
+    </section>
 </div>

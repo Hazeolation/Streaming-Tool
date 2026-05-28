@@ -30,7 +30,7 @@ export const routes: Routes = [
     component: CommentatorBox
   },
   {
-    path: 'overlay/infobox',
+    path: 'overlay/info-box',
     component: InfoboxDisplay
   }
 ];

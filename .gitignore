@@ -437,4 +437,4 @@ package-lock.json
 yarn.lock
 
 # Database
-*.db
+*.db*
