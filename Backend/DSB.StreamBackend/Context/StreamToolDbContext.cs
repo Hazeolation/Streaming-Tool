@@ -3,29 +3,40 @@ using DSB.StreamBackend.Models;
 
 namespace DSB.StreamBackend.Context;
 
-/// <summary>
-/// Represents the database context for the DSB streaming tool, providing access to the Teams, Players, Matches, and BroadcastState tables in the database.
-/// </summary>
-/// <param name="options">The options for configuring the database context.</param>
-public class StreamToolDbContext(DbContextOptions<StreamToolDbContext> options) : DbContext(options)
+public class StreamToolDbContext(
+    DbContextOptions<StreamToolDbContext> options) : DbContext(options)
 {
-    /// <summary>
-    /// Gets the DbSet for the BroadcastState entity, allowing access to the broadcast state information in the database.
-    /// </summary>
-    public DbSet<Team> Teams => Set<Team>();
+    public DbSet<BroadcastStateEntity> BroadcastStates => Set<BroadcastStateEntity>();
 
-    /// <summary>
-    /// Gets the DbSet for the Player entity, allowing access to the player information in the database.
-    /// </summary>
-    public DbSet<Player> Players => Set<Player>();
+    public DbSet<MapStateEntity> MapStates => Set<MapStateEntity>();
 
-    /// <summary>
-    /// Gets the DbSet for the Match entity, allowing access to the match information in the database.
-    /// </summary>
-    public DbSet<Match> Matches => Set<Match>();
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<BroadcastStateEntity>()
+            .HasKey(x => x.Id);
 
-    /// <summary>
-    /// Gets the DbSet for the BroadcastState entity, allowing access to the broadcast state information in the database.
-    /// </summary>
-    public DbSet<BroadcastState> BroadcastState => Set<BroadcastState>();
+        modelBuilder.Entity<MapStateEntity>()
+            .HasKey(x => x.Id);
+
+        modelBuilder.Entity<BroadcastStateEntity>()
+            .HasMany(x => x.Maps)
+            .WithOne(x => x.BroadcastState)
+            .HasForeignKey(x => x.BroadcastStateEntityId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<BroadcastStateEntity>()
+            .HasData(new BroadcastStateEntity
+            {
+                Id = 1,
+                TeamAlphaName = "Team Alpha",
+                TeamBravoName = "Team Bravo",
+                AlphaIsLeft = true,
+                ScoreAlpha = 0,
+                ScoreBravo = 0,
+                ShowMapScreen = true,
+                ShowScoreBox = true,
+                ShowCommentatorBox = true,
+                ShowInfobox = true
+            });
+    }
 }

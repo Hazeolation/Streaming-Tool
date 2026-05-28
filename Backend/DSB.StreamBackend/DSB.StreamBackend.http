@@ -1,4 +1,4 @@
-@DSB.StreamBackend_HostAddress = http://localhost:5285
+@DSB.StreamBackend_HostAddress = http://localhost:5016
 
 GET {{DSB.StreamBackend_HostAddress}}/weatherforecast/
 Accept: application/json
