@@ -1,0 +1,23 @@
+<div
+    class="infobox dsb-panel"
+    [class.overlay-hidden]="!state().showInfobox">
+
+    <div class="league">
+        Deutsche Splatoon Bundesliga
+    </div>
+
+    <div class="versus">
+        <span>{{ state().teamAlphaName }}</span>
+
+        <strong>VS</strong>
+
+        <span>{{ state().teamBravoName }}</span>
+    </div>
+
+    <div class="score">
+        {{ state().scoreAlpha }}
+        :
+        {{ state().scoreBravo }}
+    </div>
+
+</div>

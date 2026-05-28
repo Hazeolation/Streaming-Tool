@@ -1,0 +1,13 @@
+.layout {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    height: 100vh;
+    background: #1e1f26;
+    color: white;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}

@@ -1,0 +1,36 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 20px;
+  background: #252730;
+  border-right: 1px solid #343744;
+  overflow-y: auto;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+input {
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #343744;
+  color: white;
+}
+
+button {
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #343744;
+  color: white;
+  cursor: pointer;
+}
+
+button.active {
+  background: #6d28d9;
+}

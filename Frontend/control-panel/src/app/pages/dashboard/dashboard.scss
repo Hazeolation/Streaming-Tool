@@ -1,0 +1,13 @@
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 20px 0;
+}

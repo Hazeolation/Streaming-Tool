@@ -1,0 +1,40 @@
+@use '../overlay-theme.scss';
+
+.commentator-box {
+  position: absolute;
+  left: 50%;
+  bottom: 46px;
+  transform: translateX(-50%);
+  min-width: 620px;
+  padding: 16px 28px;
+  text-align: center;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.25em;
+  color: #ffd000;
+  margin-bottom: 8px;
+}
+
+.casters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+}
+
+.caster {
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.divider {
+  width: 2px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.25);
+}

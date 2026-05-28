@@ -1,0 +1,19 @@
+<div
+    class="score-box dsb-panel"
+    [class.overlay-hidden]="!state().showScoreBox">
+
+    <div class="team left">
+        {{ leftTeamName }}
+    </div>
+
+    <div class="score">
+        <span>{{ leftScore }}</span>
+        <span class="separator">:</span>
+        <span>{{ rightScore }}</span>
+    </div>
+
+    <div class="team right">
+        {{ rightTeamName }}
+    </div>
+
+</div>

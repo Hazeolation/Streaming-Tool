@@ -1,0 +1,46 @@
+@use '../overlay-theme.scss';
+
+.score-box {
+  position: absolute;
+  top: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: 260px 140px 260px;
+  align-items: center;
+  min-height: 78px;
+  padding: 10px 22px;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.team {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.team.left {
+  text-align: right;
+}
+
+.team.right {
+  text-align: left;
+}
+
+.score {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 44px;
+  font-weight: 900;
+  color: #ffd000;
+}
+
+.separator {
+  color: white;
+  opacity: 0.65;
+}

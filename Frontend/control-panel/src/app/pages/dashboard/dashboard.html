@@ -1,0 +1,9 @@
+<div class="dashboard">
+    <div class="toolbar">
+        <button (click)="addMap()">Add Map</button>
+    </div>
+    <app-map-card
+        *ngFor="let map of state().maps"
+        [map]="map">
+    </app-map-card>
+</div> 

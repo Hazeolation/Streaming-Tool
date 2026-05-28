@@ -1,0 +1,44 @@
+@use '../overlay-theme.scss';
+
+.infobox {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 920px;
+  padding: 44px;
+  text-align: center;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.league {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #ffd000;
+}
+
+.versus {
+  margin-top: 28px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  font-size: 42px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.versus strong {
+  color: #ffd000;
+}
+
+.score {
+  margin-top: 26px;
+  font-size: 64px;
+  font-weight: 900;
+}

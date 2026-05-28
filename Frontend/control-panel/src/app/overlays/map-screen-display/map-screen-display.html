@@ -1,0 +1,56 @@
+<div
+    class="map-screen"
+    [class.overlay-hidden]="!state().showMapScreen">
+
+    <div class="header dsb-panel">
+        <div class="event">
+            Deutsche Splatoon Bundesliga
+        </div>
+
+        <div class="match">
+            {{ state().teamAlphaName }}
+            <span class="dsb-accent">
+                {{ state().scoreAlpha }} : {{ state().scoreBravo }}
+            </span>
+            {{ state().teamBravoName }}
+        </div>
+    </div>
+
+    <div class="map-grid">
+        <div
+            class="map-card dsb-panel"
+            *ngFor="let map of state().maps">
+
+            <img [src]="map.imageUrl">
+
+            <div class="map-info">
+                <div class="order">
+                    MAP {{ map.order }}
+                </div>
+
+                <div class="name">
+                    {{ map.mapName }}
+                </div>
+
+                <div class="mode">
+                    {{ map.modeName }}
+                </div>
+
+                <div
+                    class="winner"
+                    *ngIf="map.winner">
+
+                    Winner:
+                    {{
+                        map.winner === 'alpha'
+                            ? state().teamAlphaName
+                            : state().teamBravoName
+                    }}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

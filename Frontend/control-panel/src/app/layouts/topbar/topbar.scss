@@ -1,0 +1,19 @@
+.topbar {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: #252730;
+  border-bottom: 1px solid #343744;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.score {
+  font-size: 32px;
+  font-weight: bold;
+}
