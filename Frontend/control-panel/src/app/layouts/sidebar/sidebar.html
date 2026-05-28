@@ -1,5 +1,18 @@
 <div class="sidebar">
     <section>
+        <h2>Division</h2>
+        <select>
+            <option value="D1">Division 1</option>
+            <option value="D2">Division 2</option>
+            <option value="D3">Division 3</option>
+            <option value="D4">Division 4</option>
+            <option value="D5">Division 5</option>
+            <option value="D6">Division 6</option>
+            <option value="D7">Division 7</option>
+            <option value="D8">Division 8</option>
+        </select>
+    </section>
+    <section>
         <h2>Teams</h2>
         <input
             [ngModel]="state().teamAlphaName"
@@ -17,18 +30,19 @@
             maxLength="13">
     </section>
     <section>
-        <h2>Swap Sides</h2>
-        <label>
-            <input
-                type="checkbox"
-                [ngModel]="state().alphaIsLeft"
-                (ngModelChange)="
-                    stateService.update({
-                        alphaIsLeft: $event
-                    })">
-
-            Alpha Left
-        </label>
+        <div class="swap-sides">
+            <h2>Swap Sides</h2>
+            <label>
+                <input
+                    type="checkbox"
+                    [ngModel]="state().alphaIsLeft"
+                    (ngModelChange)="
+                        stateService.update({
+                            alphaIsLeft: $event
+                        })">
+                Alpha Left
+            </label>
+        </div>
     </section>
     <section>
         <h2>Commentators</h2>
@@ -93,4 +107,5 @@
             Score Box
         </button>
     </section>
+    <img src="assets/dsb/DSB_Logo.png" width="100px">
 </div>
