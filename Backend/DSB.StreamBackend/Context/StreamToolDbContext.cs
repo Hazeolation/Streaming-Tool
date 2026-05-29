@@ -36,7 +36,9 @@ public class StreamToolDbContext(
                 ShowMapScreen = true,
                 ShowScoreBox = true,
                 ShowCommentatorBox = true,
-                ShowInfobox = true
+                ShowInfobox = true,
+                Division = 1,
+                Season = 10
             });
     }
 }

@@ -12,9 +12,9 @@ public class BroadcastStateDto
 
     public int ScoreBravo { get; set; }
 
-    public string Commentator1 { get; set; } = "";
+    public string Commentator1 { get; set; } = string.Empty;
 
-    public string Commentator2 { get; set; } = "";
+    public string Commentator2 { get; set; } = string.Empty;
 
     public bool ShowMapScreen { get; set; } = true;
 
@@ -25,4 +25,8 @@ public class BroadcastStateDto
     public bool ShowInfobox { get; set; } = true;
 
     public List<MapStateDto> Maps { get; set; } = [];
+
+    public int Season { get; set; }
+
+    public int Division { get; set; }
 }

@@ -2,6 +2,7 @@
 using DSB.StreamBackend.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DSB.StreamBackend.Migrations
 {
     [DbContext(typeof(StreamToolDbContext))]
-    partial class StreamToolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260528182153_ChangeBroadcastStateService")]
+    partial class ChangeBroadcastStateService
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
@@ -76,10 +79,10 @@ namespace DSB.StreamBackend.Migrations
                             AlphaIsLeft = true,
                             Commentator1 = "",
                             Commentator2 = "",
-                            Division = 1,
+                            Division = 0,
                             ScoreAlpha = 0,
                             ScoreBravo = 0,
-                            Season = 10,
+                            Season = 0,
                             ShowCommentatorBox = true,
                             ShowInfobox = true,
                             ShowMapScreen = true,

@@ -62,7 +62,7 @@ public class BroadcastStateService(StreamToolDbContext db)
 
         db.MapStates.RemoveRange(entity.Maps);
 
-        entity.Maps = dto.Maps
+        entity.Maps = [.. dto.Maps
             .OrderBy(x => x.Order)
             .Select(x => new MapStateEntity
             {
@@ -76,8 +76,10 @@ public class BroadcastStateService(StreamToolDbContext db)
                 Winner = x.Winner,
                 IsVisible = x.IsVisible,
                 BroadcastStateEntityId = 1
-            })
-            .ToList();
+            })];
+
+        entity.Season = dto.Season;
+        entity.Division = dto.Division;
 
         await db.SaveChangesAsync();
 

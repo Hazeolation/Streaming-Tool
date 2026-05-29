@@ -27,4 +27,8 @@ public class BroadcastStateEntity
     public bool ShowInfobox { get; set; } = true;
 
     public List<MapStateEntity> Maps { get; set; } = [];
+
+    public int Season { get; set; }
+
+    public int Division { get; set; }
 }

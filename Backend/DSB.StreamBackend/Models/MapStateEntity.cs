@@ -6,15 +6,15 @@ public class MapStateEntity
 
     public int Order { get; set; }
 
-    public string MapId { get; set; } = "";
+    public string MapId { get; set; } = string.Empty;
 
-    public string MapName { get; set; } = "";
+    public string MapName { get; set; } = string.Empty;
 
-    public string ModeId { get; set; } = "";
+    public string ModeId { get; set; } = string.Empty;
 
-    public string ModeName { get; set; } = "";
+    public string ModeName { get; set; } = string.Empty;
 
-    public string ImageUrl { get; set; } = "";
+    public string ImageUrl { get; set; } = string.Empty;
 
     public string? Winner { get; set; }
 
