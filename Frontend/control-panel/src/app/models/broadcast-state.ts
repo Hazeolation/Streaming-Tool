@@ -22,5 +22,8 @@ export interface BroadcastState {
 
     // Maps
     maps: MapState[];
-    
+
+    // League Information
+    season: number;
+    division: number;
 }
