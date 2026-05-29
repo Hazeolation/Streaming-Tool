@@ -1,15 +1,17 @@
 <div class="sidebar">
     <section>
         <h2>Division</h2>
-        <select>
-            <option value="D1">Division 1</option>
-            <option value="D2">Division 2</option>
-            <option value="D3">Division 3</option>
-            <option value="D4">Division 4</option>
-            <option value="D5">Division 5</option>
-            <option value="D6">Division 6</option>
-            <option value="D7">Division 7</option>
-            <option value="D8">Division 8</option>
+        <select
+            [ngModel]="state().division"
+            (ngModelChange)="
+                stateService.update({
+                    division: $event
+                })">
+            <option
+                *ngFor="let division of availableDivisions"
+                [value]="division.id">
+                {{ division.name }}
+            </option>
         </select>
     </section>
     <section>

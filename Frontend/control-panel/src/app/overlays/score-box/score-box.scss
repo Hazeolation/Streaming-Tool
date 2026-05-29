@@ -10,13 +10,21 @@
   align-items: center;
   min-height: 78px;
   padding: 10px 22px;
+  background: rgba(241, 146, 56, 1);
+  background: linear-gradient(
+    0deg,
+    rgba(241, 146, 56, 1) 0%,
+    rgba(144, 73, 42, 1) 11%,
+    rgba(25, 12, 38, 1) 24%
+  );
+  border: 4px solid black;
   transition:
     opacity 180ms ease,
     transform 180ms ease;
 }
 
 .team {
-  font-size: 28px;
+  font-size: 25px;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -35,12 +43,18 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-  font-size: 44px;
+  font-size: 34px;
   font-weight: 900;
-  color: #ffd000;
+  color: white;
 }
 
 .separator {
   color: white;
-  opacity: 0.65;
+}
+
+img {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: 7px;
 }

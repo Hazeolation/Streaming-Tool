@@ -4,7 +4,13 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 24px;
-  background: #252730;
+  background: #1f1925;
+  background: linear-gradient(
+    90deg,
+    rgba(31, 25, 37, 1) 0%,
+    rgba(120, 70, 40, 1) 50%,
+    rgba(118, 108, 54, 1) 100%
+  );
   border-bottom: 1px solid #343744;
 }
 
@@ -15,5 +21,10 @@
 
 .score {
   font-size: 32px;
+  font-weight: bold;
+}
+
+.division {
+  font-size: 24px;
   font-weight: bold;
 }
