@@ -12,11 +12,11 @@ public class BroadcastController : ControllerBase
 {
     private readonly BroadcastStateService _stateService;
 
-    private readonly IHubContext<OverlayHub> _hub;
+    private readonly IHubContext<OverlayHub, IOverlayClient> _hub;
 
     public BroadcastController(
         BroadcastStateService stateService,
-        IHubContext<OverlayHub> hub)
+        IHubContext<OverlayHub, IOverlayClient> hub)
     {
         _stateService = stateService;
         _hub = hub;
@@ -37,9 +37,7 @@ public class BroadcastController : ControllerBase
         var updatedState =
             await _stateService.UpdateStateAsync(state);
 
-        await _hub.Clients.All.SendAsync(
-            "broadcastStateUpdated",
-            updatedState);
+        await _hub.Clients.All.BroadcastStateUpdated(updatedState);
 
         return Ok(updatedState);
     }

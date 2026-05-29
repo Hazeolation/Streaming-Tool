@@ -2,6 +2,6 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace DSB.StreamBackend.Hubs;
 
-public class OverlayHub : Hub
+public class OverlayHub : Hub<IOverlayClient>
 {
 }
