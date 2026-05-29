@@ -9,41 +9,13 @@ public class BroadcastStateService(StreamToolDbContext db)
 {
     public async Task<BroadcastStateDto> GetStateAsync()
     {
-        var entity = await db.BroadcastStates
-            .Include(x => x.Maps)
-            .FirstOrDefaultAsync(x => x.Id == 1);
-
-        if (entity == null)
-        {
-            entity = new BroadcastStateEntity
-            {
-                Id = 1
-            };
-
-            db.BroadcastStates.Add(entity);
-
-            await db.SaveChangesAsync();
-        }
-
+        var entity = await GetOrCreateStateAsync();
         return ToDto(entity);
     }
 
-    public async Task<BroadcastStateDto> UpdateStateAsync(
-        BroadcastStateDto dto)
+    public async Task<BroadcastStateDto> UpdateStateAsync(BroadcastStateDto dto)
     {
-        var entity = await db.BroadcastStates
-            .Include(x => x.Maps)
-            .FirstOrDefaultAsync(x => x.Id == 1);
-
-        if (entity == null)
-        {
-            entity = new BroadcastStateEntity
-            {
-                Id = 1
-            };
-
-            db.BroadcastStates.Add(entity);
-        }
+        var entity = await GetOrCreateStateAsync();
 
         entity.TeamAlphaName = dto.TeamAlphaName;
         entity.TeamBravoName = dto.TeamBravoName;
@@ -60,34 +32,77 @@ public class BroadcastStateService(StreamToolDbContext db)
         entity.ShowCommentatorBox = dto.ShowCommentatorBox;
         entity.ShowInfobox = dto.ShowInfobox;
 
-        db.MapStates.RemoveRange(entity.Maps);
-
-        entity.Maps = [.. dto.Maps
-            .OrderBy(x => x.Order)
-            .Select(x => new MapStateEntity
-            {
-                Id = x.Id,
-                Order = x.Order,
-                MapId = x.MapId,
-                MapName = x.MapName,
-                ModeId = x.ModeId,
-                ModeName = x.ModeName,
-                ImageUrl = x.ImageUrl,
-                Winner = x.Winner,
-                IsVisible = x.IsVisible,
-                BroadcastStateEntityId = 1
-            })];
-
         entity.Season = dto.Season;
         entity.Division = dto.Division;
+
+        UpdateMaps(entity, dto.Maps);
 
         await db.SaveChangesAsync();
 
         return ToDto(entity);
     }
 
-    private static BroadcastStateDto ToDto(
-        BroadcastStateEntity entity)
+    private async Task<BroadcastStateEntity> GetOrCreateStateAsync()
+    {
+        var entity = await db.BroadcastStates
+            .Include(x => x.Maps)
+            .FirstOrDefaultAsync(x => x.Id == 1);
+
+        if (entity != null)
+            return entity;
+
+        entity = new BroadcastStateEntity { Id = 1 };
+        db.BroadcastStates.Add(entity);
+        await db.SaveChangesAsync();
+        return entity;
+    }
+
+    private void UpdateMaps(BroadcastStateEntity entity, List<MapStateDto> dtoMaps)
+    {
+        var dtoIds = dtoMaps
+            .Where(x => !string.IsNullOrEmpty(x.Id))
+            .Select(x => x.Id)
+            .ToHashSet();
+
+        db.MapStates.RemoveRange(entity.Maps.Where(x => !dtoIds.Contains(x.Id)));
+
+        foreach (var mapDto in dtoMaps.OrderBy(x => x.Order))
+        {
+            var existing = !string.IsNullOrEmpty(mapDto.Id)
+                ? entity.Maps.FirstOrDefault(x => x.Id == mapDto.Id)
+                : null;
+
+            if (existing != null)
+            {
+                existing.Order = mapDto.Order;
+                existing.MapId = mapDto.MapId;
+                existing.MapName = mapDto.MapName;
+                existing.ModeId = mapDto.ModeId;
+                existing.ModeName = mapDto.ModeName;
+                existing.ImageUrl = mapDto.ImageUrl;
+                existing.Winner = mapDto.Winner;
+                existing.IsVisible = mapDto.IsVisible;
+            }
+            else
+            {
+                entity.Maps.Add(new MapStateEntity
+                {
+                    Id = string.IsNullOrEmpty(mapDto.Id) ? Guid.NewGuid().ToString() : mapDto.Id,
+                    Order = mapDto.Order,
+                    MapId = mapDto.MapId,
+                    MapName = mapDto.MapName,
+                    ModeId = mapDto.ModeId,
+                    ModeName = mapDto.ModeName,
+                    ImageUrl = mapDto.ImageUrl,
+                    Winner = mapDto.Winner,
+                    IsVisible = mapDto.IsVisible,
+                    BroadcastStateEntityId = 1
+                });
+            }
+        }
+    }
+
+    private static BroadcastStateDto ToDto(BroadcastStateEntity entity)
     {
         return new BroadcastStateDto
         {
@@ -119,7 +134,10 @@ public class BroadcastStateService(StreamToolDbContext db)
                     ImageUrl = x.ImageUrl,
                     Winner = x.Winner,
                     IsVisible = x.IsVisible
-                })]
+                })],
+
+            Season = entity.Season,
+            Division = entity.Division
         };
     }
 }
