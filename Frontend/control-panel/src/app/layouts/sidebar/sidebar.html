@@ -33,7 +33,7 @@
     </section>
     <section>
         <div class="swap-sides">
-            <h2>Swap Sides</h2>
+            <h2>Seiten wechseln</h2>
             <label>
                 <input
                     type="checkbox"
@@ -42,12 +42,12 @@
                         stateService.update({
                             alphaIsLeft: $event
                         })">
-                Alpha Left
+                Alpha links
             </label>
         </div>
     </section>
     <section>
-        <h2>Commentators</h2>
+        <h2>Kommentatoren</h2>
         <input
             placeholder="@caster1"
             [ngModel]="state().commentator1"
@@ -64,7 +64,7 @@
                 })">
     </section>
     <section>
-        <h2>Overlay Visibility</h2>
+        <h2>Sichtbarkeit von Overlay</h2>
         <button
             [class.active]="state().showMapScreen"
             (click)="
@@ -73,7 +73,7 @@
                         !state().showMapScreen
                 })">
 
-            Map Screen
+            Kartenanzeige
         </button>
         <button
             [class.active]="state().showScoreBox"
@@ -82,7 +82,7 @@
                     showScoreBox:
                         !state().showScoreBox
                 })">
-            Score Box
+            Spielstand
         </button>
         <button
             [class.active]="state().showCommentatorBox"
@@ -91,9 +91,10 @@
                     showCommentatorBox:
                         !state().showCommentatorBox
                 })">
-            Commentator Box
+            Kommentatoren
         </button>
     </section>
+    <!-- Remove in release version -->
     <section>
         <h2>Overlays</h2>
         <button onClick="window.open('/overlay/commentator-box', '_blank', 'noopener');">

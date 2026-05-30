@@ -25,77 +25,77 @@ export class BroadcastStateService {
   availableMaps = [
     {
       id: 'scorch-gorge',
-      mapName: 'Scorch Gorge',
+      mapName: 'Sengkluft',
       imageUrl: 'assets/maps/scorch-gorge.png'
     },
     {
       id: 'eeltail-alley',
-      mapName: 'Eeltail Alley',
+      mapName: 'Streifenaal-Stra&szlig;e',
       imageUrl: 'assets/maps/eeltail-alley.png'
     },
     {
       id: 'hagglefish-market',
-      mapName: 'Hagglefish Market',
+      mapName: 'Schnapperchen-Basar',
       imageUrl: 'assets/maps/hagglefish-market.png'
     },
     {
       id: 'undertow-spillway',
-      mapName: 'Undertow Spillway',
+      mapName: 'Schwertmuschel-Reservoir',
       imageUrl: 'assets/maps/undertow-spillway.png'
     },
     {
       id: 'mincemeat-metalworks',
-      mapName: 'Mincemeat Metalworks',
+      mapName: 'Aalstahl-Metallwerk',
       imageUrl: 'assets/maps/Mincemeat-Metalworks.png'
     },
     {
       id: 'hammerhead-bridge',
-      mapName: 'Hammerhead Bridge',
+      mapName: 'Makrelenbrücke',
       imageUrl: 'assets/maps/hammerhead-bridge.png'
     },
     {
       id: 'museum-dalfonsino',
-      mapName: 'Museum d\'Alfonsino',
+      mapName: 'Pinakoithek',
       imageUrl: 'assets/maps/museum-dalfonsino.png'
     },
     {
       id: 'mahi-mahi-resort',
-      mapName: 'Mahi-Mahi Resort',
+      mapName: 'Mahi-Mahi-Resort',
       imageUrl: 'assets/maps/mahi-mahi-resort.png'
     },
     {
       id: 'inkblot-art-academy',
-      mapName: 'Inkblot Art Academy',
+      mapName: 'Perlmutt-Akademie',
       imageUrl: 'assets/maps/Inkblot-Art-Academy.png'
     },
     {
       id: 'sturgeon-shipyard',
-      mapName: 'Sturgeon Shipyard',
+      mapName: 'Störwerft',
       imageUrl: 'assets/maps/Sturgeon-Shipyard.png'
     },
     {
       id: 'makomart',
-      mapName: 'MakoMart',
+      mapName: 'Cetacea-Markt',
       imageUrl: 'assets/maps/MakoMart.png'
     },
     {
       id: 'wahoo-world',
-      mapName: 'Wahoo World',
+      mapName: 'Flundere-Funpark',
       imageUrl: 'assets/maps/Wahoo-World.png'
     },
     {
       id: 'brinewater-springs',
-      mapName: 'Brinewater Springs',
+      mapName: 'Kusaya-Quellen',
       imageUrl: 'assets/maps/Brinewater-Springs.png'
     },
     {
       id: 'flounder-heights',
-      mapName: 'Flounder Heights',
+      mapName: 'Schollensiedlung',
       imageUrl: 'assets/maps/Flounder-Heights.png'
     },
     {
       id: 'umami-ruins',
-      mapName: 'Um\'ami Ruins',
+      mapName: 'Um\'ami-Ruinen',
       imageUrl: 'assets/maps/umami-ruins.png'
     },
     {
@@ -105,47 +105,47 @@ export class BroadcastStateService {
     },
     {
       id: 'barnacle-dime',
-      mapName: 'Barnacle & Dime',
+      mapName: 'Talerfisch & Pock',
       imageUrl: 'assets/maps/Barnacle__Dime.png'
     },
     {
       id: 'humpback-pump-track',
-      mapName: 'Humpback Pump Track',
+      mapName: 'Buckelwal-Piste',
       imageUrl: 'assets/maps/Humpback_Pump_Track.png'
     },
     {
       id: 'crableg-capital',
-      mapName: 'Crableg Capital',
+      mapName: 'Seespinnen-Skyline',
       imageUrl: 'assets/maps/Crableg-Capital.png'
     },
     {
       id: 'shipshape-cargo-co',
-      mapName: 'Shipshape Cargo Co.',
+      mapName: 'Frachtschiff Schwerfisch',
       imageUrl: 'assets/maps/Shipshape-Cargo-Co.png'
     },
     {
       id: 'robo-romen',
-      mapName: 'Robo ROM-en',
+      mapName: 'ROM & RAMen',
       imageUrl: 'assets/maps/Robo-ROM-en.png'
     },
     {
       id: 'bluefin-depot',
-      mapName: 'Bluefin Depot',
+      mapName: 'Blauflossen-Depot',
       imageUrl: 'assets/maps/bluefin-depot.png'
     },
     {
       id: 'marlin-airport',
-      mapName: 'Marlin Airport',
+      mapName: 'La Ola Airport',
       imageUrl: 'assets/maps/marlin-airport.png'
     },
     {
       id: 'lemuria-hub',
-      mapName: 'Lemuria Hub',
+      mapName: 'Bahnhof Lemuria',
       imageUrl: 'assets/maps/Lemuria-Hub.png'
     },
     {
       id: 'urchin-underpass',
-      mapName: 'Urchin Underpass',
+      mapName: 'Dekabahnstation',
       imageUrl: 'assets/maps/Urchin_Underpass.png'
     }
   ];
@@ -153,23 +153,23 @@ export class BroadcastStateService {
   availableModes = [
     {
       id: 'tw',
-      name: 'Turf War'
+      name: 'Revierkampf'
     },
     {
       id: 'sz',
-      name: 'Splat Zones'
+      name: 'Herrschaft'
     },
     {
       id: 'tc',
-      name: 'Tower Control'
+      name: 'Turm-Kommando'
     },
     {
       id: 'rm',
-      name: 'Rainmaker' 
+      name: 'Operation Goldfisch' 
     },
     {
       id: 'cb',
-      name: 'Clam Blitz'
+      name: 'Muschelchaos'
     }
   ]
 
