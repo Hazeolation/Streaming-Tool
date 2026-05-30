@@ -9,7 +9,7 @@
                 })">
             <option
                 *ngFor="let division of availableDivisions"
-                [value]="division.id">
+                [ngValue]="division.id">
                 {{ division.name }}
             </option>
         </select>
