@@ -6,8 +6,16 @@
   top: 50%;
   transform: translate(-50%, -50%);
   width: 920px;
-  padding: 44px;
+  padding: 16px 13px 70px 13px;
   text-align: center;
+  border: 6px solid black;
+  background: rgba(241, 146, 56, 1);
+  background: linear-gradient(
+    0deg,
+    rgba(241, 146, 56, 1) 0%,
+    rgba(144, 73, 42, 1) 17%,
+    rgba(25, 12, 38, 1) 34%
+  );
   transition:
     opacity 180ms ease,
     transform 180ms ease;
@@ -16,29 +24,36 @@
 .league {
   font-size: 22px;
   font-weight: 900;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #ffd000;
+  color: #e57231;
 }
 
 .versus {
   margin-top: 28px;
-
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 32px;
-  font-size: 42px;
+  font-size: 36px;
   font-weight: 900;
-  text-transform: uppercase;
 }
 
 .versus strong {
-  color: #ffd000;
+  color: #e57231;
 }
 
 .score {
-  margin-top: 26px;
-  font-size: 64px;
+  display: flex;
+  font-size: 44px;
   font-weight: 900;
+  justify-content: center;
+  padding-right: 17px;
+}
+
+img {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: 7px;
 }
