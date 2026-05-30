@@ -5,27 +5,35 @@
   left: 50%;
   bottom: 46px;
   transform: translateX(-50%);
-  min-width: 620px;
+  min-width: 500px;
   padding: 16px 28px;
   text-align: center;
+  border: 4px solid black;
+  background: rgba(241, 146, 56, 1);
+  background: linear-gradient(
+    0deg,
+    rgba(241, 146, 56, 1) 0%,
+    rgba(144, 73, 42, 1) 17%,
+    rgba(25, 12, 38, 1) 34%
+  );
   transition:
     opacity 180ms ease,
     transform 180ms ease;
 }
 
 .label {
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 900;
-  letter-spacing: 0.25em;
-  color: #ffd000;
+  color: #f17932;
   margin-bottom: 8px;
 }
 
 .casters {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 22px;
+  margin: 0px 20px;
 }
 
 .caster {
@@ -33,8 +41,9 @@
   font-weight: 800;
 }
 
-.divider {
-  width: 2px;
-  height: 32px;
-  background: rgba(255, 255, 255, 0.25);
+img {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: 7px;
 }
