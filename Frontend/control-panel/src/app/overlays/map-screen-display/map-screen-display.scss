@@ -63,6 +63,14 @@
   padding: 18px;
 }
 
+.dsb-logo {
+  --image-size: 17.1875rem;
+  position: absolute;
+  right: 11.25rem;
+  width: var(--image-size);
+  height: var(--image-size);
+}
+
 .order {
   font-size: 14px;
   font-weight: 900;
