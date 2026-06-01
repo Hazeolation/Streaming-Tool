@@ -2,14 +2,49 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  gap: 20px;
+  gap: 70px 50px;
   padding: 20px;
   overflow-y: auto;
 }
 
 .add-map-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 390px;
   height: 220px;
-  border: 2px solid white;
+  border: 2px solid #7f7f81;
   border-radius: 25px;
+  background: linear-gradient(
+    0deg,
+    rgba(243, 176, 56, 1) 0%,
+    rgba(183, 58, 56, 1) 22%,
+    rgba(37, 39, 48, 1) 45%
+  );
+  cursor: pointer;
+}
+
+.add-map-text {
+  font-size: 29px;
+  font-weight: bold;
+  color: #ffffff;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  cursor: pointer;
+}
+
+.add-map-icon {
+  font-size: 180px;
+  font-weight: bold;
+  color: gray;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  cursor: pointer;
 }
