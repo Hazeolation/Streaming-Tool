@@ -17,40 +17,37 @@
     </div>
 
     <div class="map-grid">
-        <div
-            class="map-card dsb-panel"
-            *ngFor="let map of state().maps">
+        @for (map of state().maps; track map) {
+            <div class="map-card dsb-panel">
+                <img [src]="map.imageUrl">
 
-            <img [src]="map.imageUrl">
+                <div class="map-info">
+                    <div class="order">
+                        KARTE {{ map.order }}
+                    </div>
 
-            <div class="map-info">
-                <div class="order">
-                    KARTE {{ map.order }}
+                    <div class="name">
+                        {{ map.mapName }}
+                    </div>
+
+                    <div class="mode">
+                        {{ map.modeName }}
+                    </div>
+
+                    @if (map.winner) {
+                        <div class="winner">
+                            Sieger:
+                            {{
+                                map.winner === 'alpha'
+                                    ? state().teamAlphaName
+                                    : state().teamBravoName
+                            }}
+                        </div>
+                    }
                 </div>
 
-                <div class="name">
-                    {{ map.mapName }}
-                </div>
-
-                <div class="mode">
-                    {{ map.modeName }}
-                </div>
-
-                <div
-                    class="winner"
-                    *ngIf="map.winner">
-
-                    Sieger:
-                    {{
-                        map.winner === 'alpha'
-                            ? state().teamAlphaName
-                            : state().teamBravoName
-                    }}
-
-                </div>
             </div>
-
-        </div>
+        }
     </div>
 
 </div>

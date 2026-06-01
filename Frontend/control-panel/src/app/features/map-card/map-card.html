@@ -32,9 +32,11 @@
     <img class="mode-image" [src]="'assets/modes/' + (state().maps.find(m => m.mapId === map.mapId)?.modeId) + '.png'" alt="Mode Icon">
     <div class="settings__container">
         <select [ngModel]="map.mapId" (ngModelChange)="updateMap($event)">
-            <option *ngFor="let entry of availableMaps" [value]="entry.id">
-                {{ entry.mapName }}
-            </option>
+            @for (entry of availableMaps; track entry) {
+                <option [value]="entry.id">
+                    {{ entry.mapName }}
+                </option>
+            }
         </select>
         <button
             class="edit"
@@ -42,5 +44,7 @@
             Bearbeiten
         </button>
     </div>
-    <app-edit-card class="edit-menu"*ngIf="showEditMenu" (onCloseClick)="closeEditMenu()" (onModeChange)="updateMode($event)" (onDeleteMap)="removeMap()" />
+    @if (showEditMenu) {
+         <app-edit-card class="edit-menu" (onCloseClick)="closeEditMenu()" (onModeChange)="updateMode($event)" (onDeleteMap)="removeMap()" />
+    }
 </div>

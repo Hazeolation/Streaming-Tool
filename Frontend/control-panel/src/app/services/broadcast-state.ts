@@ -1,15 +1,21 @@
-import { effect, inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { BroadcastApi } from './broadcast-api';
 import { Signalr } from './signalr';
 import { BroadcastState } from '../models/broadcast-state';
+import { Division } from '../models/division';
+import { Map } from '../models/map';
+import { Mode } from '../models/mode';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BroadcastStateService {
-  private readonly api = inject(BroadcastApi);
-  private readonly signalr = inject(Signalr);
+  private readonly api: BroadcastApi = inject(BroadcastApi);
+  private readonly signalr: Signalr = inject(Signalr);
 
+  /**
+   * Initializes the BroadcastStateService by setting up an effect that listens for incoming broadcast state updates from the SignalR service. When a new state is received, it updates the local state signal with the incoming data. Additionally, it starts the SignalR connection to begin receiving live updates. This ensures that the service always has the most current broadcast state as provided by the backend or other sources sending updates through SignalR.
+   */
   constructor() {
     effect(() => {
       const incoming = this.signalr.liveState();
@@ -22,7 +28,10 @@ export class BroadcastStateService {
     this.signalr.start();
   }
 
-  availableMaps = [
+  /**
+   * A predefined list of maps that can be selected for the broadcast. Each map has a unique ID, a name, and an image URL. This list is used to populate dropdowns or selection components in the UI where the user can choose the map for each map slot in the current broadcast state.
+   */
+  availableMaps: Map[] = [
     {
       id: 'scorch-gorge',
       mapName: 'Sengkluft',
@@ -150,7 +159,10 @@ export class BroadcastStateService {
     }
   ];
 
-  availableModes = [
+  /**
+   * A predefined list of game modes that can be selected for the broadcast. Each mode has a unique ID and a name. This list is used to populate dropdowns or selection components in the UI where the user can choose the game mode for the current broadcast state.
+   */
+  availableModes: Mode[] = [
     {
       id: 'tw',
       name: 'Revierkampf'
@@ -173,7 +185,10 @@ export class BroadcastStateService {
     }
   ]
 
-  availableDivisions = [
+  /**
+   * A predefined list of divisions that can be selected for the broadcast. Each division has a unique ID and a name. This list is used to populate dropdowns or selection components in the UI where the user can choose the division for the current broadcast state.
+   */
+  availableDivisions: Division[] = [
     { id: 1, name: 'Division 1' },
     { id: 2, name: 'Division 2' },
     { id: 3, name: 'Division 3' },
@@ -184,7 +199,10 @@ export class BroadcastStateService {
     { id: 8, name: 'Division 8' }
   ];
 
-  state = signal<BroadcastState>({
+  /**
+   * The main state signal that holds the current broadcast state. It is initialized with default values and gets updated either through incoming SignalR messages or when the `update` method is called to change the state and persist it to the backend API.
+   */
+  state: WritableSignal<BroadcastState> = signal<BroadcastState>({
     teamAlphaName: 'Team Alpha',
     teamBravoName: 'Team Bravo',
     alphaIsLeft: true,
@@ -201,13 +219,20 @@ export class BroadcastStateService {
     division: 1
   });
 
-  loadInitialState() {
+  /**
+   * Loads the initial broadcast state from the backend API and sets it to the state signal. This method is typically called during the initialization of components that depend on the broadcast state to ensure they have the most up-to-date information when they start.
+   */
+  loadInitialState(): void {
     this.api.getState().subscribe(state => {
       this.state.set(state);
     });
   }
 
-  update(partial: Partial<BroadcastState>) {
+  /**
+   * Updates the broadcast state by merging the existing state with the provided partial state, then sends the updated state to the backend API.
+   * @param partial The partial state containing the properties to be updated in the current broadcast state.
+   */
+  update(partial: Partial<BroadcastState>): void {
     const newState = {
       ...this.state(),
       ...partial
@@ -217,7 +242,10 @@ export class BroadcastStateService {
     this.api.updateState(newState).subscribe();
   }
 
-  addMap() {
+  /**
+   * Adds a new map to the state with default values, then updates the state and recalculates the scores accordingly.
+   */
+  addMap(): void {
     const state = this.state();
     const defaultMap = this.availableMaps[0];
     const defaultMode = this.availableModes[1];
@@ -236,7 +264,11 @@ export class BroadcastStateService {
     this.update({ maps: [...state.maps, newMap] });
   }
 
-  removeMap(id: string) {
+  /**
+   * Removes a map from the state based on its ID, then reorders the remaining maps and updates the scores accordingly.
+   * @param id The unique identifier of the map to be removed.
+   */
+  removeMap(id: string): void {
     const maps = this.state().maps.filter(x => x.id !== id);
     const reordered = maps.map((map, index) => ({
       ...map, order: index + 1

@@ -7,11 +7,11 @@
                 stateService.update({
                     division: $event
                 })">
-            <option
-                *ngFor="let division of availableDivisions"
-                [ngValue]="division.id">
+            @for (division of availableDivisions; track division) {
+            <option [ngValue]="division.id">
                 {{ division.name }}
             </option>
+            }
         </select>
     </section>
     <section>
