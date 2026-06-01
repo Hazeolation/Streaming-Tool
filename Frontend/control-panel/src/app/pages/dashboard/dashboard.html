@@ -3,8 +3,9 @@
         <span class="add-map-text">Add Map</span>
         <span class="add-map-icon">+</span>
     </div>
-    <app-map-card
-        *ngFor="let map of state().maps;"
-        [map]="map">
-    </app-map-card>
+    @for (map of state().maps; track map) {
+         <app-map-card
+            [map]="map">
+        </app-map-card>
+    }
 </div>
