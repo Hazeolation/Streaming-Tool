@@ -64,15 +64,19 @@ select {
   color: white;
   height: 37px;
   width: 165px;
+  font-weight: bolder;
   cursor: pointer;
 }
 
 .teamButton {
   background: #3D3D3D;
   color: white;
+  border: none;
   border-radius: 10px;
   height: 37px;
   width: 140px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
   cursor: pointer;
 }
 
@@ -84,6 +88,16 @@ select {
   border: 2px solid #F4752D;
 }
 
+.alpha-win {
+  background: #F9C839;
+  color: black;
+}
+
+.bravo-win {
+  background: #F4752D;
+  color: black;
+}
+
 .edit {
   background: #D9D9D9;
   border: none;
@@ -92,6 +106,7 @@ select {
   width: 90px;
   justify-self: end;
   margin-right: 16px;
+  font-weight: bolder;
   cursor: pointer;
 }
 

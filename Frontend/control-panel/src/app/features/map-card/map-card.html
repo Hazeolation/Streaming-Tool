@@ -5,13 +5,27 @@
     <div class="overlay">
         <div class="controls">
             <button
-            class="teamButton alpha"
-            (click)="setWinner('alpha')">
+            class="teamButton"
+            [ngClass]="
+                state().maps.find(m => m.id === map.id)?.winner === null 
+                    ? 'alpha'
+                    : (state().maps.find(m => m.id === map.id)?.winner === 'alpha'
+                        ? 'alpha-win'
+                        : '')
+            "
+            (click)="handleWinnerSelection('alpha')">
             {{ state().teamAlphaName }}
         </button>
         <button
-            class="teamButton bravo"
-            (click)="setWinner('bravo')">
+            class="teamButton"
+            [ngClass]="
+                state().maps.find(m => m.id === map.id)?.winner === null 
+                    ? 'bravo'
+                    : (state().maps.find(m => m.id === map.id)?.winner === 'bravo'
+                        ? 'bravo-win'
+                        : '')
+            "
+            (click)="handleWinnerSelection('bravo')">
             {{ state().teamBravoName }}
         </button>
     </div>

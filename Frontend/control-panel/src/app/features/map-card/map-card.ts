@@ -1,6 +1,6 @@
 import { Component, Input, WritableSignal, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgFor, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { MapState } from '../../models/map-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { EditCard } from '../edit-card/edit-card';
@@ -8,7 +8,7 @@ import { BroadcastState } from '../../models/broadcast-state';
 
 @Component({
   selector: 'app-map-card',
-  imports: [FormsModule, EditCard, NgFor, NgIf],
+  imports: [FormsModule, EditCard, NgFor, NgIf, NgClass],
   templateUrl: './map-card.html',
   styleUrl: './map-card.scss',
 })
@@ -21,10 +21,19 @@ export class MapCard {
   availableModes = this.stateService.availableModes;
   showEditMenu: boolean = false;
 
-  setWinner(winner: 'alpha' | 'bravo'): void {
+  handleWinnerSelection(winner: 'alpha' | 'bravo'): void {
+    if (this.state().maps.find(m => m.id === this.map.id)?.winner === winner) {
+      
+      return this.setWinner(null);
+    }
+    
+    this.setWinner(winner);
+  }
+
+  setWinner(winner: 'alpha' | 'bravo' | null): void {
     const state = this.stateService.state();
 
-    const updatedMaps = state.maps.map(m => {
+    const updatedMaps = state.maps.map((m) => {
       if (m.id === this.map.id)
       {
         return {

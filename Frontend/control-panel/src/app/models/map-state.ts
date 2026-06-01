@@ -6,6 +6,6 @@ export interface MapState {
     modeId: string;
     modeName: string;
     imageUrl: string;
-    winner?: 'alpha' | 'bravo';
+    winner?: 'alpha' | 'bravo' | null;
     isVisible: boolean;
 }

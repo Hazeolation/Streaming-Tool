@@ -3,7 +3,7 @@
         <button (click)="addMap()">Karte hinzuf&uuml;gen</button>
     </div>
     <app-map-card
-        *ngFor="let map of state().maps"
+        *ngFor="let map of state().maps;"
         [map]="map">
     </app-map-card>
-</div> 
+</div>
