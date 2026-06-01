@@ -9,7 +9,8 @@ if [ -f "./Frontend/control-panel/package.json" ]; then
     npm start
   ) &
 else
-  echo "Frontend project not found!"
+  echo "Frontend project not found! Press any key to exit..."
+  read -r -n 1 -s dummy
 fi
 
 echo "Starting backend..."
@@ -19,15 +20,14 @@ if [ -f "./Backend/DSB.StreamBackend/DSB.StreamBackend.csproj" ]; then
     dotnet run
   ) &
 else
-  echo "Backend project not found!"
+  echo "Backend project not found! Stopping frontend..."
+  pkill -f "npm start" > /dev/null 2>&1 || true
+  echo "Press any key to exit..."
+  read -r -n 1 -s dummy
 fi
 
 if command -v xdg-open >/dev/null 2>&1; then
   xdg-open "http://localhost:4200"
-elif command -v open >/dev/null 2>&1; then
-  open "http://localhost:4200"
-elif command -v start >/dev/null 2>&1; then
-  start "http://localhost:4200"
 else
   echo "Bitte oeffnen Sie http://localhost:4200 im Browser."
 fi
