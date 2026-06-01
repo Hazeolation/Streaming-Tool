@@ -230,7 +230,7 @@ export class BroadcastStateService {
 
   /**
    * Updates the broadcast state by merging the existing state with the provided partial state, then sends the updated state to the backend API.
-   * @param partial The partial state containing the properties to be updated in the current broadcast state.
+   * @param {Partial<BroadcastState>} partial The partial state containing the properties to be updated in the current broadcast state.
    */
   update(partial: Partial<BroadcastState>): void {
     const newState = {
@@ -266,7 +266,7 @@ export class BroadcastStateService {
 
   /**
    * Removes a map from the state based on its ID, then reorders the remaining maps and updates the scores accordingly.
-   * @param id The unique identifier of the map to be removed.
+   * @param {string} id The unique identifier of the map to be removed.
    */
   removeMap(id: string): void {
     const maps = this.state().maps.filter(x => x.id !== id);

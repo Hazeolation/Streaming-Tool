@@ -47,7 +47,7 @@ export class MapCard {
 
   /**
    * Handles the selection of a winner for the map. When a user selects a winner (either 'alpha' or 'bravo'), this method checks if the selected winner is already marked as the winner for the current map. If it is, it calls `setWinner` with `null` to clear the winner selection. If it is not, it calls `setWinner` with the selected winner to update the map's state accordingly. This method allows users to easily toggle the winner selection for a map, providing an intuitive way to manage the outcome of each map in the broadcast.
-   * @param winner The team selected as the winner for the map, which can be either 'alpha' or 'bravo'. This parameter is used to determine which team is currently marked as the winner for the map and to update the state accordingly when a user interacts with the winner selection in the UI.
+   * @param {('alpha' | 'bravo')} winner The team selected as the winner for the map, which can be either 'alpha' or 'bravo'. This parameter is used to determine which team is currently marked as the winner for the map and to update the state accordingly when a user interacts with the winner selection in the UI.
    */
   handleWinnerSelection(winner: 'alpha' | 'bravo'): void {
     if (this.state().maps.find(m => m.id === this.map.id)?.winner === winner) {
@@ -60,7 +60,7 @@ export class MapCard {
 
   /**
    * Sets the winner for the current map by updating the broadcast state through the `BroadcastStateService`. This method takes a `winner` parameter, which can be 'alpha', 'bravo', or `null` to indicate no winner. It updates the `maps` array in the broadcast state to reflect the new winner for the current map, and also recalculates the scores for both teams based on the updated winners of all maps. Finally, it calls the `update` method on the `BroadcastStateService` to apply these changes to the overall broadcast state, ensuring that all components that depend on this state will reactively update their UI to reflect the new winner and scores.
-   * @param winner The team selected as the winner for the map, which can be 'alpha', 'bravo', or `null` to indicate no winner. This parameter is used to update the state of the current map in the broadcast, allowing users to manage the outcome of each map and see the corresponding changes in team scores based on the winners selected.
+   * @param {('alpha' | 'bravo' | null)} winner The team selected as the winner for the map, which can be 'alpha', 'bravo', or `null` to indicate no winner. This parameter is used to update the state of the current map in the broadcast, allowing users to manage the outcome of each map and see the corresponding changes in team scores based on the winners selected.
    */
   setWinner(winner: 'alpha' | 'bravo' | null): void {
     const state = this.stateService.state();
@@ -96,7 +96,7 @@ export class MapCard {
 
   /**
    * Updates the map information for the current map in the broadcast state by finding the selected map from the available maps based on the provided `mapId`, and then updating the corresponding map entry in the `maps` array of the broadcast state with the new map details (such as `mapId`, `mapName`, and `imageUrl`). This method is typically triggered by a user action, such as selecting a different map from a dropdown menu in the edit menu of the map card. When invoked, it ensures that the broadcast state reflects the new map selection, allowing users to manage and customize the maps being played in the broadcast effectively.
-   * @param mapId The unique identifier of the selected map, which is used to find the corresponding map details from the `availableMaps` array and update the current map's state in the broadcast accordingly. This parameter is essential for ensuring that the correct map information is applied to the current map in the broadcast when a user makes a selection.
+   * @param {string} mapId The unique identifier of the selected map, which is used to find the corresponding map details from the `availableMaps` array and update the current map's state in the broadcast accordingly. This parameter is essential for ensuring that the correct map information is applied to the current map in the broadcast when a user makes a selection.
    */
   updateMap(mapId: string): void {
     const selected = this.availableMaps.find(m => m.id === mapId);
@@ -119,7 +119,7 @@ export class MapCard {
 
   /**
    * Updates the mode information for the current map in the broadcast state by finding the selected mode from the available modes based on the provided `modeId`, and then updating the corresponding map entry in the `maps` array of the broadcast state with the new mode details (such as `modeId` and `modeName`). This method is typically triggered by a user action, such as selecting a different mode from a dropdown menu in the edit menu of the map card. When invoked, it ensures that the broadcast state reflects the new mode selection for the current map, allowing users to manage and customize both the maps and modes being played in the broadcast effectively.
-   * @param modeId The unique identifier of the selected mode, which is used to find the corresponding mode details from the `availableModes` array and update the current map's state in the broadcast accordingly. This parameter is essential for ensuring that the correct mode information is applied to the current map in the broadcast when a user makes a selection, allowing for accurate representation of the game mode being played on that map. 
+   * @param {string} modeId The unique identifier of the selected mode, which is used to find the corresponding mode details from the `availableModes` array and update the current map's state in the broadcast accordingly. This parameter is essential for ensuring that the correct mode information is applied to the current map in the broadcast when a user makes a selection, allowing for accurate representation of the game mode being played on that map. 
    */
   updateMode(modeId: string): void {
     const selected = this.availableModes.find(m => m.id === modeId);

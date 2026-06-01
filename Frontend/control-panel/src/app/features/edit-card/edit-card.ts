@@ -31,7 +31,7 @@ export class EditCard {
 
   /**
    * Changes the mode for the current map by emitting the `onModeChange` event with the selected mode as its payload. This method is typically triggered by a user action, such as selecting a different mode from a dropdown menu in the edit menu of the map card. When invoked, it signals to parent components that the user has selected a new mode for the current map, allowing the parent component to update the broadcast state accordingly to reflect the new mode selection for that map in the broadcast.
-   * @param mode The unique identifier of the selected mode, which is emitted as the payload of the `onModeChange` event. This parameter is essential for ensuring that the correct mode information is communicated to parent components when a user makes a selection, allowing for accurate updates to the broadcast state based on the user's choice.
+   * @param {string} mode The unique identifier of the selected mode, which is emitted as the payload of the `onModeChange` event. This parameter is essential for ensuring that the correct mode information is communicated to parent components when a user makes a selection, allowing for accurate updates to the broadcast state based on the user's choice.
    */
   changeMode(mode: string): void {
     this.onModeChange.emit(mode);
