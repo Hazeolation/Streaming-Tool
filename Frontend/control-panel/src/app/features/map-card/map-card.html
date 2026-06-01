@@ -1,7 +1,7 @@
 <div
     class="map-card"
     [class.hidden]="!map.isVisible">
-    <img [src]="map.isVisible ? map.imageUrl : 'assets/maps/Shifty-Station.png'" alt="{{ map.mapName }}">
+    <img class="map-image" [src]="map.imageUrl" alt="{{ map.mapName }}">
     <div class="overlay">
         <div class="controls">
             <button
@@ -15,6 +15,7 @@
             {{ state().teamBravoName }}
         </button>
     </div>
+    <img class="mode-image" [src]="'assets/modes/' + (state().maps.find(m => m.mapId === map.mapId)?.modeId) + '.png'" alt="Mode Icon">
     <div class="settings__container">
         <select [ngModel]="map.mapId" (ngModelChange)="updateMap($event)">
             <option *ngFor="let entry of availableMaps" [value]="entry.id">
@@ -24,7 +25,8 @@
         <button
             class="edit"
             (click)="openEditMenu()">
-            Edit
+            Bearbeiten
         </button>
     </div>
+    <app-edit-card class="edit-menu"*ngIf="showEditMenu" (onCloseClick)="closeEditMenu()" (onModeChange)="updateMode($event)" (onDeleteMap)="removeMap()" />
 </div>

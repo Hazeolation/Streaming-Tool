@@ -1,24 +1,27 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, WritableSignal, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { MapState } from '../../models/map-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
+import { EditCard } from '../edit-card/edit-card';
+import { BroadcastState } from '../../models/broadcast-state';
 
 @Component({
   selector: 'app-map-card',
-  imports: [FormsModule, NgFor],
+  imports: [FormsModule, EditCard, NgFor, NgIf],
   templateUrl: './map-card.html',
   styleUrl: './map-card.scss',
 })
 export class MapCard {
   @Input({required: true}) map!: MapState;
-  stateService = inject(BroadcastStateService);
-  state = this.stateService.state;
+  stateService: BroadcastStateService = inject(BroadcastStateService);
+  state: WritableSignal<BroadcastState> = this.stateService.state;
 
   availableMaps = this.stateService.availableMaps;
   availableModes = this.stateService.availableModes;
+  showEditMenu: boolean = false;
 
-  setWinner(winner: 'alpha' | 'bravo') {
+  setWinner(winner: 'alpha' | 'bravo'): void {
     const state = this.stateService.state();
 
     const updatedMaps = state.maps.map(m => {
@@ -43,28 +46,13 @@ export class MapCard {
     });
   }
 
-  removeMap() {
+  removeMap(): void {
     this.stateService.removeMap(this.map.id);
   }
 
-  toggleVisibility() {
-    const state = this.stateService.state();
-    const updatedMaps = state.maps.map(m => {
-      if (m.id === this.map.id)
-        return {
-          ...m,
-          isVisible: !m.isVisible
-        };
-
-      return m;
-    });
-
-    this.stateService.update({ maps: updatedMaps });
-  }
-
-  updateMap(mapId: string) {
+  updateMap(mapId: string): void {
     const selected = this.availableMaps.find(m => m.id === mapId);
-    if (!selected) return;
+    if (!selected) return console.error("Selected map not found:", mapId);
 
     const updatedMaps = this.stateService.state().maps.map(m => {
       if (m.id === this.map.id)
@@ -81,17 +69,18 @@ export class MapCard {
     this.stateService.update({ maps: updatedMaps });
   }
 
-  updateMode(modeId: string) {
+  updateMode(modeId: string): void {
     const selected = this.availableModes.find(m => m.id === modeId);
-    if (!selected) return;
+    if (!selected) return console.error('Selected mode not found:', modeId);
 
     const updatedMaps = this.stateService.state().maps.map(m => {
-      if (m.id === this.map.id)
+      if (m.id === this.map.id) {
         return {
           ...m,
-          modeId,
+          modeId: selected.id,
           modeName: selected.name
         };
+      }
 
       return m;
     });
@@ -99,7 +88,11 @@ export class MapCard {
     this.stateService.update({ maps: updatedMaps });
   }
 
-  openEditMenu() {
-    
+  openEditMenu(): void {
+    this.showEditMenu = !this.showEditMenu;
+  }
+
+  closeEditMenu(): void {
+    this.showEditMenu = false;
   }
 }
