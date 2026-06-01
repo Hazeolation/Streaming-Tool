@@ -25,7 +25,7 @@
 
             <div class="map-info">
                 <div class="order">
-                    MAP {{ map.order }}
+                    KARTE {{ map.order }}
                 </div>
 
                 <div class="name">
@@ -40,7 +40,7 @@
                     class="winner"
                     *ngIf="map.winner">
 
-                    Winner:
+                    Sieger:
                     {{
                         map.winner === 'alpha'
                             ? state().teamAlphaName
