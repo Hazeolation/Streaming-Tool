@@ -13,6 +13,7 @@ import { BroadcastStateService } from '../../services/broadcast-state';
 export class MapCard {
   @Input({required: true}) map!: MapState;
   stateService = inject(BroadcastStateService);
+  state = this.stateService.state;
 
   availableMaps = this.stateService.availableMaps;
   availableModes = this.stateService.availableModes;
@@ -96,5 +97,9 @@ export class MapCard {
     });
 
     this.stateService.update({ maps: updatedMaps });
+  }
+
+  openEditMenu() {
+    
   }
 }

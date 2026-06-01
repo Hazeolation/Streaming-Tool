@@ -3,35 +3,28 @@
     [class.hidden]="!map.isVisible">
     <img [src]="map.isVisible ? map.imageUrl : 'assets/maps/Shifty-Station.png'" alt="{{ map.mapName }}">
     <div class="overlay">
+        <div class="controls">
+            <button
+            class="teamButton alpha"
+            (click)="setWinner('alpha')">
+            {{ state().teamAlphaName }}
+        </button>
+        <button
+            class="teamButton bravo"
+            (click)="setWinner('bravo')">
+            {{ state().teamBravoName }}
+        </button>
+    </div>
+    <div class="settings__container">
         <select [ngModel]="map.mapId" (ngModelChange)="updateMap($event)">
             <option *ngFor="let entry of availableMaps" [value]="entry.id">
                 {{ entry.mapName }}
             </option>
         </select>
-        <select [ngModel]="map.modeId" (ngModelChange)="updateMode($event)">
-            <option *ngFor="let mode of availableModes" [value]="mode.id">
-                {{ mode.name }}
-            </option>
-        </select>
-        <div class="mode">
-            {{ map.modeName }}
-        </div>
-        <div class="controls">
-            <label class="visibility-toggle">
-                <input type="checkbox" [checked]="map.isVisible" (change)="toggleVisibility()">
-                Visible
-            </label>
-            <button
-                class="alpha"
-                (click)="setWinner('alpha')">
-                Alpha gewinnt
-            </button>
-            <button
-                class="bravo"
-                (click)="setWinner('bravo')">
-                Bravo gewinnt
-            </button>
-        </div>
+        <button
+            class="edit"
+            (click)="openEditMenu()">
+            Edit
+        </button>
     </div>
-    <button class="remove-button" (click)="removeMap()">✕</button>
 </div>
