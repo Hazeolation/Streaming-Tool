@@ -3,17 +3,17 @@
     [class.overlay-hidden]="!state().showMapScreen">
 
     <div class="header dsb-panel">
-        <div class="event">
-            Deutsche Splatoon Bundesliga
-        </div>
+        <span class="match team-alpha-name">
+            {{ state().teamAlphaName.toUpperCase() }}
+        </span>
 
-        <div class="match">
-            {{ state().teamAlphaName }}
-            <span class="dsb-accent">
-                {{ state().scoreAlpha }} : {{ state().scoreBravo }}
-            </span>
-            {{ state().teamBravoName }}
-        </div>
+        <span class="match match-score">
+            {{ state().scoreAlpha }} : {{ state().scoreBravo }}
+        </span>
+
+        <span class="match team-bravo-name">
+            {{ state().teamBravoName.toUpperCase() }}
+        </span>
     </div>
 
     <div class="map-grid">
