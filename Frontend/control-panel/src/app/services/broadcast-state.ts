@@ -30,7 +30,7 @@ export class BroadcastStateService {
     },
     {
       id: 'eeltail-alley',
-      mapName: 'Streifenaal-Stra&szlig;e',
+      mapName: 'Streifenaal-Straße',
       imageUrl: 'assets/maps/eeltail-alley.png'
     },
     {
@@ -242,16 +242,9 @@ export class BroadcastStateService {
       ...map, order: index + 1
     }));
 
-    this.update({ maps: reordered });
+    const scoreAlpha = reordered.filter(x => x.winner === 'alpha').length;
+    const scoreBravo = reordered.filter(x => x.winner === 'bravo').length;
 
-    this.recalculateScore();
-  }
-
-  recalculateScore() {
-    const maps = this.state().maps;
-    const scoreAlpha = maps.filter(x => x.winner === 'alpha').length;
-    const scoreBravo = maps.filter(x => x.winner === 'bravo').length;
-
-    this.update({ scoreAlpha, scoreBravo });
+    this.update({ maps: reordered, scoreAlpha, scoreBravo });
   }
 }

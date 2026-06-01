@@ -1,23 +1,27 @@
 .map-card {
   position: relative;
-  border-radius: 16px;
+  border-radius: 25px;
   overflow: hidden;
   background: #252730;
-  border: 2px solid transparent;
+  width: 390px;
   transition:
     transform 150ms,
     border 150ms;
 }
 
-.map-card:hover {
-  transform: scale(1.01);
-  border-color: #6d28d9;
+.map-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
+.mode-image {
+  width: 70px;
+  position: absolute;
+  right: 16px;
+  top: 0;
+  bottom: 0;
+  margin: auto 16px auto 0;
 }
 
 .overlay {
@@ -25,7 +29,7 @@ img {
   inset: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 16px;
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
 }
@@ -42,12 +46,9 @@ img {
 
 .controls {
   display: flex;
+  justify-content: space-between;
   gap: 12px;
-  padding: 16px;
-}
-
-.controls button {
-  flex: 1;
+  padding: 10px 16px;
 }
 
 .map-card.hidden {
@@ -57,8 +58,62 @@ img {
 select {
   padding: 10px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #343744;
   color: white;
-  font-size: 16px;
+  height: 37px;
+  width: 165px;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.teamButton {
+  background: #3d3d3d;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  height: 37px;
+  width: 140px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+
+.alpha {
+  border: 2px solid #f9c839;
+}
+
+.bravo {
+  border: 2px solid #f4752d;
+}
+
+.alpha-win {
+  background: #f9c839;
+  color: black;
+}
+
+.bravo-win {
+  background: #f4752d;
+  color: black;
+}
+
+.edit {
+  background: #d9d9d9;
+  border: none;
+  border-radius: 10px;
+  height: 37px;
+  width: 90px;
+  justify-self: end;
+  margin-right: 16px;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.settings__container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit-menu {
+  position: absolute;
 }

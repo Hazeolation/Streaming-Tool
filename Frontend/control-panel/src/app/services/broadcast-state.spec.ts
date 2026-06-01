@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BroadcastState } from './broadcast-state';
+import { BroadcastStateService } from './broadcast-state';
 
-describe('BroadcastState', () => {
-  let service: BroadcastState;
+describe('BroadcastStateService', () => {
+  let service: BroadcastStateService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(BroadcastState);
+    service = TestBed.inject(BroadcastStateService);
   });
 
   it('should be created', () => {
