@@ -30,7 +30,7 @@ export class BroadcastStateService {
     },
     {
       id: 'eeltail-alley',
-      mapName: 'Streifenaal-Stra&szlig;e',
+      mapName: 'Streifenaal-Straße',
       imageUrl: 'assets/maps/eeltail-alley.png'
     },
     {
