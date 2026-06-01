@@ -1,13 +1,15 @@
 .dashboard {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   gap: 20px;
   padding: 20px;
   overflow-y: auto;
 }
 
-.toolbar {
-  display: flex;
-  justify-content: flex-end;
-  padding: 20px 20px 0;
+.add-map-card {
+  width: 390px;
+  height: 220px;
+  border: 2px solid white;
+  border-radius: 25px;
 }
