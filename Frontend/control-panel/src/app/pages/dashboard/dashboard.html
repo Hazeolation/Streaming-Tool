@@ -1,10 +1,10 @@
 <div class="dashboard">
-    <app-map-card
-        *ngFor="let map of state().maps;"
-        [map]="map">
-    </app-map-card>
     <div class="add-map-card" (click)="addMap()">
         <span class="add-map-text">Add Map</span>
         <span class="add-map-icon">+</span>
     </div>
+    <app-map-card
+        *ngFor="let map of state().maps;"
+        [map]="map">
+    </app-map-card>
 </div>
