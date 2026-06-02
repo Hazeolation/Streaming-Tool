@@ -32,29 +32,21 @@
                 />
 
                 @if (map.winner) {
-                    <div class="winner">
+                    <img
+                        class="winner-logo"
+                        [class.winner-alpha]="map.winner === 'alpha'"
+                        [class.winner-bravo]="map.winner === 'bravo'"
+                        src="assets/dsb/DSB_Outline_White.png"
+                    />
+                    <!-- <div class="winner">
                         Sieger:
                         {{
                             map.winner === 'alpha'
                                 ? state().teamAlphaName
                                 : state().teamBravoName
                         }}
-                    </div>
+                    </div> -->
                 }
-
-                <!-- <div class="map-info">
-                    <div class="order">
-                        KARTE {{ map.order }}
-                    </div>
-
-                    <div class="name">
-                        {{ map.mapName }}
-                    </div>
-
-                    <div class="mode">
-                        {{ map.modeName }}
-                    </div>
-                </div> -->
             </div>
         }
     </div>

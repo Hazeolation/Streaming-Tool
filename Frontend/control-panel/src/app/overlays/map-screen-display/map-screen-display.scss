@@ -7,6 +7,9 @@
     drop-shadow(0.125rem -0.125rem 0px #ffffff)
     drop-shadow(0.125rem 0.125rem 0px #ffffff)
   ;
+
+  --team-alpha-color-filter: brightness(0) saturate(100%) invert(90%) sepia(91%) saturate(3260%) hue-rotate(343deg) brightness(100%) contrast(91%);
+  --team-bravo-color-filter: brightness(0) saturate(100%) invert(12%) sepia(99%) saturate(7103%) hue-rotate(260deg) brightness(85%) contrast(105%);
 }
 
 .map-screen {
@@ -41,11 +44,11 @@
 }
 
 .team-alpha-name {
-  color: #F9C839;
+  color: var(--team-alpha-color);
 }
 
 .team-bravo-name {
-  color: #F4752D;
+  color: var(--team-bravo-color);
 }
 
 .team-name {
@@ -85,7 +88,7 @@
 
 .mode-image {
   width: 5.625rem;
-  height: 5.625rem;
+  height: auto;
   position: absolute;
   bottom: 4.875rem;
   left: 50%;
@@ -102,7 +105,7 @@
  * Re-Render doesn't fire the transition with a class
  * so we're forced to use this
  */
-@keyframes grayscaleImage {
+@keyframes grayscale-image {
   from {
     filter: grayscale(0%) var(--mode-outline);
   }
@@ -113,7 +116,7 @@
 }
 
 .map-won .map-image, .map-won .mode-image {
-  animation: grayscaleImage 500ms ease forwards;
+  animation: grayscale-image 500ms ease forwards;
 }
 
 .map-info {
@@ -126,6 +129,36 @@
   right: 11.25rem;
   width: var(--image-size);
   height: var(--image-size);
+}
+
+@keyframes show-winner-logo {
+  from {
+    opacity: 0;
+    width: 100%;
+  }
+
+  to {
+    opacity: 1;
+    width: 80%
+  }
+}
+
+.winner-logo {
+  position: absolute;
+  top: calc(50% - 4rem);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: auto;
+  animation: show-winner-logo 500ms ease forwards;
+}
+
+.winner-logo.winner-alpha {
+  filter: var(--team-alpha-color-filter) drop-shadow(1rem 1rem 0.25rem rgba(0, 0, 0, 0.75));
+}
+
+.winner-logo.winner-bravo {
+  filter: var(--team-bravo-color-filter) drop-shadow(1rem 1rem 0.25rem rgba(0, 0, 0, 0.75));
 }
 
 .order {
