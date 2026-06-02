@@ -72,8 +72,22 @@
   transition: filter 180ms ease;
 }
 
-.mapWon .map-image {
-  filter: grayscale(100%);
+/* Use animation instead of transition for greyscale
+ * Re-Render doesn't fire the transition with a class
+ * so we're forced to use this
+ */
+@keyframes grayscaleMap {
+  from {
+    filter: grayscale(0%);
+  }
+
+  to {
+    filter: grayscale(100%);
+  }
+}
+
+.map-won .map-image {
+  animation: grayscaleMap 500ms ease forwards;
 }
 
 .map-info {
