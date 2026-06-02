@@ -19,7 +19,7 @@
     </div>
 
     <div class="map-grid">
-        @for (map of state().maps; track map) {
+        @for (map of state().maps; track map.modeId) {
             <div 
                 class="map-card dsb-panel"
                 [class.map-won]="map.winner !== null"
