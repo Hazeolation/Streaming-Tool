@@ -2,10 +2,10 @@
 
 :host {
   --mode-outline: 
-    drop-shadow(-0.125rem -0.125rem 0px #ffffff)
-    drop-shadow(-0.125rem 0.125rem 0px #ffffff)
-    drop-shadow(0.125rem -0.125rem 0px #ffffff)
-    drop-shadow(0.125rem 0.125rem 0px #ffffff)
+    drop-shadow(-0.0625rem -0.0625rem 0px #ffffff)
+    drop-shadow(-0.0625rem 0.0625rem 0px #ffffff)
+    drop-shadow(0.0625rem -0.0625rem 0px #ffffff)
+    drop-shadow(0.0625rem 0.0625rem 0px #ffffff)
   ;
 
   --team-alpha-color-filter: brightness(0) saturate(100%) invert(90%) sepia(91%) saturate(3260%) hue-rotate(343deg) brightness(100%) contrast(91%);
