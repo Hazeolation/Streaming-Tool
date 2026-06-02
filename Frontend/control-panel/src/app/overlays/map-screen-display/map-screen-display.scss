@@ -169,11 +169,11 @@
 }
 
 .winner-logo.winner-alpha {
-  filter: var(--team-alpha-color-filter) drop-shadow(1rem 1rem 0.25rem rgba(0, 0, 0, 0.75));
+  filter: var(--team-alpha-color-filter) drop-shadow(0.75em 0.75rem 0.25rem rgba(0, 0, 0, 0.75));
 }
 
 .winner-logo.winner-bravo {
-  filter: var(--team-bravo-color-filter) drop-shadow(1rem 1rem 0.25rem rgba(0, 0, 0, 0.75));
+  filter: var(--team-bravo-color-filter) drop-shadow(0.75rem 0.75rem 0.25rem rgba(0, 0, 0, 0.75));
 }
 
 .order {
