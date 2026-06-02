@@ -8,55 +8,40 @@
     drop-shadow(0.0625rem 0.0625rem 0px #ffffff)
   ;
 
-  --team-alpha-color-filter: brightness(0) saturate(100%) invert(90%) sepia(91%) saturate(3260%) hue-rotate(343deg) brightness(100%) contrast(91%);
-  --team-bravo-color-filter: brightness(0) saturate(100%) invert(12%) sepia(99%) saturate(7103%) hue-rotate(260deg) brightness(85%) contrast(105%);
+  --team-alpha-color-filter: brightness(0) saturate(100%) invert(90%) sepia(91%) saturate(3260%)
+    hue-rotate(343deg) brightness(100%) contrast(91%);
+  --team-bravo-color-filter: brightness(0) saturate(100%) invert(12%) sepia(99%) saturate(7103%)
+    hue-rotate(260deg) brightness(85%) contrast(105%);
 }
 
 .map-screen {
   width: 100vw;
   height: 100vh;
-  padding: 4em;
+  padding: 64px;
   transition: opacity 180ms ease;
 }
 
 .header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  height: 9.0625rem;
-  padding: 0em 1.875em;
-  margin-left: 14.0625em;
-  margin-right: 14.0625em;
-  margin-bottom: 2em;
-  border: 0.375rem solid black;
-  background: linear-gradient(
-      0deg,
-      rgb(241, 181, 67) 0%,
-      rgb(244, 117, 41) 16%,
-      rgb(26, 15, 38) 33%);
+  padding: 22px 30px;
+  margin-bottom: 32px;
 }
 
-.match {
-  font-size: 2.25rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-}
-
-.team-alpha-name {
-  color: var(--team-alpha-color);
-}
-
-.team-bravo-name {
-  color: var(--team-bravo-color);
-}
-
-.team-name {
+.event {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.match-score {
-  padding: 0em 2.8em;
+.match {
+  font-size: 30px;
+  font-weight: 800;
+  display: flex;
+  gap: 18px;
+  align-items: center;
 }
 
 .map-grid {
@@ -112,7 +97,8 @@
   }
 }
 
-.map-won .map-image, .map-won .mode-image {
+.map-won .map-image,
+.map-won .mode-image {
   animation: grayscale-image 500ms ease forwards;
 }
 
@@ -136,7 +122,7 @@
 
   to {
     opacity: 1;
-    width: 80%
+    width: 80%;
   }
 }
 

@@ -1,3 +1,8 @@
+@if (!isConnected()) {
+    <div class="connection-warning">
+        &#9888; Aktuell keine Verbindung zum Backend!
+    </div>
+}
 <div class="topbar">
     <div class="title">Deutsche Splatoon Bundesliga</div>
     <div class="division">Season {{ state().season }} - Division {{ state().division }}</div>
