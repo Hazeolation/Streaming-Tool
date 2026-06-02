@@ -5,6 +5,12 @@
   overflow: hidden;
   color: white;
   font-family: Inter, Arial, sans-serif;
+
+  /* Colors are directly pulled from Inkipedia
+   * https://splatoonwiki.org/wiki/Ink/Splatoon_3
+   */
+  --team-alpha-color: #f2dc19;
+  --team-bravo-color: #4917de;
 }
 
 .overlay-hidden {

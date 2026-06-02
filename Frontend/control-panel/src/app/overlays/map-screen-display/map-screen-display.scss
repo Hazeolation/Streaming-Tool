@@ -1,5 +1,16 @@
 @use '../overlay-theme.scss';
 
+:host {
+  --mode-outline: drop-shadow(-0.125rem -0.125rem 0px #ffffff)
+    drop-shadow(-0.125rem 0.125rem 0px #ffffff) drop-shadow(0.125rem -0.125rem 0px #ffffff)
+    drop-shadow(0.125rem 0.125rem 0px #ffffff);
+
+  --team-alpha-color-filter: brightness(0) saturate(100%) invert(90%) sepia(91%) saturate(3260%)
+    hue-rotate(343deg) brightness(100%) contrast(91%);
+  --team-bravo-color-filter: brightness(0) saturate(100%) invert(12%) sepia(99%) saturate(7103%)
+    hue-rotate(260deg) brightness(85%) contrast(105%);
+}
+
 .map-screen {
   width: 100vw;
   height: 100vh;
@@ -31,23 +42,103 @@
 }
 
 .map-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 26px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  gap: 1rem;
 }
 
 .map-card {
+  position: relative;
+  max-width: 25rem;
+  height: 43.5rem;
   overflow: hidden;
+  border-radius: 4rem;
+  border: 0.375rem solid black;
 }
 
-.map-card img {
+.map-image {
   width: 100%;
-  height: 210px;
+  height: 100%;
   object-fit: cover;
+  transition: filter 180ms ease;
+  --mode-outline: drop-shadow(0px 0px 0px #000000);
+}
+
+.mode-image {
+  width: 5.625rem;
+  height: auto;
+  position: absolute;
+  bottom: 4.875rem;
+  left: 50%;
+  transform: translateX(-50%);
+  filter: var(--mode-outline);
+}
+
+/* No outline for turf war image needed, already has one in the image */
+.mode-image[mode='tw'] {
+  --mode-outline: drop-shadow(0px 0px 0px #000000);
+}
+
+/* Use animation instead of transition for greyscale
+ * Re-Render doesn't fire the transition with a class
+ * so we're forced to use this
+ */
+@keyframes grayscale-image {
+  from {
+    filter: grayscale(0%) var(--mode-outline);
+  }
+
+  to {
+    filter: grayscale(100%) var(--mode-outline);
+  }
+}
+
+.map-won .map-image,
+.map-won .mode-image {
+  animation: grayscale-image 500ms ease forwards;
 }
 
 .map-info {
   padding: 18px;
+}
+
+.dsb-logo {
+  --image-size: 17.1875rem;
+  position: absolute;
+  right: 11.25rem;
+  width: var(--image-size);
+  height: var(--image-size);
+}
+
+@keyframes show-winner-logo {
+  from {
+    opacity: 0;
+    width: 100%;
+  }
+
+  to {
+    opacity: 1;
+    width: 80%;
+  }
+}
+
+.winner-logo {
+  position: absolute;
+  top: calc(50% - 4rem);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: auto;
+  animation: show-winner-logo 500ms ease forwards;
+}
+
+.winner-logo.winner-alpha {
+  filter: var(--team-alpha-color-filter) drop-shadow(1rem 1rem 0.25rem rgba(0, 0, 0, 0.75));
+}
+
+.winner-logo.winner-bravo {
+  filter: var(--team-bravo-color-filter) drop-shadow(1rem 1rem 0.25rem rgba(0, 0, 0, 0.75));
 }
 
 .order {

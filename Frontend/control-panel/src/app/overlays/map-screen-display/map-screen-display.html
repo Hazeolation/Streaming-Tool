@@ -18,34 +18,25 @@
 
     <div class="map-grid">
         @for (map of state().maps; track map) {
-            <div class="map-card dsb-panel">
-                <img [src]="map.imageUrl">
+            <div 
+                class="map-card dsb-panel"
+                [class.map-won]="map.winner !== null"
+            >
+                <img class="map-image" [src]="map.imageUrl"/>
+                <img
+                    class="mode-image"
+                    [src]="'assets/modes/' + map.modeId + '-Large.png'"
+                    [attr.mode]="map.modeId"
+                />
 
-                <div class="map-info">
-                    <div class="order">
-                        KARTE {{ map.order }}
-                    </div>
-
-                    <div class="name">
-                        {{ map.mapName }}
-                    </div>
-
-                    <div class="mode">
-                        {{ map.modeName }}
-                    </div>
-
-                    @if (map.winner) {
-                        <div class="winner">
-                            Sieger:
-                            {{
-                                map.winner === 'alpha'
-                                    ? state().teamAlphaName
-                                    : state().teamBravoName
-                            }}
-                        </div>
-                    }
-                </div>
-
+                @if (map.winner) {
+                    <img
+                        class="winner-logo"
+                        [class.winner-alpha]="map.winner === 'alpha'"
+                        [class.winner-bravo]="map.winner === 'bravo'"
+                        src="assets/dsb/DSB_Outline_White.png"
+                    />
+                }
             </div>
         }
     </div>
