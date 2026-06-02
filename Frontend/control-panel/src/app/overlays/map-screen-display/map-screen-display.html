@@ -25,6 +25,18 @@
                 [class.map-won]="map.winner !== null"
             >
                 <img class="map-image" [src]="map.imageUrl"/>
+                <img class="mode-image" [src]="'assets/modes/' + map.modeId + '-Large.png'"/>
+
+                @if (map.winner) {
+                    <div class="winner">
+                        Sieger:
+                        {{
+                            map.winner === 'alpha'
+                                ? state().teamAlphaName
+                                : state().teamBravoName
+                        }}
+                    </div>
+                }
 
                 <!-- <div class="map-info">
                     <div class="order">
@@ -38,17 +50,6 @@
                     <div class="mode">
                         {{ map.modeName }}
                     </div>
-
-                    @if (map.winner) {
-                        <div class="winner">
-                            Sieger:
-                            {{
-                                map.winner === 'alpha'
-                                    ? state().teamAlphaName
-                                    : state().teamBravoName
-                            }}
-                        </div>
-                    }
                 </div> -->
             </div>
         }

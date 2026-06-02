@@ -1,5 +1,14 @@
 @use '../overlay-theme.scss';
 
+:host {
+  --mode-outline: 
+    drop-shadow(-0.125rem -0.125rem 0px #ffffff)
+    drop-shadow(-0.125rem 0.125rem 0px #ffffff)
+    drop-shadow(0.125rem -0.125rem 0px #ffffff)
+    drop-shadow(0.125rem 0.125rem 0px #ffffff)
+  ;
+}
+
 .map-screen {
   width: 100vw;
   height: 100vh;
@@ -58,6 +67,7 @@
 }
 
 .map-card {
+  position: relative;
   max-width: 25rem;
   height: 43.5rem;
   overflow: hidden;
@@ -70,24 +80,40 @@
   height: 100%;
   object-fit: cover;
   transition: filter 180ms ease;
+  --mode-outline: drop-shadow(0px 0px 0px #000000);
+}
+
+.mode-image {
+  width: 5.625rem;
+  height: 5.625rem;
+  position: absolute;
+  bottom: 4.875rem;
+  left: 50%;
+  transform: translateX(-50%);
+  filter: var(--mode-outline);
+}
+
+/* No outline for turf war image needed, already has one in the image */
+.mode-image[src*='tw-Large.png'] {
+  --mode-outline: drop-shadow(0px 0px 0px #000000);
 }
 
 /* Use animation instead of transition for greyscale
  * Re-Render doesn't fire the transition with a class
  * so we're forced to use this
  */
-@keyframes grayscaleMap {
+@keyframes grayscaleImage {
   from {
-    filter: grayscale(0%);
+    filter: grayscale(0%) var(--mode-outline);
   }
 
   to {
-    filter: grayscale(100%);
+    filter: grayscale(100%) var(--mode-outline);
   }
 }
 
-.map-won .map-image {
-  animation: grayscaleMap 500ms ease forwards;
+.map-won .map-image, .map-won .mode-image {
+  animation: grayscaleImage 500ms ease forwards;
 }
 
 .map-info {
