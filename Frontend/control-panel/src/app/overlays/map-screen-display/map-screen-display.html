@@ -25,7 +25,11 @@
                 [class.map-won]="map.winner !== null"
             >
                 <img class="map-image" [src]="map.imageUrl"/>
-                <img class="mode-image" [src]="'assets/modes/' + map.modeId + '-Large.png'"/>
+                <img
+                    class="mode-image"
+                    [src]="'assets/modes/' + map.modeId + '-Large.png'"
+                    [attr.mode]="map.modeId"
+                />
 
                 @if (map.winner) {
                     <div class="winner">

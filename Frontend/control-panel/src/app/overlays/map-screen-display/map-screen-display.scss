@@ -94,7 +94,7 @@
 }
 
 /* No outline for turf war image needed, already has one in the image */
-.mode-image[src*='tw-Large.png'] {
+.mode-image[mode='tw'] {
   --mode-outline: drop-shadow(0px 0px 0px #000000);
 }
 
