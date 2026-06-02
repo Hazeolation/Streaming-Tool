@@ -3,16 +3,16 @@
     [class.overlay-hidden]="!state().showMapScreen">
 
     <div class="header dsb-panel">
-        <span class="match team-alpha-name">
-            {{ state().teamAlphaName.toUpperCase() }}
+        <span class="match team-name team-alpha-name">
+            {{ state().teamAlphaName }}
         </span>
 
         <span class="match match-score">
             {{ state().scoreAlpha }} : {{ state().scoreBravo }}
         </span>
 
-        <span class="match team-bravo-name">
-            {{ state().teamBravoName.toUpperCase() }}
+        <span class="match team-name team-bravo-name">
+            {{ state().teamBravoName }}
         </span>
 
         <img class="match dsb-logo" src="assets/dsb/DSB_Logo-Large.png"/>
@@ -20,8 +20,11 @@
 
     <div class="map-grid">
         @for (map of state().maps; track map) {
-            <div class="map-card dsb-panel">
-                <img [src]="map.imageUrl">
+            <div 
+                class="map-card dsb-panel"
+                [class.mapWon]="map.winner !== null"
+            >
+                <img class="map-image" [src]="map.imageUrl"/>
 
                 <!-- <div class="map-info">
                     <div class="order">
