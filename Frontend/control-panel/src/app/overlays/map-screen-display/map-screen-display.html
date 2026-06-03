@@ -3,21 +3,27 @@
     [class.overlay-hidden]="!state().showMapScreen">
 
     <div class="header dsb-panel">
-        <div class="event">
-            Deutsche Splatoon Bundesliga
-        </div>
+        <img src="assets/misc/Splatoon_Ink_Splat.png" class="ink-splat-logo team-alpha-color"/>
 
-        <div class="match">
+        <span class="match team-name team-alpha-name">
             {{ state().teamAlphaName }}
-            <span class="dsb-accent">
-                {{ state().scoreAlpha }} : {{ state().scoreBravo }}
-            </span>
+        </span>
+
+        <span class="match match-score">
+            {{ state().scoreAlpha }} : {{ state().scoreBravo }}
+        </span>
+
+        <span class="match team-name team-bravo-name">
             {{ state().teamBravoName }}
-        </div>
+        </span>
+
+        <img src="assets/misc/Splatoon_Ink_Splat.png" class="ink-splat-logo team-bravo-color"/>
+
+        <img class="match dsb-logo" src="assets/dsb/DSB_Logo-Large.png"/>
     </div>
 
     <div class="map-grid">
-        @for (map of state().maps; track map) {
+        @for (map of state().maps; track map.modeId) {
             <div 
                 class="map-card dsb-panel"
                 [class.map-won]="map.winner !== null"

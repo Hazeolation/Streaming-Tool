@@ -1,9 +1,12 @@
 @use '../overlay-theme.scss';
 
 :host {
-  --mode-outline: drop-shadow(-0.125rem -0.125rem 0px #ffffff)
-    drop-shadow(-0.125rem 0.125rem 0px #ffffff) drop-shadow(0.125rem -0.125rem 0px #ffffff)
-    drop-shadow(0.125rem 0.125rem 0px #ffffff);
+  --mode-outline: 
+    drop-shadow(-0.0625rem -0.0625rem 0px #ffffff)
+    drop-shadow(-0.0625rem 0.0625rem 0px #ffffff)
+    drop-shadow(0.0625rem -0.0625rem 0px #ffffff)
+    drop-shadow(0.0625rem 0.0625rem 0px #ffffff)
+  ;
 
   --team-alpha-color-filter: brightness(0) saturate(100%) invert(90%) sepia(91%) saturate(3260%)
     hue-rotate(343deg) brightness(100%) contrast(91%);
@@ -20,16 +23,48 @@
 
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 22px 30px;
-  margin-bottom: 32px;
+  height: 9.0625rem;
+  padding: 0em 1.875em;
+  margin-left: 14.0625em;
+  margin-right: 14.0625em;
+  margin-bottom: 2em;
+  border: 0.375rem solid black;
+  background: linear-gradient(
+      0deg,
+      rgb(241, 181, 67) 0%,
+      rgb(244, 117, 41) 16%,
+      rgb(26, 15, 38) 33%);
 }
 
-.event {
-  font-size: 28px;
-  font-weight: 900;
-  letter-spacing: 0.08em;
+.match {
+  font-size: 2.25rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+}
+
+.match-score {
+  padding: 0rem 5.25rem;
+}
+
+.ink-splat-logo {
+  width: 4.5rem;
+  height: auto;
+}
+
+.team-alpha-color {
+  margin-right: 1.25em;
+  filter: var(--team-alpha-color-filter);
+}
+
+.team-bravo-color {
+  margin-left: 1.25em;
+  filter: var(--team-bravo-color-filter);
+}
+
+.team-name {
   text-transform: uppercase;
 }
 
@@ -53,7 +88,7 @@
   max-width: 25rem;
   height: 43.5rem;
   overflow: hidden;
-  border-radius: 4rem;
+  border-radius: 3.5rem;
   border: 0.375rem solid black;
 }
 
@@ -134,11 +169,11 @@
 }
 
 .winner-logo.winner-alpha {
-  filter: var(--team-alpha-color-filter) drop-shadow(1rem 1rem 0.25rem rgba(0, 0, 0, 0.75));
+  filter: var(--team-alpha-color-filter) drop-shadow(0.75em 0.75rem 0.25rem rgba(0, 0, 0, 0.75));
 }
 
 .winner-logo.winner-bravo {
-  filter: var(--team-bravo-color-filter) drop-shadow(1rem 1rem 0.25rem rgba(0, 0, 0, 0.75));
+  filter: var(--team-bravo-color-filter) drop-shadow(0.75rem 0.75rem 0.25rem rgba(0, 0, 0, 0.75));
 }
 
 .order {
