@@ -47,6 +47,16 @@
         </div>
     </section>
     <section>
+        <h2>Streamer</h2>
+        <input
+            placeholder="@streamer"
+            [ngModel]="state().streamer"
+            (ngModelChange)="
+                stateService.update({
+                    streamer: $event
+                })"/>
+    </section>
+    <section>
         <h2>Kommentatoren</h2>
         <input
             placeholder="@caster1"
