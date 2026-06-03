@@ -22,7 +22,6 @@
 }
 
 .header {
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,15 +45,6 @@
   align-items: center;
 }
 
-.division-text {
-  position: absolute;
-  top: 0px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 1.875rem;
-  color: #c4c4c4;
-}
-
 .match-score {
   padding: 0rem 5.25rem;
 }
@@ -76,6 +66,14 @@
 
 .team-name {
   text-transform: uppercase;
+}
+
+.match {
+  font-size: 30px;
+  font-weight: 800;
+  display: flex;
+  gap: 18px;
+  align-items: center;
 }
 
 .map-grid {
@@ -143,7 +141,7 @@
 .dsb-logo {
   --image-size: 17.1875rem;
   position: absolute;
-  right: -7.25rem;
+  right: 11.25rem;
   width: var(--image-size);
   height: var(--image-size);
 }
