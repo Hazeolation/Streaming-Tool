@@ -1,54 +1,45 @@
-<div
-    class="map-screen"
-    [class.overlay-hidden]="!state().showMapScreen">
+<div class="map-screen" [class.overlay-hidden]="!state().showMapScreen">
+  <div class="header dsb-panel">
+    <span class="match division-text">
+      Season {{ state().season }} - Division {{ state().division }}
+    </span>
 
-    <div class="header dsb-panel">
-        <span class="match division-text">
-            Season {{ state().season }} - Division {{ state().division }}
-        </span>
+    <img src="assets/misc/Splatoon_Ink_Splat.png" class="ink-splat-logo team-alpha-color" />
 
-        <img src="assets/misc/Splatoon_Ink_Splat.png" class="ink-splat-logo team-alpha-color"/>
+    <span class="match team-name team-alpha-name">
+      {{ state().teamAlphaName }}
+    </span>
 
-        <span class="match team-name team-alpha-name">
-            {{ state().teamAlphaName }}
-        </span>
+    <span class="match match-score"> {{ state().scoreAlpha }} : {{ state().scoreBravo }} </span>
 
-        <span class="match match-score">
-            {{ state().scoreAlpha }} : {{ state().scoreBravo }}
-        </span>
+    <span class="match team-name team-bravo-name">
+      {{ state().teamBravoName }}
+    </span>
 
-        <span class="match team-name team-bravo-name">
-            {{ state().teamBravoName }}
-        </span>
+    <img src="assets/misc/Splatoon_Ink_Splat.png" class="ink-splat-logo team-bravo-color" />
 
-        <img src="assets/misc/Splatoon_Ink_Splat.png" class="ink-splat-logo team-bravo-color"/>
+    <img class="match dsb-logo" src="assets/dsb/DSB_Logo-Large.png" />
+  </div>
 
-        <img class="match dsb-logo" src="assets/dsb/DSB_Logo-Large.png"/>
-    </div>
+  <div class="map-grid">
+    @for (map of state().maps; track map.modeId) {
+      <div class="map-card dsb-panel" [class.map-won]="map.winner !== null">
+        <img class="map-image" [src]="map.imageUrl" />
+        <img
+          class="mode-image"
+          [src]="'assets/modes/' + map.modeId + '-Large.png'"
+          [attr.mode]="map.modeId"
+        />
 
-    <div class="map-grid">
-        @for (map of state().maps; track map.modeId) {
-            <div 
-                class="map-card dsb-panel"
-                [class.map-won]="map.winner !== null"
-            >
-                <img class="map-image" [src]="map.imageUrl"/>
-                <img
-                    class="mode-image"
-                    [src]="'assets/modes/' + map.modeId + '-Large.png'"
-                    [attr.mode]="map.modeId"
-                />
-
-                @if (map.winner) {
-                    <img
-                        class="winner-logo"
-                        [class.winner-alpha]="map.winner === 'alpha'"
-                        [class.winner-bravo]="map.winner === 'bravo'"
-                        src="assets/dsb/DSB_Outline_White.png"
-                    />
-                }
-            </div>
+        @if (map.winner) {
+          <img
+            class="winner-logo"
+            [class.winner-alpha]="map.winner === 'alpha'"
+            [class.winner-bravo]="map.winner === 'bravo'"
+            src="assets/dsb/DSB_Outline_White.png"
+          />
         }
-    </div>
-
+      </div>
+    }
+  </div>
 </div>
