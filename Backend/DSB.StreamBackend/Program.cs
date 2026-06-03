@@ -3,6 +3,8 @@ using DSB.StreamBackend.Context;
 using DSB.StreamBackend.Hubs;
 using DSB.StreamBackend.Services;
 
+// Program.cs configures the web host, dependency injection, middleware,
+// SignalR, database migration, CORS, and endpoint routing for the backend.
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
