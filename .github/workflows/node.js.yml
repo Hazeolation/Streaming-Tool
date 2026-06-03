@@ -19,13 +19,12 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
-            - run: cd "./Frontend/control-panel"
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v4
               with:
+                  working-directory: ./Frontend/control-panel
                   node-version: ${{ matrix.node-version }}
                   cache: "npm"
-            - run: ls
             - run: npm ci ./Frontend/control-panel
             - run: npm run build --if-present ./Frontend/control-panel
             - run: npm test ./Frontend/control-panel
