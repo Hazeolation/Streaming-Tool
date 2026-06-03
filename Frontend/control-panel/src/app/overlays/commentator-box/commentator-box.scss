@@ -24,26 +24,6 @@
     transform 180ms ease;
 }
 
-.label {
-  font-size: 20px;
-  font-weight: 900;
-  color: #f17932;
-  margin-bottom: 8px;
-}
-
-.casters {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 22px;
-  margin: 0px 20px;
-}
-
-.caster {
-  font-size: 30px;
-  font-weight: 800;
-}
-
 .streamer-text, .casters-text {
   font-size: 1.875rem;
   font-weight: 800;
