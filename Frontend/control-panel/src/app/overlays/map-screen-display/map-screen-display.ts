@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, WritableSignal } from '@angular/core';
+import { CommentatorBox } from '../commentator-box/commentator-box';
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
-import { CommentatorBox } from '../commentator-box/commentator-box';
 
 @Component({
   selector: 'app-map-screen-display',
