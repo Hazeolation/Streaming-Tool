@@ -12,6 +12,10 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
+        defaults:
+            run:
+                shell: bash
+                working-directory: ./Frontend/control-panel
 
         strategy:
             matrix:
@@ -22,7 +26,6 @@ jobs:
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v4
               with:
-                  working-directory: ./Frontend/control-panel
                   node-version: ${{ matrix.node-version }}
                   cache: "npm"
             - run: npm ci ./Frontend/control-panel
