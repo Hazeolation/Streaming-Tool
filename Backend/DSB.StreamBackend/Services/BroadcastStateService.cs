@@ -24,6 +24,8 @@ public class BroadcastStateService(StreamToolDbContext db)
         entity.ScoreAlpha = dto.ScoreAlpha;
         entity.ScoreBravo = dto.ScoreBravo;
 
+        entity.Streamer = dto.Streamer;
+
         entity.Commentator1 = dto.Commentator1;
         entity.Commentator2 = dto.Commentator2;
 
@@ -112,6 +114,8 @@ public class BroadcastStateService(StreamToolDbContext db)
 
             ScoreAlpha = entity.ScoreAlpha,
             ScoreBravo = entity.ScoreBravo,
+
+            Streamer = entity.Streamer,
 
             Commentator1 = entity.Commentator1,
             Commentator2 = entity.Commentator2,

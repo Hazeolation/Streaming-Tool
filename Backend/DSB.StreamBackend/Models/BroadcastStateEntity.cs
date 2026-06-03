@@ -14,6 +14,11 @@ public class BroadcastStateEntity
 
     public int ScoreBravo { get; set; }
 
+    /// <summary>
+    /// Sets the name of the streamer
+    /// </summary>
+    public string Streamer { get; set; } = String.Empty;
+
     public string Commentator1 { get; set; } = "";
 
     public string Commentator2 { get; set; } = "";
