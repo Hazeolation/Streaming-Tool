@@ -84,16 +84,17 @@
 }
 
 .map-grid {
+  flex: 1;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-evenly;
-  gap: 1rem;
+  column-gap: 1rem;
+  padding: 1.25rem 0rem;
 }
 
 .map-card {
   position: relative;
   max-width: 25rem;
-  height: 43.5rem;
   overflow: hidden;
   border-radius: 3.5rem;
   border: 0.375rem solid black;
