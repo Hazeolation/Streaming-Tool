@@ -3,13 +3,16 @@
 .commentator-box {
   position: absolute;
   left: 50%;
-  bottom: 46px;
-  transform: translateX(-50%);
+  bottom: 3rem;
   min-width: 500px;
-  padding: 16px 28px;
+  transform: translateX(-50%);
+  padding: 1rem 3rem;
   text-align: center;
-  border: 4px solid black;
-  background: rgba(241, 146, 56, 1);
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  border: 0.25rem solid black;
   background: linear-gradient(
     0deg,
     rgba(241, 146, 56, 1) 0%,
@@ -41,9 +44,25 @@
   font-weight: 800;
 }
 
-img {
+.streamer-text, .casters-text {
+  font-size: 1.875rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.streamer-text {
+  padding-right: 0.75em;
+  border-right: 0.1875rem solid #ffffff;
+}
+
+.casters-text {
+  padding-left: 0.75em;
+}
+
+.dsb-logo-small {
   position: absolute;
+  width: 2.5rem;
+  height: auto;
   bottom: 0;
   right: 0;
-  margin-right: 7px;
 }
