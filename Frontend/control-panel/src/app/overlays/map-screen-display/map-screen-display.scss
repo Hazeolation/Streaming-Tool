@@ -19,8 +19,7 @@
 .map-screen {
   width: 100vw;
   height: 100vh;
-  padding-top: 3rem;
-  padding-bottom: 2rem;
+  padding: 3rem 3rem 2rem 3rem;
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
@@ -159,8 +158,8 @@
 @keyframes show-winner-logo {
   from {
     opacity: 0;
-    width: 100%;
-    max-width: 100%;
+    width: 150%;
+    max-width: 1000%;
   }
 
   to {
@@ -172,9 +171,9 @@
 
 .winner-logo {
   position: absolute;
-  top: calc(50% - 4rem);
+  top: 8rem;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   width: 80%;
   max-width: var(--winner-logo-max-width);
   min-width: 8.75rem;
