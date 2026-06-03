@@ -19,6 +19,8 @@ jobs:
               uses: actions/setup-dotnet@v4
               with:
                   dotnet-version: 8.0.x
+            - name: Check Directory
+              run: ls
             - name: Change Directory
               run: cd ./Backend/DSB.StreamBackend
             - name: Restore dependencies
