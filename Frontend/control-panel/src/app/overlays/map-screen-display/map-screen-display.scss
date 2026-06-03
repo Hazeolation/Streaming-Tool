@@ -103,7 +103,9 @@
 }
 
 .mode-image {
-  width: 5.625rem;
+  width: 36%;
+  max-width: 10rem;
+  min-width: 5.625rem;
   height: auto;
   position: absolute;
   bottom: 4.875rem;
@@ -166,6 +168,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80%;
+  max-width: 15.625rem;
+  min-width: 8.75rem;
   height: auto;
   animation: show-winner-logo 500ms ease forwards;
 }
