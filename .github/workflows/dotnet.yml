@@ -19,12 +19,8 @@ jobs:
               uses: actions/setup-dotnet@v4
               with:
                   dotnet-version: 8.0.x
-            - name: Change Directory
-              run: cd ./Backend/DSB.StreamBackend
-            - name: Check Directory
-              run: ls
             - name: Restore dependencies
-              run: dotnet restore
+              run: dotnet restore ./Backend/DSB.StreamBackend/DSB.StreamBackend.csproj
             - name: Build
               run: dotnet build --no-restore
             - name: Test
