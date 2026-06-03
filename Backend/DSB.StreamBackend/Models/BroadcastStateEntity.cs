@@ -17,7 +17,7 @@ public class BroadcastStateEntity
     /// <summary>
     /// Sets the name of the streamer
     /// </summary>
-    public string Streamer { get; set; } = String.Empty;
+    public string Streamer { get; set; } = string.Empty;
 
     public string Commentator1 { get; set; } = "";
 
