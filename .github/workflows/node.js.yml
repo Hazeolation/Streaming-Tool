@@ -3,6 +3,9 @@
 
 name: Node.js CI
 
+env:
+    FRONTEND_PATH: ./Frontend/control-panel
+
 defaults:
     run:
         shell: bash
@@ -28,13 +31,13 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: "npm"
-                  cache-dependency-path: ./Frontend/control-panel/package-lock.json
+                  cache-dependency-path: ${{ env.FRONTEND_PATH }}/package-lock.json
             - name: Install dependencies
               run: npm ci
-              working-directory: ./Frontend/control-panel
+              working-directory: ${{ env.FRONTEND_PATH }}
             - name: Build
               run: npm run build --if-present
-              working-directory: ./Frontend/control-panel
+              working-directory: ${{ env.FRONTEND_PATH }}
             # Commented out until tests exist
             # - name: Test
             #   run: npm test
