@@ -2,19 +2,13 @@
     class="commentator-box dsb-panel"
     [class.overlay-hidden]="!state().showCommentatorBox">
 
-    <div class="label">
-        KOMMENTATOREN
-    </div>
+    <span class="streamer-text">
+        Streamer: {{ state().streamer || 'Streamer' }}
+    </span>
 
-    <div class="casters">
-        <div class="caster">
-            {{ state().commentator1 || 'Caster 1' }}
-        </div>
+    <span class="casters-text">
+        Kommentatoren: {{ state().commentator1 || 'Caster 1' }}, {{ state().commentator2 || 'Caster 2' }}
+    </span>
 
-        <div class="caster">
-            {{ state().commentator2 || 'Caster 2' }}
-        </div>
-    </div>
-
-    <img src="assets/dsb/DSB_Logo.png" width="40px" alt="DSB Logo">
+    <img src="assets/dsb/DSB_Logo.png" alt="DSB Logo" class="dsb-logo-small">
 </div>
