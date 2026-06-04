@@ -13,7 +13,9 @@
   --team-bravo-color-filter: brightness(0) saturate(100%) invert(12%) sepia(99%) saturate(7103%)
     hue-rotate(260deg) brightness(85%) contrast(105%);
 
-    --winner-logo-max-width: 15.625rem;
+  --winner-logo-max-width: 15.625rem;
+
+  --winner-anim-duration: 500ms;
 }
 
 .map-screen {
@@ -167,7 +169,7 @@
 
 .map-won .map-image,
 .map-won .mode-image {
-  animation: grayscale-image 500ms ease forwards;
+  animation: grayscale-image var(--winner-anim-duration) ease forwards;
 }
 
 .map-info {
@@ -205,7 +207,7 @@
   max-width: var(--winner-logo-max-width);
   min-width: 8.75rem;
   height: auto;
-  animation: show-winner-logo 500ms ease forwards;
+  animation: show-winner-logo var(--winner-anim-duration) ease forwards;
 }
 
 .winner-logo.winner-alpha {
