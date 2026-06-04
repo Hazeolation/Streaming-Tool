@@ -1,12 +1,9 @@
 @use '../overlay-theme.scss';
 
 :host {
-  --mode-outline: 
-    drop-shadow(-0.0625rem -0.0625rem 0px #ffffff)
-    drop-shadow(-0.0625rem 0.0625rem 0px #ffffff)
-    drop-shadow(0.0625rem -0.0625rem 0px #ffffff)
-    drop-shadow(0.0625rem 0.0625rem 0px #ffffff)
-  ;
+  --mode-outline: drop-shadow(-0.0625rem -0.0625rem 0px #ffffff)
+    drop-shadow(-0.0625rem 0.0625rem 0px #ffffff) drop-shadow(0.0625rem -0.0625rem 0px #ffffff)
+    drop-shadow(0.0625rem 0.0625rem 0px #ffffff);
 
   --team-alpha-color-filter: brightness(0) saturate(100%) invert(90%) sepia(91%) saturate(3260%)
     hue-rotate(343deg) brightness(100%) contrast(91%);
@@ -32,11 +29,7 @@
   margin-right: 14.0625em;
   margin-bottom: 2em;
   border: 0.375rem solid black;
-  background: linear-gradient(
-      0deg,
-      rgb(241, 181, 67) 0%,
-      rgb(244, 117, 41) 16%,
-      rgb(26, 15, 38) 33%);
+  background: linear-gradient(0deg, var(--current-division-color) 0%, rgb(26, 15, 38) 31%);
 }
 
 .match {
@@ -91,7 +84,7 @@
   height: 43.5rem;
   overflow: hidden;
   border-radius: 3.5rem;
-  border: 0.375rem solid black;
+  border: 0.375rem solid var(--current-division-color);
 }
 
 .map-image {
