@@ -1,10 +1,11 @@
 import { afterRenderEffect, Component, inject, NgZone, OnDestroy, OnInit, WritableSignal } from '@angular/core';
+import { CommentatorBox } from '../commentator-box/commentator-box';
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
 
 @Component({
   selector: 'app-map-screen-display',
-  imports: [],
+  imports: [CommentatorBox],
   templateUrl: './map-screen-display.html',
   styleUrl: './map-screen-display.scss',
 })

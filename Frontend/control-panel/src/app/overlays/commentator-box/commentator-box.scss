@@ -1,11 +1,8 @@
 @use '../overlay-theme.scss';
 
 .commentator-box {
-  position: absolute;
-  left: 50%;
-  bottom: 3rem;
+  position: relative;
   min-width: 500px;
-  transform: translateX(-50%);
   padding: 1rem 3rem;
   text-align: center;
   display: flex;
