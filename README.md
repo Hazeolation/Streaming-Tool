@@ -83,7 +83,27 @@ For in-depth technical documentation, see the [`docs/`](docs/) folder.
 
 ## How to Use
 
-> **TBA** - user guide coming soon.
+> **Note:** This guide uses OBS Studio. Other broadcasting tools may behave slightly differently.
+
+1. **Start the DSB Streaming Tool** - see [Quickstart](#quickstart). The frontend runs on `http://localhost:4200`.
+
+2. **Open OBS Studio.**
+
+3. **Add a new Browser Source** - in the *Sources* panel, click the **+** icon and select **Browser**.
+
+4. **Enter the overlay URL.** Each overlay has its own route (see [Overlay Routes](#overlay-routes-http)). For example, to add the score box:
+   ```
+   http://localhost:4200/overlay/score-box
+   ```
+
+5. **Set the resolution** to match your canvas (typically **1920 × 1080**).
+
+6. Click **OK** - the overlay will appear in your scene and update in real-time as you control it from the Control Panel.
+
+To control scores, maps, commentators, and other overlay data, open the **Control Panel** in your browser at:
+```
+http://localhost:4200/
+```
 
 ---
 
@@ -109,6 +129,8 @@ Contributions are welcome - whether you are a first-time coder or an experienced
 
 > **Please do not use AI-generated code or assets.** AI-generated images and other assets will be rejected.
 
+See [CONTRIBUTING](CONTRIBUTING.md)
+
 ### Pull Request Process
 
 Every pull request is reviewed by the maintainers defined in the [CODEOWNERS](.github/CODEOWNERS) file.
@@ -132,7 +154,7 @@ Every pull request is reviewed by the maintainers defined in the [CODEOWNERS](.g
 
 ## How to Support
 
-> Coming soon.
+If you like this Project, please leave a star! ⭐
 
 ---
 
