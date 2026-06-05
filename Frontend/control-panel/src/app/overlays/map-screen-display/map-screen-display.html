@@ -7,13 +7,15 @@
     <img src="assets/misc/Splatoon_Ink_Splat.png" class="ink-splat-logo team-alpha-color" />
 
     <span class="match team-name team-alpha-name">
-      {{ state().teamAlphaName }}
+      {{ leftTeamName }}
     </span>
 
-    <span class="match match-score"> {{ state().scoreAlpha }} : {{ state().scoreBravo }} </span>
+    <span class="match match-score">
+      {{ leftScore }} : {{ rightScore }}
+    </span>
 
     <span class="match team-name team-bravo-name">
-      {{ state().teamBravoName }}
+      {{ rightTeamName }}
     </span>
 
     <img src="assets/misc/Splatoon_Ink_Splat.png" class="ink-splat-logo team-bravo-color" />
