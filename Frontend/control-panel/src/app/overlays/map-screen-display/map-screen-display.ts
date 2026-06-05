@@ -31,8 +31,6 @@ export class MapScreenDisplay implements OnInit, OnDestroy {
    * This ensures the header background gradient always reflects the current division's color scheme.
    */
   private divisionEffect = afterRenderEffect(() => {
-    if (!document) return;
-
     const division = this.state().division;
     if (!division) return;
     
