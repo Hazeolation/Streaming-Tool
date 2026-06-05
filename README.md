@@ -137,3 +137,7 @@ Every pull request is reviewed by the maintainers defined in the [CODEOWNERS](.g
 ---
 
 ## Credits
+
+| Name | Description |
+|---|---|
+| [@CrispyNugget99](https://www.artstation.com/michelle993) | Created Designs for the UI |
