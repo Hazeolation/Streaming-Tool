@@ -13,6 +13,9 @@ export interface BroadcastState {
     scoreAlpha: number;
     scoreBravo: number;
 
+    // Streamer
+    streamer: string;
+
     // Casters
     commentator1: string;
     commentator2: string;
