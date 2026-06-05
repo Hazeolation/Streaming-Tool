@@ -1,4 +1,4 @@
-import { Component, effect, inject, NgZone, OnDestroy, OnInit, WritableSignal } from '@angular/core';
+import { afterRenderEffect, Component, inject, NgZone, OnDestroy, OnInit, WritableSignal } from '@angular/core';
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
 
@@ -30,9 +30,7 @@ export class MapScreenDisplay implements OnInit, OnDestroy {
    * `--current-division-color` to match the corresponding division color variable.
    * This ensures the header background gradient always reflects the current division's color scheme.
    */
-  private divisionEffect = effect(() => {
-    if (!document) return;
-
+  private divisionEffect = afterRenderEffect(() => {
     const division = this.state().division;
     if (!division) return;
     
