@@ -1,0 +1,22 @@
+# CODEOWNERS
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# Last matching rule takes precedence.
+
+# Global fallback — all files not matched by a more specific rule
+* @iLollek @Hazeolation
+
+# GitHub repository configuration (templates, workflows, settings)
+/.github/ @iLollek @Hazeolation
+
+# Backend — C# / .NET
+/Backend/ @iLollek @Hazeolation @RubberDuckCollector
+
+# Frontend — TypeScript / Angular (HTML, SCSS, TS)
+/Frontend/ @Hazeolation @BucketRaphi @RubberDuckCollector
+
+# Release Note Generator — Python tooling (iLollek is maintainer)
+/ReleaseNoteGenerator/ @iLollek
+
+# Documentation
+/docs/ @iLollek @Hazeolation

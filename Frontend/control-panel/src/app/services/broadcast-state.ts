@@ -208,6 +208,7 @@ export class BroadcastStateService {
     alphaIsLeft: true,
     scoreAlpha: 0,
     scoreBravo: 0,
+    streamer: '',
     commentator1: '',
     commentator2: '',
     showMapScreen: true,
