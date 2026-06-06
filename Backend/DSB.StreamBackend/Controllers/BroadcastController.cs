@@ -6,38 +6,43 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace DSB.StreamBackend.Controllers;
 
+/// <summary>
+/// Controller that exposes broadcast state endpoints for retrieval and updates.
+/// </summary>
+/// <param name="stateService">Service used to retrieve and update broadcast state.</param>
+/// <param name="hub">SignalR hub context for notifying overlay clients of state changes.</param>
 [ApiController]
 [Route("api/broadcast")]
-public class BroadcastController : ControllerBase
+public class BroadcastController(
+    BroadcastStateService stateService,
+    IHubContext<OverlayHub, IOverlayClient> hub) : ControllerBase
 {
-    private readonly BroadcastStateService _stateService;
 
-    private readonly IHubContext<OverlayHub, IOverlayClient> _hub;
-
-    public BroadcastController(
-        BroadcastStateService stateService,
-        IHubContext<OverlayHub, IOverlayClient> hub)
-    {
-        _stateService = stateService;
-        _hub = hub;
-    }
-
+    /// <summary>
+    /// Retrieves the current broadcast state.
+    /// </summary>
+    /// <returns>The current broadcast state.</returns>
     [HttpGet("state")]
     public async Task<ActionResult<BroadcastStateDto>> GetState()
     {
-        var state = await _stateService.GetStateAsync();
+        var state = await stateService.GetStateAsync();
 
         return Ok(state);
     }
 
+    /// <summary>
+    /// Updates the broadcast state and notifies all connected overlay clients of the change.
+    /// </summary>
+    /// <param name="state">The new broadcast state to apply.</param>
+    /// <returns>The updated broadcast state.</returns>
     [HttpPost("state")]
     public async Task<ActionResult<BroadcastStateDto>> UpdateState(
         BroadcastStateDto state)
     {
         var updatedState =
-            await _stateService.UpdateStateAsync(state);
+            await stateService.UpdateStateAsync(state);
 
-        await _hub.Clients.All.BroadcastStateUpdated(updatedState);
+        await hub.Clients.All.BroadcastStateUpdated(updatedState);
 
         return Ok(updatedState);
     }
