@@ -63,6 +63,10 @@ describe('Topbar', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+
   it('should be created', () => {
     expect(component).toBeTruthy();
   });

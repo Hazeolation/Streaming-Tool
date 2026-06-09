@@ -1,7 +1,7 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 
 import { BroadcastStateService } from './broadcast-state';
 import { BroadcastApi } from './broadcast-api';
@@ -60,6 +60,10 @@ describe('BroadcastStateService', () => {
     });
 
     service = TestBed.inject(BroadcastStateService);
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
 
   it('should be created', () => {

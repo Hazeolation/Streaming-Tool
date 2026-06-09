@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, beforeEach, it, expect } from 'vitest'
+import { describe, beforeEach, afterEach, it, expect } from 'vitest'
 import { App } from './app';
 
 describe('App', () => {
@@ -8,6 +8,10 @@ describe('App', () => {
     await TestBed.configureTestingModule({
       imports: [App],
     }).compileComponents();
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
 
   it('should create the app', () => {

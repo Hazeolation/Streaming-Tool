@@ -60,6 +60,10 @@ describe('Sidebar', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
