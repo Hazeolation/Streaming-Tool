@@ -47,7 +47,8 @@ This document explains how to report bugs, propose new features, and create pull
     ```
 - The control panel is usually available at `http://localhost:4200`.
 
-> Note: The backend and frontend should run together locally so overlays update live via SignalR.
+> [!IMPORTANT]
+> The backend and frontend should run together locally so overlays update live via SignalR.
 
 ## 3. What You Can Contribute
 
