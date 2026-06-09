@@ -30,7 +30,8 @@ There are start scripts for both Windows and Linux/macOS. They check for require
 | Windows | `start.bat` |
 | Linux / macOS | `start.sh` |
 
-> **Note:** The scripts will prompt you to install missing dependencies via WinGet (Windows) or your system package manager (Linux/macOS).
+> [!NOTE]
+> The scripts will prompt you to install missing dependencies via WinGet (Windows) or your system package manager (Linux/macOS).
 
 ### Manual Start
 
@@ -55,7 +56,8 @@ Angular serves on `http://localhost:4200`. The Control Panel is at the root URL;
 
 </details>
 
-> **Note:** The backend must be running for overlays to receive live updates via SignalR.
+> [!IMPORTANT]
+> The backend must be running for overlays to receive live updates via SignalR.
 
 ---
 
@@ -83,7 +85,8 @@ For in-depth technical documentation, see the [`docs/`](docs/) folder.
 
 ## How to Use
 
-> **Note:** This guide uses OBS Studio. Other broadcasting tools may behave slightly differently.
+> [!NOTE]
+> This guide uses OBS Studio. Other broadcasting tools may behave slightly differently.
 
 1. **Start the DSB Streaming Tool** - see [Quickstart](#quickstart). The frontend runs on `http://localhost:4200`.
 
@@ -109,16 +112,16 @@ http://localhost:4200/
 
 ## Screenshots
 
-**Control Panel**
+**Control Panel**  
 ![Control Panel](docs/screenshots/control_panel.png)
 
-**Score-Box Overlay**
+**Score-Box Overlay**  
 ![Score-Box](docs/screenshots/score-box.png)
 
-**Info-Box Overlay**
+**Info-Box Overlay**  
 ![Info-Box](docs/screenshots/info-box.png)
 
-**Map Overview Overlay**
+**Map Overview Overlay**  
 ![Map Overview](docs/screenshots/map-screen.png)
 
 ---
@@ -127,6 +130,7 @@ http://localhost:4200/
 
 Contributions are welcome - whether you are a first-time coder or an experienced developer.
 
+> [!WARNING]
 > **Please do not use AI-generated code or assets.** AI-generated images and other assets will be rejected.
 
 See [CONTRIBUTING](CONTRIBUTING.md)
