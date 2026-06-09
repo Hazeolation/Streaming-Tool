@@ -1,4 +1,6 @@
 name: Run Node.js Tests CI
+permissions:
+    contents: read
 
 env:
     FRONTEND_PATH: ./Frontend/control-panel
