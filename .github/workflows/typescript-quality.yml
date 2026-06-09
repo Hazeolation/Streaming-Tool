@@ -3,6 +3,9 @@
 
 name: TypeScript Code Quality CI
 
+permissions:
+  contents: read
+
 env:
     FRONTEND_PATH: ./Frontend/control-panel
 
