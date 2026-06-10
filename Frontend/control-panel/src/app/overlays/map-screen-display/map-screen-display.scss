@@ -1,5 +1,13 @@
 @use '../overlay-theme.scss';
 
+@font-face {
+  font-family: 'Gupter';
+  src: local('Gupter'), local('Gupter-Regular');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 :host {
   --mode-outline: drop-shadow(-0.0625rem -0.0625rem 0px #ffffff)
     drop-shadow(-0.0625rem 0.0625rem 0px #ffffff) drop-shadow(0.0625rem -0.0625rem 0px #ffffff)
@@ -61,7 +69,8 @@
   color: #c4c4c4;
 }
 
-.season-text, .division-text {
+.season-text,
+.division-text {
   flex: 1;
 }
 
