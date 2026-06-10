@@ -1,11 +1,9 @@
 <div class="dashboard">
-    <div class="add-map-card" (click)="addMap()">
-        <span class="add-map-text">Add Map</span>
-        <span class="add-map-icon">+</span>
-    </div>
-    @for (map of state().maps; track map) {
-         <app-map-card
-            [map]="map">
-        </app-map-card>
-    }
+  <div class="add-map-card" (click)="addMap()">
+    <span class="add-map-text">Add Map</span>
+    <span class="add-map-icon">+</span>
+  </div>
+  @for (map of state().maps; track map.id) {
+    <app-map-card [map]="map" />
+  }
 </div>

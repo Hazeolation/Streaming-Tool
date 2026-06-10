@@ -1,50 +1,52 @@
-<div
-    class="map-card"
-    [class.hidden]="!map.isVisible">
-    <img class="map-image" [src]="map.imageUrl" alt="{{ map.mapName }}">
-    <div class="overlay">
-        <div class="controls">
-            <button
-            class="teamButton"
-            [ngClass]="
-                state().maps.find(m => m.id === map.id)?.winner === null 
-                    ? 'alpha'
-                    : (state().maps.find(m => m.id === map.id)?.winner === 'alpha'
-                        ? 'alpha-win'
-                        : '')
-            "
-            (click)="handleWinnerSelection('alpha')">
-            {{ state().teamAlphaName }}
-        </button>
-        <button
-            class="teamButton"
-            [ngClass]="
-                state().maps.find(m => m.id === map.id)?.winner === null 
-                    ? 'bravo'
-                    : (state().maps.find(m => m.id === map.id)?.winner === 'bravo'
-                        ? 'bravo-win'
-                        : '')
-            "
-            (click)="handleWinnerSelection('bravo')">
-            {{ state().teamBravoName }}
-        </button>
+<div class="map-card" [class.hidden]="!map.isVisible">
+  <img class="map-image" [src]="map.imageUrl" alt="{{ map.mapName }}" />
+  <div class="overlay">
+    <div class="controls">
+      <button
+        class="teamButton"
+        [ngClass]="
+          state().maps.find((m) => m.id === map.id)?.winner === null
+            ? 'alpha'
+            : state().maps.find((m) => m.id === map.id)?.winner === 'alpha'
+              ? 'alpha-win'
+              : ''
+        "
+        (click)="handleWinnerSelection('alpha')"
+      >
+        {{ state().teamAlphaName }}
+      </button>
+      <button
+        class="teamButton"
+        [ngClass]="
+          state().maps.find((m) => m.id === map.id)?.winner === null
+            ? 'bravo'
+            : state().maps.find((m) => m.id === map.id)?.winner === 'bravo'
+              ? 'bravo-win'
+              : ''
+        "
+        (click)="handleWinnerSelection('bravo')"
+      >
+        {{ state().teamBravoName }}
+      </button>
     </div>
-    <img class="mode-image" [src]="'assets/modes/' + (state().maps.find(m => m.mapId === map.mapId)?.modeId) + '.png'" alt="Mode Icon">
+    <img class="mode-image" [src]="'assets/modes/' + map.modeId + '.png'" alt="Mode Icon" />
     <div class="settings__container">
-        <select [ngModel]="map.mapId" (ngModelChange)="updateMap($event)">
-            @for (entry of availableMaps; track entry) {
-                <option [value]="entry.id">
-                    {{ entry.mapName }}
-                </option>
-            }
-        </select>
-        <button
-            class="edit"
-            (click)="openEditMenu()">
-            Bearbeiten
-        </button>
+      <select [ngModel]="map.mapId" (ngModelChange)="updateMap($event)">
+        @for (entry of availableMaps; track entry) {
+          <option [value]="entry.id">
+            {{ entry.mapName }}
+          </option>
+        }
+      </select>
+      <button class="edit" (click)="openEditMenu()">Bearbeiten</button>
     </div>
     @if (showEditMenu) {
-         <app-edit-card class="edit-menu" (onCloseClick)="closeEditMenu()" (onModeChange)="updateMode($event)" (onDeleteMap)="removeMap()" />
+      <app-edit-card
+        class="edit-menu"
+        (onCloseClick)="closeEditMenu()"
+        (onModeChange)="updateMode($event)"
+        (onDeleteMap)="removeMap()"
+      />
     }
+  </div>
 </div>
