@@ -1,0 +1,60 @@
+# This workflow will run a .NET code analysis
+
+name: .NET Code Quality CI
+
+permissions:
+    contents: read
+    pull-requests: write
+    issues: write
+
+env:
+    BACKEND_PATH: ./Backend/DSB.StreamBackend/DSB.StreamBackend.csproj
+
+on:
+    push:
+        branches: ["master"]
+    pull_request:
+        branches: ["master"]
+
+jobs:
+    code-quality:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup .NET
+              uses: actions/setup-dotnet@v4
+              with:
+                  dotnet-version: 9.0.x
+
+            - name: Restore
+              run: dotnet restore ${{ env.BACKEND_PATH }}
+
+            - name: Build with .NET analyzers
+              id: build
+              continue-on-error: true
+              run: |
+                  dotnet build ${{ env.BACKEND_PATH }} \
+                  --configuration Release \
+                  --no-restore \
+                  -warnaserror \
+                  -p:EnableNETAnalyzers=true \
+                  -p:AnalysisLevel=latest 2>&1 | tee build.log
+
+            - name: Comment on PR
+              if: github.event_name == 'pull_request'
+              uses: peter-evans/create-or-update-comment@v5
+              with:
+                  issue-number: ${{ github.event.pull_request.number }}
+                  body: |
+                      ## .NET Code Quality Result
+
+                      **Status:** `${{ steps.build.outcome }}`
+
+                      See the workflow logs for full analyzer output.
+
+            - name: Fail job if analyzer build failed
+              if: steps.build.outcome == 'failure'
+              run: exit 1
