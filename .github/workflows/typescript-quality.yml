@@ -4,40 +4,41 @@
 name: TypeScript Code Quality CI
 
 permissions:
-  contents: read
+    contents: read
 
 env:
-  FRONTEND_PATH: ./Frontend/control-panel
+    FRONTEND_PATH: ./Frontend/control-panel
 
 defaults:
-  run:
-    shell: bash
+    run:
+        shell: bash
 
 on:
-  push:
-    branches: ["master"]
-  pull_request:
-    branches: ["master"]
+    workflow_run:
+        workflows: ["Build Node.js CI"]
+        types:
+            - completed
 
 jobs:
-  typescript-quality-check:
-    runs-on: ubuntu-latest
+    typescript-quality-check:
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [20.x]
+        strategy:
+            matrix:
+                node-version: [20.x]
 
-      steps:
-        - uses: actions/checkout@v4
-        - name: Use Node.js ${{ matrix.node-version }}
-          uses: actions/setup-node@v4
-          with:
-            node-version: ${{ matrix.node-version }}
-            cache: "npm"
-            cache-dependency-path: ${{ env.FRONTEND_PATH }}/package-lock.json
-        - name: Install dependencies
-          run: npm ci
-          working-directory: ${{ env.FRONTEND_PATH }}
-        - name: Check TypeScript code quality
-          run: npx eslint src/ --format gha
-          working-directory: ${{ env.FRONTEND_PATH }}
+        steps:
+            - uses: actions/checkout@v4
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "npm"
+                  cache-dependency-path: ${{ env.FRONTEND_PATH }}/package-lock.json
+            - name: Install dependencies
+              run: npm ci
+              working-directory: ${{ env.FRONTEND_PATH }}
+            - name: Check TypeScript code quality
+              run: npx eslint src/ --format gha
+              working-directory: ${{ env.FRONTEND_PATH }}
