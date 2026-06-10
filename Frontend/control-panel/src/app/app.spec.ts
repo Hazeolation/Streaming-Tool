@@ -23,6 +23,8 @@ describe('App', () => {
   it('should have signal reachable', () => {
     const fixture: ComponentFixture<App> = TestBed.createComponent(App);
     const app: App = fixture.componentInstance;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect((app as any).title()).toBe('control-panel');
   });
 });

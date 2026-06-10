@@ -7,6 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "code-quality": "npx eslint src/",
     "serve:ssr:control-panel": "node dist/control-panel/server/server.mjs"
   },
   "private": true,
@@ -29,12 +30,15 @@
     "@angular/build": "^21.2.12",
     "@angular/cli": "^21.2.12",
     "@angular/compiler-cli": "^21.2.0",
+    "@eslint/js": "^10.0.1",
     "@types/express": "^5.0.1",
     "@types/node": "^20.17.19",
-    "@vitest/browser-playwright": "^4.1.8",
-    "jsdom": "^28.1.0",
+    "eslint": "^10.4.1",
+    "eslint-formatter-gha": "^2.0.1",
+    "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
     "typescript": "~5.9.2",
-    "vitest": "^4.1.8"
+    "typescript-eslint": "^8.61.0",
+    "vitest": "^4.0.8"
   }
 }
