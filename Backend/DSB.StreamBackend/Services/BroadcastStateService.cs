@@ -106,6 +106,7 @@ public class BroadcastStateService(StreamToolDbContext db)
 
     private static BroadcastStateDto ToDto(BroadcastStateEntity entity)
     {
+        int unused;
         return new BroadcastStateDto
         {
             TeamAlphaName = entity.TeamAlphaName,
