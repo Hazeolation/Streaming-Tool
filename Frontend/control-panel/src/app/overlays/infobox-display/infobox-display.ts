@@ -14,8 +14,6 @@ export class InfoboxDisplay implements OnInit {
    */
   stateService: BroadcastStateService = inject(BroadcastStateService);
 
-  testVar: any = 0;
-
   /**
    * A writable signal that holds the current broadcast state. It is initialized by referencing the `state` signal from the `BroadcastStateService`, allowing the infobox display component to reactively update its UI whenever the broadcast state changes. This signal is used to display the current information in the infobox display, ensuring that it always reflects the most current state of the broadcast as provided by the service.
    */
@@ -25,7 +23,6 @@ export class InfoboxDisplay implements OnInit {
    * Initializes the infobox display component by calling the `loadInitialState` method on the `BroadcastStateService`. This ensures that the component has the initial broadcast state loaded and ready to display when it is first rendered. The `ngOnInit` lifecycle hook is used to perform this initialization logic, which is a common practice in Angular components to set up necessary data or state before the component is displayed to the user.
    */
   ngOnInit(): void {
-
     this.stateService.loadInitialState();
   }
 }
