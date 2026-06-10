@@ -190,6 +190,7 @@ describe('MapScreenDisplay', () => {
   });
 
   it('should destroy division effect on destroy', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const destroySpy = vi.spyOn((component as any).divisionEffect, 'destroy');
 
     component.ngOnDestroy();
