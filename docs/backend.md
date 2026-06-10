@@ -1,86 +1,87 @@
-# Backend – Technische Dokumentation
+# Backend – Technical Documentation
 
 ## Stack
 
-| Komponente | Technologie |
+| Component | Technology |
 |---|---|
 | Framework | ASP.NET Core 9.0 |
-| Echtzeit | SignalR |
+| Real-Time | SignalR |
 | ORM | Entity Framework Core 9 |
-| Datenbank | SQLite (`dsb-stream-tool.db`) |
-| API-Doku | Swagger / Swashbuckle |
+| Database | SQLite (`dsb-stream-tool.db`) |
+| API-Documentation | Swagger / Swashbuckle |
 
 ---
 
-## Projektstruktur
+## Project Structure
 
 ```
 DSB.StreamBackend/
 ├── Controllers/
-│   └── BroadcastController.cs   # REST-Endpunkte
+│   └── BroadcastController.cs   # REST-Endpoints
 ├── Hubs/
-│   ├── IOverlayClient.cs        # Typisiertes SignalR-Interface
+│   ├── IOverlayClient.cs        # SignalR-Interface
 │   └── OverlayHub.cs            # SignalR-Hub
 ├── Services/
-│   └── BroadcastStateService.cs # Business-Logik + DB-Zugriff
+│   └── BroadcastStateService.cs # Business Logic + DB Access
 ├── Models/
-│   ├── BroadcastStateEntity.cs  # EF-Entität (Hauptzustand)
-│   └── MapStateEntity.cs        # EF-Entität (Maps, 1:N)
+│   ├── BroadcastStateEntity.cs  # EF-Entity (Main State)
+│   └── MapStateEntity.cs        # EF-Entity (Maps, 1:N)
 ├── Dtos/
 │   ├── BroadcastStateDto.cs
 │   └── MapStateDto.cs
 ├── Context/
 │   └── StreamToolDbContext.cs   # EF DbContext
-└── Migrations/                  # EF-Migrationen (auto-apply beim Start)
+└── Migrations/                  # EF-Migrations (auto-apply on Start)
 ```
 
 ---
 
-## Datenmodell
+## Data Model
 
-Der gesamte Broadcast-Zustand wird als **eine einzige Zeile** in der Datenbank gehalten (`BroadcastStateEntity.Id = 1`). Es gibt keinen Multi-Tenant-Support; der State ist global.
+The entire Broadcast State is held in the database as **a single row** (`BroadcastStateEntity.Id = 1`). There is no multi-tenant support; the state is global.
 
-### `BroadcastStates` (1 Zeile)
+### `BroadcastStates` (1 Column)
 
-| Spalte | Typ | Beschreibung |
+| Column | Type | Description |
 |---|---|---|
-| `Id` | `int` | Immer `1` (Singleton) |
+| `Id` | `int` | Always `1` (Singleton) |
 | `TeamAlphaName` | `string` | Name Team Alpha |
 | `TeamBravoName` | `string` | Name Team Bravo |
-| `AlphaIsLeft` | `bool` | Seitenanzeige Alpha |
-| `ScoreAlpha` | `int` | Punktestand Alpha |
-| `ScoreBravo` | `int` | Punktestand Bravo |
-| `Commentator1/2` | `string` | Kommentatorennamen |
-| `ShowMapScreen` | `bool` | Overlay-Sichtbarkeit |
+| `AlphaIsLeft` | `bool` | Side Display Alpha |
+| `ScoreAlpha` | `int` | Point Score Alpha |
+| `ScoreBravo` | `int` | Point Score Bravo |
+| `Streamer` | `string` | Streamer Name |
+| `Commentator1/2` | `string` | Commentator Names |
+| `ShowMapScreen` | `bool` | Overlay Visibility |
 | `ShowScoreBox` | `bool` | |
 | `ShowCommentatorBox` | `bool` | |
 | `ShowInfobox` | `bool` | |
-| `Season` | `int` | Aktuelle Saison |
-| `Division` | `int` | Aktuelle Division |
+| `Season` | `int` | Current Season |
+| `Division` | `int` | Current Division |
 
-### `MapStates` (0..N Zeilen)
+### `MapStates` (0..N Columns)
 
-Fremdschlüssel `BroadcastStateEntityId → BroadcastStates.Id` mit `ON DELETE CASCADE`.
+Foreign Key `BroadcastStateEntityId → BroadcastStates.Id` with `ON DELETE CASCADE`.
 
-| Spalte | Typ | Beschreibung |
+| Column | Type | Description |
 |---|---|---|
-| `Id` | `string` (GUID) | Primärschlüssel |
-| `Order` | `int` | Reihenfolge |
-| `MapId` / `MapName` | `string` | Map-Referenz |
-| `ModeId` / `ModeName` | `string` | Modus-Referenz |
-| `ImageUrl` | `string` | Vorschaubild |
-| `Winner` | `string?` | `null` = kein Ergebnis |
-| `IsVisible` | `bool` | Overlay-Sichtbarkeit |
+| `Id` | `string` (GUID) | Primary Ke |
+| `Order` | `int` | Order |
+| `MapId` / `MapName` | `string` | Map Reference |
+| `ModeId` / `ModeName` | `string` | Mode Reference |
+| `ImageUrl` | `string` | Preview Image |
+| `Winner` | `string?` | `null` = No Result |
+| `IsVisible` | `bool` | Overlay Visibility |
 
 ---
 
 ## REST API
 
-Basis-URL: `/api/broadcast`
+Base URL: `/api/broadcast`
 
 ### `GET /api/broadcast/state`
 
-Gibt den aktuellen Broadcast-State zurück. Legt die Singleton-Zeile automatisch an, falls sie noch nicht existiert (Upsert).
+Gets the current Broadcast State. Automatically adds the Singleton-Row, if it doesn't exist (Upsert).
 
 **Response:** `BroadcastStateDto` (200)
 
@@ -88,20 +89,20 @@ Gibt den aktuellen Broadcast-State zurück. Legt die Singleton-Zeile automatisch
 
 ### `POST /api/broadcast/state`
 
-Überschreibt den Broadcast-State und broadcastet das Ergebnis per SignalR an alle verbundenen Overlay-Clients.
+Overwrites the Broadcast State und broadcasts the Result to all connected Overlay Clients via SignalR.
 
 **Body:** `BroadcastStateDto`  
 **Response:** `BroadcastStateDto` (200)
 
-Maps werden per Upsert verarbeitet: bestehende Maps werden anhand ihrer GUID-ID gematcht und aktualisiert, fehlende Maps werden gelöscht, neue hinzugefügt.
+Maps are handled via Upsert: Existing Maps are matched and updated based on their GUID, missing Maps get deleted, new Maps added.
 
 ---
 
 ## SignalR
 
-Hub-Endpunkt: `/overlayHub`
+Hub Endpointt: `/overlayHub`
 
-Das Interface `IOverlayClient` typisiert alle Server→Client-Aufrufe:
+The Interface `IOverlayClient` types all Server→Client Calls:
 
 ```csharp
 public interface IOverlayClient
@@ -110,40 +111,40 @@ public interface IOverlayClient
 }
 ```
 
-| Event | Ausgelöst durch | Payload |
+| Event | Triggered By | Payload |
 |---|---|---|
 | `BroadcastStateUpdated` | `POST /api/broadcast/state` | `BroadcastStateDto` |
 
 ---
 
-## Service-Layer
+## Service Layer
 
-`BroadcastStateService` ist als **Scoped** registriert (passend zum `DbContext`-Lifetime).
+`BroadcastStateService` is registered as **Scoped** (befitting of the `DbContext` lifetime).  
 
-Kernmethoden:
+Core Methods:
 
-- `GetOrCreateStateAsync()` — privater Upsert-Helper; legt die Singleton-Zeile an, falls nicht vorhanden
-- `GetStateAsync()` — liest und gibt den State als DTO zurück
-- `UpdateStateAsync(dto)` — schreibt State + Maps, gibt aktualisierten State zurück
-- `UpdateMaps(entity, dtoMaps)` — Upsert-Logik für die Map-Liste
-- `ToDto(entity)` — statische Mapping-Methode Entity → DTO
+- `GetOrCreateStateAsync()` — private Upsert Helper, adds the Singleton Row, if it doesn't exist
+- `GetStateAsync()` — reads and returns the State as a DTO
+- `UpdateStateAsync(dto)` — writes State + Maps, returns updated State
+- `UpdateMaps(entity, dtoMaps)` — Upset Logic for the Map List
+- `ToDto(entity)` — static Mapping Method Entity → DTO
 
 ---
 
 ## CORS
 
-Erlaubte Origins (konfiguriert in `Program.cs`):
+Allows Origins (configured in `Program.cs`):
 
 - `http://localhost:4200` (Angular Dev)
 - `http://localhost:4201`
 
-`AllowCredentials()` ist gesetzt — erforderlich für SignalR mit Cookies/Auth.
+`AllowCredentials()` is set — required for SignalR with Cookies/Auth.
 
 ---
 
-## Startup-Verhalten
+## Startup Behaviour
 
-EF-Migrationen werden beim Start automatisch angewendet:
+EF Migrations are automatically applied on start:
 
 ```csharp
 using var scope = app.Services.CreateScope();
@@ -151,11 +152,11 @@ var db = scope.ServiceProvider.GetRequiredService<StreamToolDbContext>();
 db.Database.Migrate();
 ```
 
-Die SQLite-Datei (`dsb-stream-tool.db`) wird im Arbeitsverzeichnis des Prozesses angelegt.
+The SQLite file (`dsb-stream-tool.db`)  gets created in the working directory of the process.
 
 ---
 
-## Neue Migration anlegen
+## Add New Migration
 
 ```bash
 dotnet ef migrations add <Name> --project Backend/DSB.StreamBackend
