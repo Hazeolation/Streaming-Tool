@@ -11,7 +11,7 @@ This document serves to document which rules we're using in our Code Quality tes
 
 ## Additional ESLint rules
 
-Additiona rules from ESLint that aren't enabled by default with recommended rulesets, but are worth using
+Additional rules from ESLint that aren't enabled by default with recommended rulesets, but are worth using
 | Rule | Severity |
 |---|---|
 | [eqeqeq](https://eslint.org/docs/latest/rules/eqeqeq) | ❌ Error |
