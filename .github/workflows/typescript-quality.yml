@@ -20,8 +20,11 @@ on:
         branches: ["master"]
 
 jobs:
-    build:
+    typescript-quality-check:
         runs-on: ubuntu-latest
+
+        # Use continue on error so we will get our code quality results uploaded
+        continue-on-error: true
 
         strategy:
             matrix:
