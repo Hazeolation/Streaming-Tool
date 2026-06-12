@@ -50,8 +50,7 @@
         @if (map.winner) {
           <img
             class="winner-logo"
-            [class.winner-alpha]="map.winner === 'alpha'"
-            [class.winner-bravo]="map.winner === 'bravo'"
+            [ngClass]="setWinnerLogoColor(map.winner)"
             src="assets/dsb/DSB_Outline_White.png"
           />
         }
