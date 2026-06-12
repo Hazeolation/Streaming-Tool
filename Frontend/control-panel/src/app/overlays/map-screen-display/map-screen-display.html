@@ -38,7 +38,7 @@
   </div>
 
   <div class="map-grid">
-    @for (map of state().maps; track map.modeId) {
+    @for (map of state().maps; track map.id) {
       <div class="map-card dsb-panel" [class.map-won]="map.winner !== null">
         <img class="map-image" [src]="map.imageUrl" />
         <img
