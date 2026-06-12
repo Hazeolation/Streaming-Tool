@@ -33,7 +33,7 @@ export class CommentatorBox implements OnInit {
       return `Kommentator: ${commentator2}`;
     }
 
-    return `Kommentatoren: ${commentator1}, ${commentator2}`;
+    return `Kommentatoren: ${commentator1 || "Kommentator 1"}, ${commentator2 || "Kommentator 2"}`;
   }
 
   /**
