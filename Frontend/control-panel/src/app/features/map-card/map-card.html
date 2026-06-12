@@ -11,9 +11,9 @@
               ? 'alpha-win'
               : ''
         "
-        (click)="handleWinnerSelection('alpha')"
+        (click)="handleWinnerSelection(state().alphaIsLeft ? 'alpha' : 'bravo')"
       >
-        {{ state().teamAlphaName }}
+        {{ state().alphaIsLeft ? state().teamAlphaName : state().teamBravoName }}
       </button>
       <button
         class="teamButton"
@@ -24,9 +24,9 @@
               ? 'bravo-win'
               : ''
         "
-        (click)="handleWinnerSelection('bravo')"
+        (click)="handleWinnerSelection(state().alphaIsLeft ? 'bravo' : 'alpha')"
       >
-        {{ state().teamBravoName }}
+        {{ state().alphaIsLeft ? state().teamBravoName : state().teamAlphaName }}
       </button>
     </div>
     <img class="mode-image" [src]="'assets/modes/' + map.modeId + '.png'" alt="Mode Icon" />
