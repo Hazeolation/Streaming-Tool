@@ -46,9 +46,15 @@
 
 .controls {
   display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: nowrap;
   justify-content: space-between;
   gap: 12px;
   padding: 10px 16px;
+}
+
+.controls.alpha-is-left {
+  flex-direction: row;
 }
 
 .map-card.hidden {
@@ -67,7 +73,7 @@ select {
   cursor: pointer;
 }
 
-.teamButton {
+.team-button {
   background: #3d3d3d;
   color: white;
   border: none;
@@ -79,20 +85,20 @@ select {
   cursor: pointer;
 }
 
-.alpha {
+.team-button.button-alpha-color {
   border: 2px solid var(--team-alpha-color);
 }
 
-.bravo {
+.team-button.button-bravo-color {
   border: 2px solid var(--team-bravo-color);
 }
 
-.alpha-win {
+.map-won.button-alpha-color {
   background: var(--team-alpha-color);
   color: black;
 }
 
-.bravo-win {
+.map-won.button-bravo-color {
   background: var(--team-bravo-color);
   color: white;
 }
