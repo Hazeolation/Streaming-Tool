@@ -24,6 +24,10 @@
   margin: auto 16px auto 0;
 }
 
+.map-won .map-image, .map-won .mode-image {
+  filter: grayscale(100%);
+}
+
 .overlay {
   position: absolute;
   inset: 0;

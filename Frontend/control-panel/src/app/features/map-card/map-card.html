@@ -1,4 +1,4 @@
-<div class="map-card" [class.hidden]="!map.isVisible">
+<div class="map-card" [class.hidden]="!map.isVisible" [class.map-won]="map.winner !== null">
   <img class="map-image" [src]="map.imageUrl" alt="{{ map.mapName }}" />
   <div class="overlay">
     <div class="controls" [class.alpha-is-left]="state().alphaIsLeft">
