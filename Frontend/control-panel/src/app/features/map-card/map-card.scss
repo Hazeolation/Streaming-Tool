@@ -80,21 +80,21 @@ select {
 }
 
 .alpha {
-  border: 2px solid #f9c839;
+  border: 2px solid var(--team-alpha-color);
 }
 
 .bravo {
-  border: 2px solid #f4752d;
+  border: 2px solid var(--team-bravo-color);
 }
 
 .alpha-win {
-  background: #f9c839;
+  background: var(--team-alpha-color);
   color: black;
 }
 
 .bravo-win {
-  background: #f4752d;
-  color: black;
+  background: var(--team-bravo-color);
+  color: white;
 }
 
 .edit {
