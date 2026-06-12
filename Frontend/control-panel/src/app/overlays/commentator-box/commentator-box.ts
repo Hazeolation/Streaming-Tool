@@ -25,11 +25,11 @@ export class CommentatorBox implements OnInit {
   get commentatorsText(): string {
     const commentator1 = this.state().commentator1;
     const commentator2 = this.state().commentator2;
-    if(commentator1.length > 0 && !commentator2) {
+    if(commentator1 && !commentator2) {
       return `Kommentator: ${commentator1}`;
     }
 
-    if(commentator2.length > 0 && !commentator1) {
+    if(commentator2 && !commentator1) {
       return `Kommentator: ${commentator2}`;
     }
 
