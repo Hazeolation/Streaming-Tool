@@ -20,6 +20,23 @@ export class CommentatorBox implements OnInit {
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
   /**
+   * Computed property that gets the name of all commentators, and turns the text into a singular if only one commentator is added in the input fields
+   */
+  get commentatorsText(): string {
+    const commentator1 = this.state().commentator1;
+    const commentator2 = this.state().commentator2;
+    if(commentator1.length > 0 && !commentator2) {
+      return `Kommentator: ${commentator1}`;
+    }
+
+    if(commentator2.length > 0 && !commentator1) {
+      return `Kommentator: ${commentator2}`;
+    }
+
+    return `Kommentatoren: ${commentator1}, ${commentator2}`;
+  }
+
+  /**
    * Initializes the commentator box component by calling the `loadInitialState` method on the `BroadcastStateService`. This ensures that the component has the initial broadcast state loaded and ready to display when it is first rendered. The `ngOnInit` lifecycle hook is used to perform this initialization logic, which is a common practice in Angular components to set up necessary data or state before the component is displayed to the user.
    */
   ngOnInit(): void {
