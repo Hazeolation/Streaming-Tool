@@ -2,10 +2,11 @@ import { afterRenderEffect, Component, inject, NgZone, OnDestroy, OnInit, Writab
 import { CommentatorBox } from '../commentator-box/commentator-box';
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-map-screen-display',
-  imports: [CommentatorBox],
+  imports: [CommentatorBox, NgClass],
   templateUrl: './map-screen-display.html',
   styleUrl: './map-screen-display.scss',
 })
@@ -40,6 +41,19 @@ export class MapScreenDisplay implements OnInit, OnDestroy {
       `var(--division-${division}-color)`
     );
   });
+
+  /**
+   * Sets the color for the winner logo depending on which team won, and if the alpha is team is on the left or not.
+   * @param {'alpha' | 'bravo'} winner - Winner team, either `alpha` or `bravo`
+   * @returns {'logo-color-alpha' | 'logo-color-bravo'}
+   */
+  setWinnerLogoColor(winner: 'alpha' | 'bravo'): string {
+    if(winner === 'alpha' && this.state().alphaIsLeft || winner === 'bravo' && !this.state().alphaIsLeft) {
+      return 'logo-color-alpha';
+    }
+
+    return 'logo-color-bravo'
+  }
 
   /**
    * Initializes the map screen display component by calling the `loadInitialState` method on the `BroadcastStateService`. This ensures that the component has the initial broadcast state loaded and ready to display when it is first rendered. The `ngOnInit` lifecycle hook is used to perform this initialization logic, which is a common practice in Angular components to set up necessary data or state before the component is displayed to the user.
