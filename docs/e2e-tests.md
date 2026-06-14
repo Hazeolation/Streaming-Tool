@@ -6,7 +6,7 @@
 |---|---|
 | Framework | .NET 9.0 / NUnit |
 | Browser Automation | Microsoft.Playwright 1.60 |
-| Browser | Chromium (headless) |
+| Browsers | Chromium, Firefox, WebKit (Safari) |
 | Test Base Class | `Microsoft.Playwright.NUnit.PageTest` |
 
 ---
@@ -146,3 +146,59 @@ This means:
 - Team name inputs may contain values left by `Sidebar_TeamAlphaName_UpdatesTopbar` / `Sidebar_TeamBravoName_UpdatesTopbar`.
 
 For a fully clean test run, reset the database by deleting `dsb-stream-tool.db` and restarting the backend (EF migrations re-create it automatically).
+
+---
+
+## CI / GitHub Actions
+
+The workflow at `.github/workflows/e2e.yml` runs automatically on every pull request targeting `master`.
+
+### Browser Matrix
+
+Tests run in parallel across three browsers:
+
+| Browser | Engine |
+|---|---|
+| `chromium` | Blink |
+| `firefox` | Gecko |
+| `webkit` | WebKit (Safari equivalent) |
+
+Each browser runs as a separate CI job (`E2E – chromium`, `E2E – firefox`, `E2E – webkit`). `fail-fast: false` ensures all three jobs always complete even if one fails, providing a full picture of cross-browser compatibility.
+
+### How the Workflow Operates
+
+1. Installs .NET 9 and Node 20
+2. Installs frontend npm dependencies
+3. Builds backend and E2E test project
+4. Installs the Playwright browser binary for that matrix entry (`pwsh playwright.ps1 install --with-deps <browser>`)
+5. Starts the backend in the background using the `http` launch profile (`http://localhost:7000`)
+6. Starts the Angular dev server in the background (`http://localhost:4200`)
+7. Polls both endpoints with `curl` until they respond (timeout: 60s backend, 120s frontend)
+8. Runs `dotnet test` with `BROWSER=<browser>` set — `PageTest` picks this up automatically
+9. On failure: uploads `backend.log` and `frontend.log` as artifacts (retained 7 days) for debugging
+
+### Selecting the Browser in Tests
+
+No code changes are needed to support multiple browsers. `Microsoft.Playwright.NUnit.PageTest` reads the `BROWSER` environment variable at runtime. The workflow sets this via:
+
+```yaml
+env:
+  BROWSER: ${{ matrix.browser }}
+```
+
+### Local Multi-Browser Run
+
+To reproduce the CI matrix locally, run `dotnet test` once per browser:
+
+```powershell
+$env:BROWSER = "firefox";  dotnet test tests/DSB.StreamTool.E2E/DSB.StreamTool.E2E.csproj
+$env:BROWSER = "webkit";   dotnet test tests/DSB.StreamTool.E2E/DSB.StreamTool.E2E.csproj
+$env:BROWSER = "chromium"; dotnet test tests/DSB.StreamTool.E2E/DSB.StreamTool.E2E.csproj
+```
+
+Browsers must be installed first:
+
+```powershell
+powershell.exe -File tests/DSB.StreamTool.E2E/bin/Debug/net9.0/playwright.ps1 install firefox
+powershell.exe -File tests/DSB.StreamTool.E2E/bin/Debug/net9.0/playwright.ps1 install webkit
+```
