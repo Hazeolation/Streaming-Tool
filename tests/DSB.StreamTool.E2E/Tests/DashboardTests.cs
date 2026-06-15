@@ -53,22 +53,16 @@ public class DashboardTests : PageTest
     public async Task Dashboard_MapCard_ShowsTeamButtons()
     {
         await Page.GotoAsync(BaseUrl);
-
-        // Wait for Angular to be fully rendered and sidebar to confirm app is ready
         await Expect(Page.Locator(".sidebar")).ToBeVisibleAsync();
 
-        // Ensure at least one map card exists
         var count = await Page.Locator(".map-card").CountAsync();
         if (count == 0)
         {
             await Page.Locator(".add-map-card").ClickAsync();
-            // Wait for the new card to appear in the DOM after the backend confirms
             await Expect(Page.Locator(".map-card").First).ToBeVisibleAsync();
         }
 
-        // Allow extra time for SignalR state to stabilize after addMap round-trip
-        await Expect(Page.Locator(".map-card .teamButton").First)
-            .ToBeVisibleAsync(new() { Timeout = 15000 });
+        await Expect(Page.Locator(".map-card .controls button").First).ToBeVisibleAsync();
     }
 
     [Test]
