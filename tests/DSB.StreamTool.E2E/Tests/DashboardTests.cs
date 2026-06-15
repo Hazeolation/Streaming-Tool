@@ -68,7 +68,7 @@ public class DashboardTests : PageTest
 
         // Allow extra time for SignalR state to stabilize after addMap round-trip
         await Expect(Page.Locator(".map-card .teamButton").First)
-            .ToBeVisibleAsync(new LocatorAssertionsToBeVisibleOptions { Timeout = 15000 });
+            .ToBeVisibleAsync(new() { Timeout = 15000 });
     }
 
     [Test]
