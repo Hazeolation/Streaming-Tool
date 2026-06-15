@@ -25,6 +25,10 @@
   margin: auto 16px auto 0;
 }
 
+.map-won .map-image, .map-won .mode-image {
+  filter: grayscale(100%);
+}
+
 .overlay {
   position: absolute;
   inset: 0;
@@ -47,9 +51,15 @@
 
 .controls {
   display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: nowrap;
   justify-content: space-between;
   gap: 12px;
   padding: 10px 16px;
+}
+
+.controls.alpha-is-left {
+  flex-direction: row;
 }
 
 .map-card.hidden {
@@ -68,7 +78,7 @@ select {
   cursor: pointer;
 }
 
-.teamButton {
+.team-button {
   background: #3d3d3d;
   color: white;
   border: none;
@@ -80,22 +90,22 @@ select {
   cursor: pointer;
 }
 
-.alpha {
-  border: 2px solid #f9c839;
+.team-button.button-alpha-color {
+  border: 2px solid var(--team-alpha-color);
 }
 
-.bravo {
-  border: 2px solid #f4752d;
+.team-button.button-bravo-color {
+  border: 2px solid var(--team-bravo-color);
 }
 
-.alpha-win {
-  background: #f9c839;
+.map-won.button-alpha-color {
+  background: var(--team-alpha-color);
   color: black;
 }
 
-.bravo-win {
-  background: #f4752d;
-  color: black;
+.map-won.button-bravo-color {
+  background: var(--team-bravo-color);
+  color: white;
 }
 
 .edit {

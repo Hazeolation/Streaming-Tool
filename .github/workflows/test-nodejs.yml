@@ -1,0 +1,38 @@
+name: Run Node.js Tests CI
+permissions:
+    contents: read
+
+env:
+    FRONTEND_PATH: ./Frontend/control-panel
+
+defaults:
+    run:
+        shell: bash
+
+on:
+    workflow_run:
+        workflows: ["Build Node.js CI"]
+        types:
+            - completed
+
+jobs:
+    build:
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                node-version: [22.x]
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: npm
+                  cache-dependency-path: ${{ env.FRONTEND_PATH }}/package-lock.json
+            - name: Run Node.js Tests
+              run: npm test
+              working-directory: ${{ env.FRONTEND_PATH }}

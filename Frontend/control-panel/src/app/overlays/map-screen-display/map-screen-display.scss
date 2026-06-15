@@ -1,5 +1,13 @@
 @use '../overlay-theme.scss';
 
+@font-face {
+  font-family: 'Gupter';
+  src: local('Gupter'), local('Gupter-Regular');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 :host {
   --mode-outline: drop-shadow(-0.0625rem -0.0625rem 0px #ffffff)
     drop-shadow(-0.0625rem 0.0625rem 0px #ffffff) drop-shadow(0.0625rem -0.0625rem 0px #ffffff)
@@ -61,7 +69,8 @@
   color: #c4c4c4;
 }
 
-.season-text, .division-text {
+.season-text,
+.division-text {
   flex: 1;
 }
 
@@ -203,11 +212,11 @@
   animation: show-winner-logo var(--winner-anim-duration) ease forwards;
 }
 
-.winner-logo.winner-alpha {
+.winner-logo.logo-color-alpha {
   filter: var(--team-alpha-color-filter) drop-shadow(0.75em 0.75rem 0.25rem rgba(0, 0, 0, 0.75));
 }
 
-.winner-logo.winner-bravo {
+.winner-logo.logo-color-bravo {
   filter: var(--team-bravo-color-filter) drop-shadow(0.75rem 0.75rem 0.25rem rgba(0, 0, 0, 0.75));
 }
 

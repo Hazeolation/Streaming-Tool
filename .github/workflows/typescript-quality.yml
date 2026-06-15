@@ -1,7 +1,10 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+# This workflow will check the Frontend typescript code for quality with typescript-eslint
+# For more information see: https://typescript-eslint.io
 
-name: Node.js CI
+name: TypeScript Code Quality CI
+
+permissions:
+    contents: read
 
 env:
     FRONTEND_PATH: ./Frontend/control-panel
@@ -17,12 +20,12 @@ on:
         branches: ["master"]
 
 jobs:
-    build:
+    typescript-quality-check:
         runs-on: ubuntu-latest
 
         strategy:
             matrix:
-                node-version: [20.x]
+                node-version: [22.x]
 
         steps:
             - uses: actions/checkout@v4
@@ -35,10 +38,6 @@ jobs:
             - name: Install dependencies
               run: npm ci
               working-directory: ${{ env.FRONTEND_PATH }}
-            - name: Build
-              run: npm run build --if-present
+            - name: Check TypeScript code quality
+              run: npx eslint src/ --format gha
               working-directory: ${{ env.FRONTEND_PATH }}
-            # Commented out until tests exist
-            # - name: Test
-            #   run: npm test
-            #   working-directory: ./Frontend/control-panel
