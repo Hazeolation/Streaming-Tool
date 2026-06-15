@@ -95,16 +95,20 @@ public class DashboardTests : PageTest
     public async Task Dashboard_MapCard_EditMenu_CanBeClosed()
     {
         await Page.GotoAsync(BaseUrl);
+        await Expect(Page.Locator(".sidebar")).ToBeVisibleAsync();
 
         var count = await Page.Locator(".map-card").CountAsync();
         if (count == 0)
+        {
             await Page.Locator(".add-map-card").ClickAsync();
+            await Expect(Page.Locator(".map-card").First).ToBeVisibleAsync();
+        }
 
         await Page.Locator(".map-card button.edit").First.ClickAsync();
         await Expect(Page.Locator("app-edit-card .edit-menu")).ToBeVisibleAsync();
 
-        await Page.Locator("app-edit-card .close").ClickAsync();
-        // Angular's @if removes app-edit-card from the DOM entirely when closed
+        // Force the click because WebKit may report the div as unstable during Angular re-renders
+        await Page.Locator("app-edit-card .close").ClickAsync(new() { Force = true });
         await Expect(Page.Locator("app-edit-card")).ToHaveCountAsync(0);
     }
 
