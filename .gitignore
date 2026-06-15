@@ -149,6 +149,8 @@ ipch/
 
 # Visual Studio Trace Files
 *.e2e
+# Un-ignore the E2E test project (DSB.StreamTool.E2E directory matched *.e2e on Windows)
+!tests/DSB.StreamTool.E2E/
 
 # TFS 2012 Local Workspace
 $tf/

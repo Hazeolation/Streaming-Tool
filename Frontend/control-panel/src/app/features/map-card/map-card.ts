@@ -49,6 +49,13 @@ export class MapCard {
    * Handles the selection of a winner for the map. When a user selects a winner (either 'alpha' or 'bravo'), this method checks if the selected winner is already marked as the winner for the current map. If it is, it calls `setWinner` with `null` to clear the winner selection. If it is not, it calls `setWinner` with the selected winner to update the map's state accordingly. This method allows users to easily toggle the winner selection for a map, providing an intuitive way to manage the outcome of each map in the broadcast.
    * @param {('alpha' | 'bravo')} winner The team selected as the winner for the map, which can be either 'alpha' or 'bravo'. This parameter is used to determine which team is currently marked as the winner for the map and to update the state accordingly when a user interacts with the winner selection in the UI.
    */
+  getTeamButtonClass(team: 'alpha' | 'bravo'): string {
+    const winner = this.state().maps.find(m => m.id === this.map.id)?.winner ?? null;
+    if (winner === null) return `teamButton ${team}`;
+    if (winner === team) return `teamButton ${team}-win`;
+    return 'teamButton';
+  }
+
   handleWinnerSelection(winner: 'alpha' | 'bravo'): void {
     if (this.state().maps.find(m => m.id === this.map.id)?.winner === winner) {
       
