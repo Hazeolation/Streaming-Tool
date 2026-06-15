@@ -59,6 +59,8 @@ public class DashboardTests : PageTest
         if (count == 0)
             await Page.Locator(".add-map-card").ClickAsync();
 
+        // Wait for a map card to be present before checking for team buttons
+        await Expect(Page.Locator(".map-card").First).ToBeVisibleAsync();
         await Expect(Page.Locator(".map-card .teamButton").First).ToBeVisibleAsync();
     }
 
