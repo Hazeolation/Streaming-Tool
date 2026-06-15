@@ -4,6 +4,9 @@ on:
     pull_request:
         branches: ["master"]
 
+permissions:
+    contents: read
+
 env:
     FRONTEND_PATH: ./Frontend/control-panel
 
