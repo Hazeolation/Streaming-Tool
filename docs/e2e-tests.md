@@ -49,7 +49,8 @@ dotnet build tests/DSB.StreamTool.E2E
 powershell.exe -File tests/DSB.StreamTool.E2E/bin/Debug/net9.0/playwright.ps1 install chromium
 ```
 
-> **Note:** This machine does not have PowerShell 7 (`pwsh`) installed. Use `powershell.exe -File` instead of `pwsh` for all Playwright CLI operations.
+> [!NOTE]
+> This machine does not have PowerShell 7 (`pwsh`) installed. Use `powershell.exe -File` instead of `pwsh` for all Playwright CLI operations.
 
 The binaries are stored in `%LOCALAPPDATA%\ms-playwright\` and are reused across runs.
 
@@ -87,7 +88,8 @@ Covers the main control panel page at `/`.
 | `Dashboard_MapCard_MapSelect_IsVisible` | The map dropdown inside each card is visible |
 | `Dashboard_Topbar_ShowsScoreDisplay` | Score display area in the topbar is rendered |
 
-**Note on edit menu selector:** The `app-edit-card` Angular host element uses `display: inline` with no layout size. The inner `<div class="edit-menu">` (which has `position: absolute; width: 350px; height: 190px`) is used for the visibility assertion instead. For the "closed" assertion, `app-edit-card` itself is checked since Angular's `@if` removes the host element from the DOM entirely when the menu is closed.
+> [!NOTE]
+> **Edit menu selector:** The `app-edit-card` Angular host element uses `display: inline` with no layout size. The inner `<div class="edit-menu">` (which has `position: absolute; width: 350px; height: 190px`) is used for the visibility assertion instead. For the "closed" assertion, `app-edit-card` itself is checked since Angular's `@if` removes the host element from the DOM entirely when the menu is closed.
 
 ---
 
@@ -112,7 +114,8 @@ Covers all sidebar controls. Each test navigates to the dashboard in `[SetUp]`.
 | `Sidebar_Visibility_ScoreBoxButton_TogglesActiveClass` | Clicking "Spielstand" toggles the `active` CSS class |
 | `Sidebar_Visibility_CommentatorButton_TogglesActiveClass` | Clicking "Kommentatoren" toggles the `active` CSS class |
 
-**Note on visibility toggle assertions:** The state update calls the backend API asynchronously before Angular updates the DOM. Playwright's `Expect(...).ToHaveClassAsync(new Regex(@"\bactive\b"))` is used (not `EvaluateAsync`) so the assertion auto-retries until the DOM reflects the change.
+> [!NOTE]
+> **Visibility toggle assertions:** The state update calls the backend API asynchronously before Angular updates the DOM. Playwright's `Expect(...).ToHaveClassAsync(new Regex(@"\bactive\b"))` is used (not `EvaluateAsync`) so the assertion auto-retries until the DOM reflects the change.
 
 ---
 
@@ -133,7 +136,8 @@ Additionally:
 |---|---|
 | `ScoreBox_VisibilityToggle_TogglesOpacity` | Clicking "Spielstand" on the dashboard toggles the `active` class; state is restored after the test |
 
-**Note on overlay visibility:** Overlays use `opacity: 0` (not `display: none`) for the hidden state via the `.overlay-hidden` class. Playwright's `ToBeVisibleAsync` considers `opacity: 0` elements visible (they have a non-zero bounding box), so all overlay element assertions use `ToBeAttachedAsync` to check DOM presence regardless of visibility state.
+> [!NOTE]
+> **Overlay visibility:** Overlays use `opacity: 0` (not `display: none`) for the hidden state via the `.overlay-hidden` class. Playwright's `ToBeVisibleAsync` considers `opacity: 0` elements visible (they have a non-zero bounding box), so all overlay element assertions use `ToBeAttachedAsync` to check DOM presence regardless of visibility state.
 
 ---
 
