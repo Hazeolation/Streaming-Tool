@@ -37,7 +37,7 @@
     "eslint-formatter-gha": "^2.0.1",
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
-    "typescript": "~5.9.2",
+    "typescript": "^6.0.0",
     "typescript-eslint": "^8.61.0",
     "vitest": "^4.0.8"
   }
