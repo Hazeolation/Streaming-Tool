@@ -3,6 +3,9 @@
 
 name: Build .NET CI
 
+permissions:
+    contents: read
+
 on:
     push:
         branches: ["master"]
