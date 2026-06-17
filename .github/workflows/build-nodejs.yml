@@ -3,6 +3,9 @@
 
 name: Build Node.js CI
 
+permissions:
+    contents: read
+
 env:
     FRONTEND_PATH: ./Frontend/control-panel
 
