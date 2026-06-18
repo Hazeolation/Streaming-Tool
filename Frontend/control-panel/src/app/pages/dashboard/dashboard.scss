@@ -1,10 +1,13 @@
+:host {
+  overflow-y: auto;
+}
+
 .dashboard {
   display: flex;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
   justify-content: flex-start;
-  gap: 70px 50px;
-  padding: 20px;
-  overflow-y: auto;
+  gap: 4.375rem 3.125rem;
+  padding: 1.25em;
 }
 
 .add-map-card {
@@ -12,10 +15,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 390px;
-  height: 220px;
-  border: 2px solid #7f7f81;
-  border-radius: 25px;
+  width: 24.375rem;
+  height: 13.75rem;
+  border: 0.125rem solid #7f7f81;
+  border-radius: 1.5625rem;
   background: linear-gradient(
     0deg,
     rgba(243, 176, 56, 1) 0%,
@@ -26,11 +29,11 @@
 }
 
 .add-map-text {
-  font-size: 29px;
+  font-size: 1.8125rem;
   font-weight: bold;
   color: #ffffff;
   position: absolute;
-  top: 20px;
+  top: 1.25rem;
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
@@ -38,7 +41,7 @@
 }
 
 .add-map-icon {
-  font-size: 180px;
+  font-size: 11.25rem;
   font-weight: bold;
   color: gray;
   position: absolute;
