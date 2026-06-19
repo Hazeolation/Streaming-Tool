@@ -26,6 +26,7 @@ describe('ScoreBox', () => {
     maps: [],
     season: 10,
     division: 1,
+    startTime: new Date()
   };
 
   const mockState = signal<BroadcastState>(defaultState);
