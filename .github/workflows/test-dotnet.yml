@@ -1,0 +1,26 @@
+name: Run .NET Tests CI
+
+permissions:
+    contents: read
+
+on:
+    workflow_run:
+        workflows: ["Build .NET CI"]
+        types:
+            - completed
+
+jobs:
+    test:
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+            - name: Setup .NET
+              uses: actions/setup-dotnet@v4
+              with:
+                  dotnet-version: 9.0.x
+            - name: Restore dependencies
+              run: dotnet restore tests/DSB.StreamBackend.Tests/DSB.StreamBackend.Tests.csproj
+            - name: Run Backend Unit Tests
+              run: dotnet test --verbosity normal tests/DSB.StreamBackend.Tests/DSB.StreamBackend.Tests.csproj

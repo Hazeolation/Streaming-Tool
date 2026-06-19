@@ -133,7 +133,7 @@ A `nuget.config` file is scoped to the test project directory. It clears all pac
 
 ## CI / GitHub Actions
 
-Unit tests run automatically on every pull request targeting `master` as part of the backend CI workflow.
+Unit tests run automatically on every pull request targeting `master` via the dedicated `.github/workflows/test-dotnet.yml` workflow. The workflow triggers after a successful Build .NET CI run and executes:
 
 ```powershell
 dotnet test tests/DSB.StreamBackend.Tests/DSB.StreamBackend.Tests.csproj
