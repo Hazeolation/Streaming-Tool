@@ -33,7 +33,11 @@ export class MapCard {
   /**
    * An array of `Map` objects representing the available maps in the broadcasting tool. This property is populated by referencing the `availableMaps` property from the `BroadcastStateService`, allowing the map card component to display a list of maps for users to select from when updating the map's state. The `Map` interface includes properties such as `id`, `mapName`, and `imageUrl`, which are used to structure and display map information in the user interface, enabling users to easily identify and visualize the maps available in the broadcasting tool.
    */
-  availableMaps: Map[] = this.stateService.availableMaps;
+  availableMaps: Map[] = this.stateService.availableMaps.sort((a ,b) => {
+    if(a.mapName < b.mapName) return -1;
+    if(a.mapName > b.mapName) return 1;
+    return 0;
+  });
 
   /**
    * An array of `Mode` objects representing the available game modes in the broadcasting tool. This property is populated by referencing the `availableModes` property from the `BroadcastStateService`, allowing the map card component to display a list of modes for users to select from when updating the map's state. The `Mode` interface includes properties such as `id` and `name`, which are used to structure and display mode information in the user interface, enabling users to easily identify and differentiate between various game modes available in the broadcasting tool.
