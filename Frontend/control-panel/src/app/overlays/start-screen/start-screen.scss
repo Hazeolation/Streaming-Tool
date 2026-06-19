@@ -15,6 +15,50 @@
   height: 41.25rem;
   width: auto;
   border-right: 0.5rem solid black;
-  padding: 0rem 3rem;
+  padding: 0rem 6rem;
 }
 
+.match-info__container {
+  flex: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+.division__container {
+  position: relative;
+  padding: 10rem 0;
+}
+
+.division-bg-splat {
+  position: absolute;
+  aspect-ratio: 439 / 363;
+  width: auto;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  mask-image: url("/assets/misc/Division_Bg_Splat.png");
+  mask-size: cover;
+  mask-repeat: no-repeat;
+  background-color: var(--current-division-color);
+  z-index: -1;
+}
+
+.current-match-text, .team-name, .versus-text, .division-text {
+  --text-border-color: black;
+  text-shadow:
+    -0.1875rem -0.1875rem 0 var(--text-border-color),
+    0.1875rem -0.1875rem 0 var(--text-border-color),
+    -0.1875rem 0.1875rem 0 var(--text-border-color),
+    0.1875rem 0.1875rem 0 var(--text-border-color),
+    -0.1875rem 0px 0 var(--text-border-color),
+    0.1875rem 0px 0 var(--text-border-color),
+    0px -0.1875rem 0 var(--text-border-color),
+    0px 0.1875rem 0 var(--text-border-color);
+  font-size: 4rem;
+}
+
+.team-name {
+  font-weight: bold;
+}

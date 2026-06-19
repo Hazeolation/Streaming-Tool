@@ -1,3 +1,28 @@
 <div class="start-screen">
   <img class="dsb-logo" src="assets/dsb/DSB_Logo-Large.png"/>
+  <div class="match-info__container">
+      <span class="current-match-text">
+        Coming up next:
+      </span>
+
+      <div class="division__container">
+        <span class="division-text">
+          Division {{ state().division }}
+        </span>
+
+        <span class="division-bg-splat"></span>
+      </div>
+
+      <span class="team-name">
+        {{ state().teamAlphaName }}
+      </span>
+
+      <span class="versus-text">
+        VS.
+      </span>
+
+      <span class="team-name">
+        {{ state().teamBravoName }}
+      </span>
+  </div>
 </div>
