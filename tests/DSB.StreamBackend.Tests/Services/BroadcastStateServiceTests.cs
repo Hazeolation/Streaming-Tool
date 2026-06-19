@@ -1,0 +1,246 @@
+using DSB.StreamBackend.Context;
+using DSB.StreamBackend.Dtos;
+using DSB.StreamBackend.Models;
+using DSB.StreamBackend.Services;
+using Microsoft.EntityFrameworkCore;
+using NUnit.Framework;
+
+namespace DSB.StreamBackend.Tests.Services;
+
+[TestFixture]
+public class BroadcastStateServiceTests
+{
+    private StreamToolDbContext _db = null!;
+    private BroadcastStateService _service = null!;
+
+    [SetUp]
+    public void SetUp()
+    {
+        var options = new DbContextOptionsBuilder<StreamToolDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
+
+        _db = new StreamToolDbContext(options);
+        _service = new BroadcastStateService(_db);
+    }
+
+    [TearDown]
+    public void TearDown() => _db.Dispose();
+
+    [Test]
+    public async Task GetStateAsync_WhenNoStateExists_CreatesAndReturnsDefaultState()
+    {
+        var result = await _service.GetStateAsync();
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.TeamAlphaName, Is.EqualTo("Team Alpha"));
+        Assert.That(result.TeamBravoName, Is.EqualTo("Team Bravo"));
+        Assert.That(result.AlphaIsLeft, Is.True);
+    }
+
+    [Test]
+    public async Task GetStateAsync_WhenStateExists_ReturnsPersisted()
+    {
+        _db.BroadcastStates.Add(new BroadcastStateEntity
+        {
+            Id = 1,
+            TeamAlphaName = "Alpha Squad",
+            TeamBravoName = "Bravo Force",
+            ScoreAlpha = 2,
+            ScoreBravo = 1
+        });
+        await _db.SaveChangesAsync();
+
+        var result = await _service.GetStateAsync();
+
+        Assert.That(result.TeamAlphaName, Is.EqualTo("Alpha Squad"));
+        Assert.That(result.TeamBravoName, Is.EqualTo("Bravo Force"));
+        Assert.That(result.ScoreAlpha, Is.EqualTo(2));
+        Assert.That(result.ScoreBravo, Is.EqualTo(1));
+    }
+
+    [Test]
+    public async Task UpdateStateAsync_UpdatesAllFields()
+    {
+        var dto = new BroadcastStateDto
+        {
+            TeamAlphaName = "Team X",
+            TeamBravoName = "Team Y",
+            AlphaIsLeft = false,
+            ScoreAlpha = 3,
+            ScoreBravo = 2,
+            Streamer = "StreamerPro",
+            Commentator1 = "Caster A",
+            Commentator2 = "Caster B",
+            ShowMapScreen = false,
+            ShowScoreBox = false,
+            ShowCommentatorBox = false,
+            ShowInfobox = false,
+            Season = 11,
+            Division = 3,
+            Maps = []
+        };
+
+        var result = await _service.UpdateStateAsync(dto);
+
+        Assert.That(result.TeamAlphaName, Is.EqualTo("Team X"));
+        Assert.That(result.TeamBravoName, Is.EqualTo("Team Y"));
+        Assert.That(result.AlphaIsLeft, Is.False);
+        Assert.That(result.ScoreAlpha, Is.EqualTo(3));
+        Assert.That(result.ScoreBravo, Is.EqualTo(2));
+        Assert.That(result.Streamer, Is.EqualTo("StreamerPro"));
+        Assert.That(result.Commentator1, Is.EqualTo("Caster A"));
+        Assert.That(result.Commentator2, Is.EqualTo("Caster B"));
+        Assert.That(result.ShowMapScreen, Is.False);
+        Assert.That(result.ShowScoreBox, Is.False);
+        Assert.That(result.ShowCommentatorBox, Is.False);
+        Assert.That(result.ShowInfobox, Is.False);
+        Assert.That(result.Season, Is.EqualTo(11));
+        Assert.That(result.Division, Is.EqualTo(3));
+    }
+
+    [Test]
+    public async Task UpdateStateAsync_PersistsChangesToDatabase()
+    {
+        var dto = new BroadcastStateDto
+        {
+            TeamAlphaName = "Persisted Team",
+            Maps = []
+        };
+
+        await _service.UpdateStateAsync(dto);
+
+        var entity = await _db.BroadcastStates.FirstAsync(x => x.Id == 1);
+        Assert.That(entity.TeamAlphaName, Is.EqualTo("Persisted Team"));
+    }
+
+    [Test]
+    public async Task UpdateStateAsync_AddsNewMaps()
+    {
+        var dto = new BroadcastStateDto
+        {
+            Maps =
+            [
+                new MapStateDto { Id = "", Order = 0, MapName = "Scorch Gorge", ModeId = "sz", ModeName = "Splat Zones" },
+                new MapStateDto { Id = "", Order = 1, MapName = "Eeltail Alley", ModeId = "tc", ModeName = "Tower Control" }
+            ]
+        };
+
+        var result = await _service.UpdateStateAsync(dto);
+
+        Assert.That(result.Maps, Has.Count.EqualTo(2));
+        Assert.That(result.Maps[0].MapName, Is.EqualTo("Scorch Gorge"));
+        Assert.That(result.Maps[1].MapName, Is.EqualTo("Eeltail Alley"));
+    }
+
+    [Test]
+    public async Task UpdateStateAsync_UpdatesExistingMap()
+    {
+        var existingId = Guid.NewGuid().ToString();
+        _db.BroadcastStates.Add(new BroadcastStateEntity
+        {
+            Id = 1,
+            Maps =
+            [
+                new MapStateEntity { Id = existingId, Order = 0, MapName = "Old Name", ModeId = "sz", ModeName = "Splat Zones", BroadcastStateEntityId = 1 }
+            ]
+        });
+        await _db.SaveChangesAsync();
+
+        var dto = new BroadcastStateDto
+        {
+            Maps =
+            [
+                new MapStateDto { Id = existingId, Order = 0, MapName = "New Name", ModeId = "tc", ModeName = "Tower Control" }
+            ]
+        };
+
+        var result = await _service.UpdateStateAsync(dto);
+
+        Assert.That(result.Maps, Has.Count.EqualTo(1));
+        Assert.That(result.Maps[0].Id, Is.EqualTo(existingId));
+        Assert.That(result.Maps[0].MapName, Is.EqualTo("New Name"));
+        Assert.That(result.Maps[0].ModeId, Is.EqualTo("tc"));
+    }
+
+    [Test]
+    public async Task UpdateStateAsync_RemovesMapsNotInDto()
+    {
+        var keepId = Guid.NewGuid().ToString();
+        var removeId = Guid.NewGuid().ToString();
+
+        _db.BroadcastStates.Add(new BroadcastStateEntity
+        {
+            Id = 1,
+            Maps =
+            [
+                new MapStateEntity { Id = keepId, Order = 0, MapName = "Keep", BroadcastStateEntityId = 1 },
+                new MapStateEntity { Id = removeId, Order = 1, MapName = "Remove", BroadcastStateEntityId = 1 }
+            ]
+        });
+        await _db.SaveChangesAsync();
+
+        var dto = new BroadcastStateDto
+        {
+            Maps = [new MapStateDto { Id = keepId, Order = 0, MapName = "Keep" }]
+        };
+
+        var result = await _service.UpdateStateAsync(dto);
+
+        Assert.That(result.Maps, Has.Count.EqualTo(1));
+        Assert.That(result.Maps[0].Id, Is.EqualTo(keepId));
+    }
+
+    [Test]
+    public async Task UpdateStateAsync_MapsOrderedByOrder()
+    {
+        var dto = new BroadcastStateDto
+        {
+            Maps =
+            [
+                new MapStateDto { Id = "", Order = 2, MapName = "Third" },
+                new MapStateDto { Id = "", Order = 0, MapName = "First" },
+                new MapStateDto { Id = "", Order = 1, MapName = "Second" }
+            ]
+        };
+
+        var result = await _service.UpdateStateAsync(dto);
+
+        Assert.That(result.Maps[0].MapName, Is.EqualTo("First"));
+        Assert.That(result.Maps[1].MapName, Is.EqualTo("Second"));
+        Assert.That(result.Maps[2].MapName, Is.EqualTo("Third"));
+    }
+
+    [Test]
+    public async Task UpdateStateAsync_NewMapWithEmptyId_GetsGeneratedId()
+    {
+        var dto = new BroadcastStateDto
+        {
+            Maps = [new MapStateDto { Id = "", Order = 0, MapName = "New Map" }]
+        };
+
+        var result = await _service.UpdateStateAsync(dto);
+
+        Assert.That(result.Maps[0].Id, Is.Not.Null.And.Not.Empty);
+    }
+
+    [Test]
+    public async Task GetStateAsync_ReturnsMapsOrderedByOrder()
+    {
+        _db.BroadcastStates.Add(new BroadcastStateEntity
+        {
+            Id = 1,
+            Maps =
+            [
+                new MapStateEntity { Id = Guid.NewGuid().ToString(), Order = 1, MapName = "Second", BroadcastStateEntityId = 1 },
+                new MapStateEntity { Id = Guid.NewGuid().ToString(), Order = 0, MapName = "First", BroadcastStateEntityId = 1 }
+            ]
+        });
+        await _db.SaveChangesAsync();
+
+        var result = await _service.GetStateAsync();
+
+        Assert.That(result.Maps[0].MapName, Is.EqualTo("First"));
+        Assert.That(result.Maps[1].MapName, Is.EqualTo("Second"));
+    }
+}

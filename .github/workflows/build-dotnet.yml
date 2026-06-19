@@ -26,5 +26,3 @@ jobs:
               run: dotnet restore ./Backend/DSB.StreamBackend/DSB.StreamBackend.csproj
             - name: Build
               run: dotnet build --no-restore ./Backend/DSB.StreamBackend/DSB.StreamBackend.csproj
-            - name: Test
-              run: dotnet test --no-build --verbosity normal ./Backend/DSB.StreamBackend/DSB.StreamBackend.csproj

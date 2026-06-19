@@ -7,6 +7,7 @@ The workflows defined in `.github/workflows/` automate build, test, quality chec
 | Workflow                   | File                                       | Description                                                                                                             |
 | -------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
 | Build .NET CI              | `.github/workflows/build-dotnet.yml`       | Checks whether the Backend .NET code can be built using `dotnet build`. Also checks the .NET code quality during build. |
+| Run .NET Tests CI          | `.github/workflows/test-dotnet.yml`        | Runs the Backend unit tests after a successful Build .NET CI run.                                                       |
 | Build Node.js CI           | `.github/workflows/build-nodejs.yml`       | Checks whether the Frontend code can be built using `ng s`.                                                             |
 | TypeScript Code Quality CI | `.github/workflows/typescript-quality.yml` | Checks the code quality of the Frontend TypeScript code using ESLint.                                                   |
 | E2E Tests                  | `.github/workflows/e2e.yml`                | Builds and runs all End-to-End Tests.                                                                                   |
@@ -19,6 +20,11 @@ The workflows defined in `.github/workflows/` automate build, test, quality chec
 
 File: `.github/workflows/build-dotnet.yml`
 Description: Builds the Backend .NET project and validates code quality during the build stage.
+
+### Run .NET Tests CI
+
+File: `.github/workflows/test-dotnet.yml`
+Description: Runs the Backend unit tests (`DSB.StreamBackend.Tests`) after a successful Build .NET CI run. Triggers automatically on every pull request targeting `master` and on every push to `master`.
 
 ### Build Node.js CI
 
