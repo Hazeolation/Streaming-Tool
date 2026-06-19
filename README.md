@@ -80,6 +80,7 @@ For in-depth technical documentation, see the [`docs/`](docs/) folder.
 | `/overlay/map-screen` | Map overview |
 | `/overlay/commentator-box` | Commentator names |
 | `/overlay/info-box` | General info box |
+| `/overlay/start-screen` | Start screen with team names and countdown timer |
 
 ---
 
@@ -123,6 +124,9 @@ http://localhost:4200/
 
 **Map Overview Overlay**  
 ![Map Overview](docs/screenshots/map-screen.png)
+
+**Start Screen**
+![Start Screen](docs/screenshots/start-screen.png)
 
 ---
 
