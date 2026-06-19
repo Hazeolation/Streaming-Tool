@@ -1,5 +1,9 @@
 @use '../overlay-theme.scss';
 
+:host {
+  --standard-font-size: 4rem;
+}
+
 .start-screen {
   width: 100vw;
   height: 100vh;
@@ -56,7 +60,12 @@
     0.1875rem 0px 0 var(--text-border-color),
     0px -0.1875rem 0 var(--text-border-color),
     0px 0.1875rem 0 var(--text-border-color);
-  font-size: 4rem;
+    
+  font-size: var(--standard-font-size);
+}
+
+.versus-text {
+  font-size: calc(var(--standard-font-size) * 0.667);
 }
 
 .team-name {
