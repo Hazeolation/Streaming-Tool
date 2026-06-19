@@ -50,15 +50,13 @@
 }
 
 .current-match-text, .team-name, .versus-text, .division-text, .countdown-timer {
-  --drop-shadow-blur: 0.0625rem;
   --text-border-color: black;
-  filter:
-    drop-shadow(0.1875rem 0 var(--drop-shadow-blur) var(--text-border-color))
-    drop-shadow(0 0.1875rem var(--drop-shadow-blur) var(--text-border-color))
-    drop-shadow(-0.1875rem 0 var(--drop-shadow-blur) var(--text-border-color))
-    drop-shadow(0 -0.1875rem var(--drop-shadow-blur) var(--text-border-color));
-
   font-size: var(--standard-font-size);
+  filter:
+    drop-shadow(0.046875em 0 0.03125em var(--text-border-color))
+    drop-shadow(0 0.046875em 0.03125em var(--text-border-color))
+    drop-shadow(-0.046875em 0 0.03125em var(--text-border-color))
+    drop-shadow(0 -0.046875em 0.03125em var(--text-border-color));
 }
 
 .versus-text {
