@@ -30,14 +30,14 @@ export class MapScreenDisplay implements OnInit {
   /**
    * Sets the color for the winner logo depending on which team won, and if the alpha is team is on the left or not.
    * @param {'alpha' | 'bravo'} winner - Winner team, either `alpha` or `bravo`
-   * @returns {'logo-color-alpha' | 'logo-color-bravo'}
+   * @returns {'team-alpha-color' | 'team-bravo-color'}
    */
   setWinnerLogoColor(winner: 'alpha' | 'bravo'): string {
     if(winner === 'alpha' && this.state().alphaIsLeft || winner === 'bravo' && !this.state().alphaIsLeft) {
-      return 'logo-color-alpha';
+      return 'team-alpha-color';
     }
 
-    return 'logo-color-bravo'
+    return 'team-bravo-color'
   }
 
   /**
