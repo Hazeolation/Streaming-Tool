@@ -206,6 +206,7 @@ export class BroadcastStateService {
     teamAlphaName: 'Team Alpha',
     teamBravoName: 'Team Bravo',
     alphaIsLeft: true,
+    startTime: new Date(0),
     scoreAlpha: 0,
     scoreBravo: 0,
     streamer: '',
