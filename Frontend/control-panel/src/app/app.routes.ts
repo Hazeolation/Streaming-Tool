@@ -5,6 +5,7 @@ import { MapScreenDisplay } from './overlays/map-screen-display/map-screen-displ
 import { ScoreBox } from './overlays/score-box/score-box';
 import { CommentatorBox } from './overlays/commentator-box/commentator-box';
 import { InfoboxDisplay } from './overlays/infobox-display/infobox-display';
+import { StartScreen } from './overlays/start-screen/start-screen';
 
 export const routes: Routes = [
   {
@@ -32,5 +33,9 @@ export const routes: Routes = [
   {
     path: 'overlay/info-box',
     component: InfoboxDisplay
+  },
+  {
+    path: 'overlay/start-screen',
+    component: StartScreen
   }
 ];
