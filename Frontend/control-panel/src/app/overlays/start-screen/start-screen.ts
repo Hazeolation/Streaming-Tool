@@ -48,12 +48,14 @@ export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
         return;
       }
 
+      let hours = diffTime.getHours().toString();
       let minutes = diffTime.getMinutes().toString();
       let seconds = diffTime.getSeconds().toString();
+      hours = hours.length > 1 ? hours : "0" + hours;
       minutes = minutes.length > 1 ? minutes : "0" + minutes;
       seconds = seconds.length > 1 ? seconds : "0" + seconds;
 
-      timerElem.textContent = minutes + ":" + seconds;
+      timerElem.textContent = hours + ":" + minutes + ":" + seconds;
     }
 
     setCountdownTimer();
