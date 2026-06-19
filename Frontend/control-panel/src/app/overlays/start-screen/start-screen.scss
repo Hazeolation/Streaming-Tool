@@ -1,0 +1,20 @@
+@use '../overlay-theme.scss';
+
+.start-screen {
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  border: 0.5rem solid var(--current-division-color);
+  background-color: transparent;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.dsb-logo {
+  height: 41.25rem;
+  width: auto;
+  border-right: 0.5rem solid black;
+  padding: 0rem 3rem;
+}
+
