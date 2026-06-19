@@ -89,7 +89,7 @@ export class BroadcastStateService {
     },
     {
       id: 'wahoo-world',
-      mapName: 'Flundere-Funpark',
+      mapName: 'Flunder-Funpark',
       imageUrl: 'assets/maps/Wahoo-World.png'
     },
     {
