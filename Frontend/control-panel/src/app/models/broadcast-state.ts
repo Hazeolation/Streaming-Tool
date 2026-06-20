@@ -32,4 +32,5 @@ export interface BroadcastState {
     // League Information
     season: number;
     division: number;
+    week: number;
 }
