@@ -1,5 +1,13 @@
 @use '../overlay-theme.scss';
 
+:host:not(.make-responsive) {
+  display: flex;
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .commentator-box {
   position: relative;
   min-width: 500px;
@@ -10,17 +18,14 @@
   justify-content: center;
   align-items: center;
   border: 0.25rem solid black;
-  background: linear-gradient(
-    0deg,
-    var(--current-division-color) 0%,
-    rgba(25, 12, 38, 1) 31%
-  );
+  background: linear-gradient(0deg, var(--current-division-color) 0%, rgba(25, 12, 38, 1) 31%);
   transition:
     opacity 180ms ease,
     transform 180ms ease;
 }
 
-.streamer-text, .casters-text {
+.streamer-text,
+.casters-text {
   font-size: 1.875rem;
   font-weight: 800;
   white-space: nowrap;
