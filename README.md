@@ -25,10 +25,10 @@ Overlays run as Browser Sources in OBS and are controlled through a dedicated Co
 
 There are start scripts for both Windows and Linux/macOS. They check for required dependencies (Node.js, .NET 9 SDK), start the frontend and backend, and open the Control Panel in your browser automatically.
 
-| Platform | Script |
-|---|---|
-| Windows | `start.bat` |
-| Linux / macOS | `start.sh` |
+| Platform      | Script      |
+| ------------- | ----------- |
+| Windows       | `start.bat` |
+| Linux / macOS | `start.sh`  |
 
 > [!NOTE]
 > The scripts will prompt you to install missing dependencies via WinGet (Windows) or your system package manager (Linux/macOS).
@@ -67,20 +67,21 @@ For in-depth technical documentation, see the [`docs/`](docs/) folder.
 
 ### Tech Stack
 
-| Layer | Technology |
-|---|---|
+| Layer        | Technology                         |
+| ------------ | ---------------------------------- |
 | **Frontend** | Angular (Control Panel + Overlays) |
-| **Backend** | ASP.NET Core 9, SignalR, SQLite |
+| **Backend**  | ASP.NET Core 9, SignalR, SQLite    |
 
 ### Overlay Routes (HTTP)
 
-| Route | Description |
-|---|---|
-| `/overlay/score-box` | Score display for both teams |
-| `/overlay/map-screen` | Map overview |
-| `/overlay/commentator-box` | Commentator names |
-| `/overlay/info-box` | General info box |
-| `/overlay/start-screen` | Start screen with team names and countdown timer |
+| Route                      | Description                                      |
+| -------------------------- | ------------------------------------------------ |
+| `/overlay/score-box`       | Score display for both teams                     |
+| `/overlay/map-screen`      | Map overview                                     |
+| `/overlay/commentator-box` | Commentator names                                |
+| `/overlay/info-box`        | General info box                                 |
+| `/overlay/start-screen`    | Start screen with team names and countdown timer |
+| `/overlay/end-screen`      | End screen with Discord and Twitter/X socials    |
 
 ---
 
@@ -93,9 +94,10 @@ For in-depth technical documentation, see the [`docs/`](docs/) folder.
 
 2. **Open OBS Studio.**
 
-3. **Add a new Browser Source** - in the *Sources* panel, click the **+** icon and select **Browser**.
+3. **Add a new Browser Source** - in the _Sources_ panel, click the **+** icon and select **Browser**.
 
 4. **Enter the overlay URL.** Each overlay has its own route (see [Overlay Routes](#overlay-routes-http)). For example, to add the score box:
+
    ```
    http://localhost:4200/overlay/score-box
    ```
@@ -105,6 +107,7 @@ For in-depth technical documentation, see the [`docs/`](docs/) folder.
 6. Click **OK** - the overlay will appear in your scene and update in real-time as you control it from the Control Panel.
 
 To control scores, maps, commentators, and other overlay data, open the **Control Panel** in your browser at:
+
 ```
 http://localhost:4200/
 ```
@@ -127,6 +130,8 @@ http://localhost:4200/
 
 **Start Screen**
 ![Start Screen](docs/screenshots/start-screen.png)
+**End Screen**
+![End Screen](docs/screenshots/end-screen.png)
 
 ---
 
@@ -143,20 +148,20 @@ See [CONTRIBUTING](CONTRIBUTING.md)
 
 Every pull request is reviewed by the maintainers defined in the [CODEOWNERS](.github/CODEOWNERS) file.
 
-| Contributor | Role |
-|---|---|
-| [@Hazeolation](https://github.com/Hazeolation) | Original Maintainer, Head of Decisions |
-| [@iLollek](https://github.com/iLollek) | Original Contributor - ReleaseNoteGenerator, Frontend & Backend |
-| [@RubberDuckCollector](https://github.com/RubberDuckCollector) | Original Contributor - Frontend & Backend |
-| [@BucketRaphi](https://github.com/BucketRaphi) | Original Contributor - Frontend |
+| Contributor                                                    | Role                                                            |
+| -------------------------------------------------------------- | --------------------------------------------------------------- |
+| [@Hazeolation](https://github.com/Hazeolation)                 | Original Maintainer, Head of Decisions                          |
+| [@iLollek](https://github.com/iLollek)                         | Original Contributor - ReleaseNoteGenerator, Frontend & Backend |
+| [@RubberDuckCollector](https://github.com/RubberDuckCollector) | Original Contributor - Frontend & Backend                       |
+| [@BucketRaphi](https://github.com/BucketRaphi)                 | Original Contributor - Frontend                                 |
 
 ### Repository Language Rules
 
-| Scope | Language |
-|---|---|
-| Code & Documentation | English |
-| Comments | English |
-| UI Texts | German |
+| Scope                | Language |
+| -------------------- | -------- |
+| Code & Documentation | English  |
+| Comments             | English  |
+| UI Texts             | German   |
 
 ---
 
@@ -168,6 +173,6 @@ If you like this Project, please leave a star! ⭐
 
 ## Credits
 
-| Name | Description |
-|---|---|
+| Name                                                      | Description                |
+| --------------------------------------------------------- | -------------------------- |
 | [@CrispyNugget99](https://www.artstation.com/michelle993) | Created Designs for the UI |
