@@ -85,4 +85,9 @@ public class BroadcastStateEntity
     /// Gets or sets the current division number for the broadcast.
     /// </summary>
     public int Division { get; set; }
+
+    /// <summary>
+    /// Gets or sets the current week number for the broadcast.
+    /// </summary>
+    public int Week { get; set; }
 }
