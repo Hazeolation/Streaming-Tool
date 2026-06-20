@@ -7,12 +7,21 @@ namespace DSB.StreamBackend.Services;
 
 public class BroadcastStateService(StreamToolDbContext db)
 {
+    /// <summary>
+    /// Asynchronously gets the <see cref="BroadcastStateDto"/>
+    /// </summary>
+    /// <returns>A <see cref="Task"/> returning the state as <see cref="BroadcastStateDto"/></returns>
     public async Task<BroadcastStateDto> GetStateAsync()
     {
         var entity = await GetOrCreateStateAsync();
         return ToDto(entity);
     }
 
+    /// <summary>
+    /// Asynchronously updates the <see cref="BroadcastStateEntity"/>
+    /// </summary>
+    /// <param name="dto">The <see cref="BroadcastStateDto"/> containing the updated information</param>
+    /// <returns>The updated <see cref="BroadcastStateDto"/></returns>
     public async Task<BroadcastStateDto> UpdateStateAsync(BroadcastStateDto dto)
     {
         var entity = await GetOrCreateStateAsync();
@@ -44,6 +53,10 @@ public class BroadcastStateService(StreamToolDbContext db)
         return ToDto(entity);
     }
 
+    /// <summary>
+    /// Asynchronously gets or creates the <see cref="BroadcastStateEntity"/> database context
+    /// </summary>
+    /// <returns>The <see cref="BroadcastStateEntity"/></returns>
     private async Task<BroadcastStateEntity> GetOrCreateStateAsync()
     {
         var entity = await db.BroadcastStates
@@ -59,6 +72,11 @@ public class BroadcastStateService(StreamToolDbContext db)
         return entity;
     }
 
+    /// <summary>
+    /// Updates the maps contained in the <see cref="BroadcastStateEntity"/>
+    /// </summary>
+    /// <param name="entity">The <see cref="BroadcastStateEntity"/> database context</param>
+    /// <param name="dtoMaps">A <see cref="List"/> of the <see cref="MapStateDto"/>s to update</param>
     private void UpdateMaps(BroadcastStateEntity entity, List<MapStateDto> dtoMaps)
     {
         var dtoIds = dtoMaps
@@ -104,6 +122,11 @@ public class BroadcastStateService(StreamToolDbContext db)
         }
     }
 
+    /// <summary>
+    /// Converts the <see cref="BroadcastStateEntity"/> database context to a <see cref="BroadcastStateDto"/>
+    /// </summary>
+    /// <param name="entity">The <see cref="BroadcastStateDto"/> to convert</param>
+    /// <returns>The converted <see cref="BroadcastStateDto"/></returns>
     private static BroadcastStateDto ToDto(BroadcastStateEntity entity)
     {
         return new BroadcastStateDto

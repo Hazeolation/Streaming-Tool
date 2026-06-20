@@ -44,7 +44,7 @@ public class BroadcastStateEntity
     /// <summary>
     /// Gets or sets the name of the first commentator.
     /// </summary>
-    public string Commentator1 { get; set; } = "";
+    public string Commentator1 { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the name of the second commentator.

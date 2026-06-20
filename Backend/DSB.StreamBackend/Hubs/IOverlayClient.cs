@@ -12,4 +12,6 @@ public interface IOverlayClient
     /// </summary>
     /// <param name="state">The latest broadcast state data.</param>
     Task BroadcastStateUpdated(BroadcastStateDto state);
+
+    Task SocialsUpdated(SocialsDto socials);
 }
