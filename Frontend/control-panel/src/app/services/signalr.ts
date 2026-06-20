@@ -1,6 +1,7 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BroadcastState } from '../models/broadcast-state';
+import { Socials } from '../models/socials';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +10,7 @@ export class Signalr {
   private connection?: signalR.HubConnection;
 
   liveState: WritableSignal<BroadcastState | null> = signal<BroadcastState | null>(null);
+  liveSocials: WritableSignal<Socials | null> = signal<Socials | null>(null);
   isConnected: WritableSignal<boolean> = signal<boolean>(false);
 
   /**
@@ -22,6 +24,10 @@ export class Signalr {
 
     this.connection.on('broadcastStateUpdated', (state: BroadcastState) => {
       this.liveState.set(state);
+    });
+
+    this.connection.on('socialsUpdated', (socials: Socials) => {
+      this.liveSocials.set(socials);
     });
 
     this.connection.onreconnecting(() => this.isConnected.set(false));

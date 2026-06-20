@@ -89,7 +89,7 @@ describe('BroadcastStateService', () => {
 
     mockLiveState.set(incomingState);
 
-    TestBed.flushEffects();
+    TestBed.tick();
 
     expect(service.state()).toEqual(incomingState);
   });
