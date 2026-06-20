@@ -1,12 +1,19 @@
-import { AfterContentInit, Component, inject, OnDestroy, OnInit, WritableSignal } from "@angular/core";
+import {
+  AfterContentInit,
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  WritableSignal,
+} from '@angular/core';
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
 
 @Component({
-    selector: 'start-screen',
-    imports: [],
-    templateUrl: './start-screen.html',
-    styleUrl: './start-screen.scss'
+  selector: 'start-screen',
+  imports: [],
+  templateUrl: './start-screen.html',
+  styleUrl: './start-screen.scss',
 })
 export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
   /**
@@ -19,6 +26,9 @@ export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
    */
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
+  /**
+   * Id of the interval that refreshes the countdown timer once every second and gets cleared on content init and component destroy
+   */
   private countdownInterval: ReturnType<typeof setInterval> | undefined = undefined;
 
   /**
@@ -33,30 +43,30 @@ export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
    */
   ngAfterContentInit(): void {
     // Check for document undefined, document element isn't still properly rendered after content init
-    if(typeof document === 'undefined') return;
+    if (typeof document === 'undefined') return;
 
     clearInterval(this.countdownInterval);
 
     const setCountdownTimer = () => {
-      const timerElem = document.body.querySelector(".countdown-timer");
-      if(!timerElem) return;
+      const timerElem = document.body.querySelector('.countdown-timer');
+      if (!timerElem) return;
 
       const startTime = new Date(this.state().startTime);
       const diffTime = new Date(startTime.getTime() - Date.now());
-      if(diffTime.getTime() <= 0) {
-        timerElem.textContent = "SOON™";
+      if (diffTime.getTime() <= 0) {
+        timerElem.textContent = 'SOON™';
         return;
       }
 
       let hours = (diffTime.getHours() - 1).toString();
       let minutes = diffTime.getMinutes().toString();
       let seconds = diffTime.getSeconds().toString();
-      hours = hours.length > 1 ? hours : "0" + hours;
-      minutes = minutes.length > 1 ? minutes : "0" + minutes;
-      seconds = seconds.length > 1 ? seconds : "0" + seconds;
+      hours = hours.length > 1 ? hours : '0' + hours;
+      minutes = minutes.length > 1 ? minutes : '0' + minutes;
+      seconds = seconds.length > 1 ? seconds : '0' + seconds;
 
-      timerElem.textContent = hours + ":" + minutes + ":" + seconds;
-    }
+      timerElem.textContent = hours + ':' + minutes + ':' + seconds;
+    };
 
     setCountdownTimer();
     this.countdownInterval = setInterval(setCountdownTimer, 1000);
