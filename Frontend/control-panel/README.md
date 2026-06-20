@@ -1,59 +1,105 @@
-# ControlPanel
+# Control Panel
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.12.
+The `Frontend/control-panel` package is the Angular control UI for the DSB Streaming Tool.
+It provides the dashboard used to control broadcast state, and the overlay pages that are shown as OBS browser sources.
 
-## Development server
+## What this package contains
 
-To start a local development server, run:
+- `src/app/pages/dashboard/` — main control panel UI
+- `src/app/overlays/` — overlay views for OBS browser sources
+- `src/app/services/` — state sync, backend API, and SignalR integration
+- `src/app/models/` — broadcast state and display models
+- `public/` — static assets such as map images
 
-```bash
-ng serve
-```
+## Quickstart
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Prerequisites
 
-## Code scaffolding
+- Node.js 18 or newer
+- npm 9 or newer
+- .NET 9 SDK installed and the backend running locally at `http://localhost:7000`
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+> [!NOTE]
+> The backend must be running for overlay state, SignalR updates, and API requests to work.
 
-```bash
-ng generate component component-name
-```
+### Install dependencies
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+From `Frontend/control-panel`:
 
 ```bash
-ng build
+npm install
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### Start development server
 
 ```bash
-ng test
+npm start
 ```
 
-## Running end-to-end tests
+Open `http://localhost:4200/` in your browser.
 
-For end-to-end (e2e) testing, run:
+## Available npm scripts
+
+- `npm start` — start the Angular development server
+- `npm run build` — build the app for production
+- `npm run watch` — build in watch mode using the development configuration
+- `npm test` — run unit tests
+- `npm run code-quality` — run ESLint on `src/`
+- `npm run serve:ssr:control-panel` — serve the SSR build from `dist/control-panel`
+
+## Backend integration
+
+This frontend currently connects to the backend using hard-coded URLs:
+
+- API: `http://localhost:7000/api/broadcast`
+- SignalR hub: `http://localhost:7000/overlayHub`
+
+If the backend host or port changes, update these values in:
+
+- `src/app/services/broadcast-api.ts`
+- `src/app/services/signalr.ts`
+
+## Overlay routes
+
+The app exposes these routes:
+
+- `/` — Control Panel dashboard
+- `/overlay/score-box` — Score box overlay
+- `/overlay/map-screen` — Map screen overlay
+- `/overlay/commentator-box` — Commentator box overlay
+- `/overlay/info-box` — Info box overlay
+
+Use the overlay routes as OBS browser source URLs when the app is running.
+
+## Development notes
+
+- The app uses Angular 22 and SSR support via `@angular/ssr`.
+- `BroadcastStateService` loads initial broadcast state from the backend and syncs live updates through SignalR.
+- Overlay components react to the shared broadcast state and render scenes suitable for browser sources.
+
+## Testing & quality
+
+Run unit tests:
 
 ```bash
-ng e2e
+npm test
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Run lint checks:
 
-## Additional Resources
+```bash
+npm run code-quality
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Contributing
+
+When changing this package:
+
+1. Work in a feature branch.
+2. Keep code and comments consistent with Angular best practices.
+3. Add or update tests for new features.
+4. Confirm `npm test` and `npm run code-quality` pass.
+
+## Notes
+
+This README documents only the `control-panel` frontend package. Use the repository root README for workspace-wide setup, overall architecture, and release information.
