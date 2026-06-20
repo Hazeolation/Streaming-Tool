@@ -6,6 +6,7 @@ import { ScoreBox } from './overlays/score-box/score-box';
 import { CommentatorBox } from './overlays/commentator-box/commentator-box';
 import { InfoboxDisplay } from './overlays/infobox-display/infobox-display';
 import { StartScreen } from './overlays/start-screen/start-screen';
+import { EndScreen } from './overlays/end-screen/end-screen';
 
 export const routes: Routes = [
   {
@@ -14,28 +15,32 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: Dashboard
-      }
-    ]
+        component: Dashboard,
+      },
+    ],
   },
   {
     path: 'overlay/map-screen',
-    component: MapScreenDisplay
+    component: MapScreenDisplay,
   },
   {
     path: 'overlay/score-box',
-    component: ScoreBox
+    component: ScoreBox,
   },
   {
     path: 'overlay/commentator-box',
-    component: CommentatorBox
+    component: CommentatorBox,
   },
   {
     path: 'overlay/info-box',
-    component: InfoboxDisplay
+    component: InfoboxDisplay,
   },
   {
     path: 'overlay/start-screen',
-    component: StartScreen
-  }
+    component: StartScreen,
+  },
+  {
+    path: 'overlay/end-screen',
+    component: EndScreen,
+  },
 ];
