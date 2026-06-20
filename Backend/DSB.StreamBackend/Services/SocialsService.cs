@@ -45,7 +45,7 @@ public class SocialsService(StreamToolDbContext db)
     /// <returns>The <see cref="SocialsEntity"/></returns>
     private async Task<SocialsEntity> GetOrCreateSocialsAsync()
     {
-        /* var entity = await db.Socials
+        var entity = await db.Socials
             .FirstOrDefaultAsync(x => x.Id == 1);
 
         if (entity != null) return entity;
@@ -53,8 +53,7 @@ public class SocialsService(StreamToolDbContext db)
         entity = new SocialsEntity { Id = 1 };
         db.Socials.Add(entity);
         await db.SaveChangesAsync();
-        return entity; */
-        return null;
+        return entity;
     }
 
     /// <summary>
