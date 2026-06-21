@@ -1,24 +1,24 @@
-<div
-    class="infobox dsb-panel"
-    [class.overlay-hidden]="!state().showInfobox">
+<div class="infobox dsb-panel" [class.overlay-hidden]="!state().showInfobox">
+  <span class="tourney-name"
+    >DSB Season {{ state().season }} - Woche {{ state().week }} - Division
+    {{ state().division }}</span
+  >
 
-    <div class="league">
-        Deutsche Splatoon Bundesliga
-    </div>
+  <div class="versus">
+    <span class="team-name team-alpha-name">{{ state().teamAlphaName }}</span>
 
-    <div class="versus">
-        <span>{{ state().teamAlphaName }}</span>
+    <strong>VS</strong>
 
-        <strong>VS</strong>
+    <span class="team-name team-bravo-name">{{ state().teamBravoName }}</span>
+  </div>
 
-        <span>{{ state().teamBravoName }}</span>
-    </div>
+  <span class="score">
+    {{ state().scoreAlpha }}
+    :
+    {{ state().scoreBravo }}
+  </span>
 
-    <div class="score">
-        {{ state().scoreAlpha }}
-        :
-        {{ state().scoreBravo }}
-    </div>
-
-    <img src="assets/dsb/DSB_Logo.png" width="100px" alt="DSB Logo">
+  <img src="assets/dsb/DSB_Logo.png" width="100px" alt="DSB Logo" />
 </div>
+
+<app-commentator-box class="make-responsive"></app-commentator-box>
