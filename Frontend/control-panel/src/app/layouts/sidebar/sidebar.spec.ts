@@ -6,6 +6,8 @@ import { Sidebar } from './sidebar';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
 import { Division } from '../../models/division';
+import { Socials } from '../../models/socials';
+import { SocialsService } from '../../services/socials';
 
 describe('Sidebar', () => {
   let component: Sidebar;
@@ -31,6 +33,11 @@ describe('Sidebar', () => {
     week: 1,
   };
 
+  const defaultSocials: Socials = {
+    xHandle: '',
+    discordInvite: '',
+  };
+
   const availableDivisions: Division[] = [
     { id: 1, name: 'Division 1' },
     { id: 2, name: 'Division 2' },
@@ -38,10 +45,14 @@ describe('Sidebar', () => {
   ];
 
   const mockState = signal<BroadcastState>(defaultState);
+  const mockSocials = signal<Socials>(defaultSocials);
 
   const mockStateService = {
     state: mockState,
     availableDivisions,
+  };
+  const mockSocialsService = {
+    socials: mockSocials,
   };
 
   beforeEach(async () => {
@@ -53,6 +64,10 @@ describe('Sidebar', () => {
         {
           provide: BroadcastStateService,
           useValue: mockStateService,
+        },
+        {
+          provide: SocialsService,
+          useValue: mockSocialsService,
         },
       ],
     }).compileComponents();
@@ -86,6 +101,7 @@ describe('Sidebar', () => {
       teamBravoName: 'Updated Bravo',
       season: 11,
       division: 2,
+      week: 5,
     };
 
     mockState.set(updatedState);
@@ -101,5 +117,17 @@ describe('Sidebar', () => {
       { id: 2, name: 'Division 2' },
       { id: 3, name: 'Division 3' },
     ]);
+  });
+
+  it('should reflect state changes from SocialsService', () => {
+    const updatedSocials: Socials = {
+      ...defaultSocials,
+      xHandle: 'testxhandle',
+      discordInvite: 'testinvite',
+    };
+
+    mockSocials.set(updatedSocials);
+
+    expect(component.socials()).toEqual(updatedSocials);
   });
 });
