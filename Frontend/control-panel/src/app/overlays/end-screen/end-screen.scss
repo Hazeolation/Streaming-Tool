@@ -1,0 +1,55 @@
+@use '../overlay-theme.scss';
+
+.end-screen {
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  border: 0.5rem solid var(--current-division-color);
+  background-color: transparent;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 2rem 4rem 2rem;
+}
+
+.dsb-logo {
+  height: 35rem;
+  width: auto;
+}
+
+.ending-text,
+.socials-text {
+  --text-border-color: black;
+  text-align: center;
+  font-size: 4rem;
+  filter: drop-shadow(0.046875em 0 0.03125em var(--text-border-color))
+    drop-shadow(0 0.046875em 0.03125em var(--text-border-color))
+    drop-shadow(-0.046875em 0 0.03125em var(--text-border-color))
+    drop-shadow(0 -0.046875em 0.03125em var(--text-border-color));
+}
+
+.ending-text {
+  padding-top: 2rem;
+}
+
+.socials__container {
+  margin-top: auto;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+.socials-icon {
+  height: 6rem;
+  width: auto;
+  padding-right: 0.5rem;
+}
+
+.discord-icon {
+  padding-left: 8rem;
+}
+
+.socials-text {
+  font-size: 3rem;
+}

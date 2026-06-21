@@ -9,6 +9,9 @@ export interface BroadcastState {
     teamBravoName: string;
     alphaIsLeft: boolean;
 
+    // Match start time
+    startTime: Date;
+
     // Score
     scoreAlpha: number;
     scoreBravo: number;

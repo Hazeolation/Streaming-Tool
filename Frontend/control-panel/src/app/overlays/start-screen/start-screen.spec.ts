@@ -1,21 +1,19 @@
-import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-
-import { InfoboxDisplay } from './infobox-display';
+import { StartScreen } from './start-screen';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
+import { signal } from '@angular/core';
 
-describe('InfoboxDisplay', () => {
-  let component: InfoboxDisplay;
-  let fixture: ComponentFixture<InfoboxDisplay>;
+describe('StartScreen', () => {
+  let component: StartScreen;
+  let fixture: ComponentFixture<StartScreen>;
 
   const defaultState: BroadcastState = {
     teamAlphaName: 'Team Alpha',
     teamBravoName: 'Team Bravo',
     alphaIsLeft: true,
-    scoreAlpha: 0,
-    scoreBravo: 0,
+    scoreAlpha: 2,
+    scoreBravo: 1,
     streamer: '',
     commentator1: '',
     commentator2: '',
@@ -26,14 +24,14 @@ describe('InfoboxDisplay', () => {
     maps: [],
     season: 10,
     division: 1,
-    startTime: new Date()
+    startTime: new Date(),
   };
 
   const mockState = signal<BroadcastState>(defaultState);
 
   const mockStateService = {
     state: mockState,
-    loadInitialState: vi.fn(),
+    loadInitialState: vi.fn()
   };
 
   beforeEach(async () => {
@@ -41,7 +39,7 @@ describe('InfoboxDisplay', () => {
     mockState.set(defaultState);
 
     await TestBed.configureTestingModule({
-      imports: [InfoboxDisplay],
+      imports: [StartScreen],
       providers: [
         {
           provide: BroadcastStateService,
@@ -50,7 +48,7 @@ describe('InfoboxDisplay', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(InfoboxDisplay);
+    fixture = TestBed.createComponent(StartScreen);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -72,21 +70,17 @@ describe('InfoboxDisplay', () => {
     expect(component.state()).toEqual(defaultState);
   });
 
-  it('should call loadInitialState on init', () => {
+  it('should load initial state on init', () => {
     expect(mockStateService.loadInitialState).toHaveBeenCalledOnce();
   });
 
-  it('should reflect state changes from BroadcastStateService', () => {
-    const updatedState: BroadcastState = {
+  it('should return match start time correctly', () => {
+    const testDate = new Date('2026-05-24');
+    mockState.set({
       ...defaultState,
-      streamer: 'Test Streamer',
-      commentator1: 'Caster One',
-      commentator2: 'Caster Two',
-      showInfobox: false,
-    };
+      startTime: testDate
+    });
 
-    mockState.set(updatedState);
-
-    expect(component.state()).toEqual(updatedState);
+    expect(component.state().startTime).toBe(testDate);
   });
 });

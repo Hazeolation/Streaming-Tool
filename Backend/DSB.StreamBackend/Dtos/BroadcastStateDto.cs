@@ -83,4 +83,9 @@ public class BroadcastStateDto
     /// Gets or sets the current week number.
     /// </summary>
     public int Week { get; set; }
+
+    /// <summary>
+    /// Gets or sets the start time of the match
+    /// </summary>
+    public DateTime StartTime { get; set; }
 }

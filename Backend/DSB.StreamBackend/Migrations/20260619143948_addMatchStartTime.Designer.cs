@@ -3,6 +3,7 @@ using System;
 using DSB.StreamBackend.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DSB.StreamBackend.Migrations
 {
     [DbContext(typeof(StreamToolDbContext))]
-    partial class StreamToolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260619143948_addMatchStartTime")]
+    partial class addMatchStartTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
@@ -73,9 +76,6 @@ namespace DSB.StreamBackend.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Week")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.ToTable("BroadcastStates");
@@ -98,8 +98,7 @@ namespace DSB.StreamBackend.Migrations
                             StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Streamer = "",
                             TeamAlphaName = "Team Alpha",
-                            TeamBravoName = "Team Bravo",
-                            Week = 0
+                            TeamBravoName = "Team Bravo"
                         });
                 });
 
@@ -145,25 +144,6 @@ namespace DSB.StreamBackend.Migrations
                     b.HasIndex("BroadcastStateEntityId");
 
                     b.ToTable("MapStates");
-                });
-
-            modelBuilder.Entity("DSB.StreamBackend.Models.SocialsEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("DiscordInvite")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("XHandle")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Socials");
                 });
 
             modelBuilder.Entity("DSB.StreamBackend.Models.MapStateEntity", b =>

@@ -1,4 +1,4 @@
-import { afterRenderEffect, Component, inject, NgZone, OnDestroy, OnInit, WritableSignal } from '@angular/core';
+import { Component, inject, NgZone, OnInit, WritableSignal } from '@angular/core';
 import { CommentatorBox } from '../commentator-box/commentator-box';
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
@@ -10,7 +10,7 @@ import { NgClass } from '@angular/common';
   templateUrl: './map-screen-display.html',
   styleUrl: './map-screen-display.scss',
 })
-export class MapScreenDisplay implements OnInit, OnDestroy {
+export class MapScreenDisplay implements OnInit {
   /**
    * Injects the `BroadcastStateService` to access the current broadcast state and available maps, modes, and divisions. The `state` signal is used to reactively track changes to the broadcast state, allowing the score box component to update its UI accordingly whenever the state changes. This setup enables the score box to display the current team names and scores based on the latest broadcast state received from the service.
    */
@@ -28,31 +28,16 @@ export class MapScreenDisplay implements OnInit, OnDestroy {
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
   /**
-   * Effect that watches for division changes and updates the CSS custom property
-   * `--current-division-color` to match the corresponding division color variable.
-   * This ensures the header background gradient always reflects the current division's color scheme.
-   */
-  private divisionEffect = afterRenderEffect(() => {
-    const division = this.state().division;
-    if (!division) return;
-    
-    document.documentElement.style.setProperty(
-      '--current-division-color',
-      `var(--division-${division}-color)`
-    );
-  });
-
-  /**
    * Sets the color for the winner logo depending on which team won, and if the alpha is team is on the left or not.
    * @param {'alpha' | 'bravo'} winner - Winner team, either `alpha` or `bravo`
-   * @returns {'logo-color-alpha' | 'logo-color-bravo'}
+   * @returns {'team-alpha-color' | 'team-bravo-color'}
    */
   setWinnerLogoColor(winner: 'alpha' | 'bravo'): string {
     if(winner === 'alpha' && this.state().alphaIsLeft || winner === 'bravo' && !this.state().alphaIsLeft) {
-      return 'logo-color-alpha';
+      return 'team-alpha-color';
     }
 
-    return 'logo-color-bravo'
+    return 'team-bravo-color'
   }
 
   /**
@@ -88,12 +73,5 @@ export class MapScreenDisplay implements OnInit, OnDestroy {
    */
   get rightScore(): number {
     return this.state().alphaIsLeft ? this.state().scoreBravo : this.state().scoreAlpha;
-  }
-  
-  /**
-   * Destroys all effects on component destroy
-   */
-  ngOnDestroy(): void {
-    this.divisionEffect.destroy();
   }
 }

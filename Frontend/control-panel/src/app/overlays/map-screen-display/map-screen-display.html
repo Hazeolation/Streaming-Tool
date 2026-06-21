@@ -15,7 +15,7 @@
     </div>
 
     <div class="team-name-container team-alpha-name-container">
-      <img src="assets/misc/Splatoon_Ink_Splat.png" class="ink-splat-logo team-alpha-color"/>
+      <span class="ink-splat-logo team-alpha-color"></span>
 
       <span class="match team-name team-alpha-name">
         {{ leftTeamName }}
@@ -31,7 +31,7 @@
         {{ rightTeamName }}
       </span>
 
-      <img src="assets/misc/Splatoon_Ink_Splat.png" class="ink-splat-logo team-bravo-color"/>
+      <span class="ink-splat-logo team-bravo-color"></span>
     </div>
 
     <img class="match dsb-logo" src="assets/dsb/DSB_Logo-Large.png"/>
@@ -48,15 +48,16 @@
         />
 
         @if (map.winner) {
-          <img
-            class="winner-logo"
-            [ngClass]="setWinnerLogoColor(map.winner)"
-            src="assets/dsb/DSB_Outline_White.png"
-          />
+          <div class="winner-logo__container">
+            <span
+              class="winner-logo"
+              [ngClass]="setWinnerLogoColor(map.winner)"
+            ></span>
+          </div>
         }
       </div>
     }
   </div>
 
-  <app-commentator-box class="app-commentator-box"/>
+  <app-commentator-box class="app-commentator-box make-responsive"/>
 </div>

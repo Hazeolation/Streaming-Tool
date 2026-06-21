@@ -47,6 +47,8 @@ public class BroadcastStateService(StreamToolDbContext db)
         entity.Division = dto.Division;
         entity.Week = dto.Week;
 
+        entity.StartTime = dto.StartTime;
+
         UpdateMaps(entity, dto.Maps);
 
         await db.SaveChangesAsync();
@@ -166,7 +168,8 @@ public class BroadcastStateService(StreamToolDbContext db)
 
             Season = entity.Season,
             Division = entity.Division,
-            Week = entity.Week
+            Week = entity.Week,
+            StartTime = entity.StartTime
         };
     }
 }

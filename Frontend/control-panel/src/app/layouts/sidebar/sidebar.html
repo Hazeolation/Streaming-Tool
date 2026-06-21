@@ -17,6 +17,18 @@
     </select>
   </section>
   <section>
+    <h2>Startzeit</h2>
+    <input
+      type="datetime-local"
+      [ngModel]="state().startTime"
+      (ngModelChange)="
+        stateService.update({
+          startTime: $event,
+        })
+      "
+    />
+  </section>
+  <section>
     <h2>Woche</h2>
     <input
       type="number"

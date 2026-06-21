@@ -89,7 +89,7 @@ export class BroadcastStateService {
     },
     {
       id: 'wahoo-world',
-      mapName: 'Flundere-Funpark',
+      mapName: 'Flunder-Funpark',
       imageUrl: 'assets/maps/Wahoo-World.png'
     },
     {
@@ -206,6 +206,7 @@ export class BroadcastStateService {
     teamAlphaName: 'Team Alpha',
     teamBravoName: 'Team Bravo',
     alphaIsLeft: true,
+    startTime: new Date(0),
     scoreAlpha: 0,
     scoreBravo: 0,
     streamer: '',
