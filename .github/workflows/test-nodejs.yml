@@ -47,8 +47,8 @@ jobs:
               working-directory: ${{ env.FRONTEND_PATH }}
             - name: Install @vitest/browser-playwright
               run: npm install @vitest/browser-playwright
-            - name: Set Up Playwright
-              run: npx playwright install
+            - name: Set Up Playwright Browsers
+              run: npx playwright install --with-deps
               working-directory: ${{ env.FRONTEND_PATH }}
             - name: Run Node.js Tests
               run: npm test
