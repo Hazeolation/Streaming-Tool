@@ -36,9 +36,21 @@ describe('Signalr', () => {
   let service: any;
 
   beforeEach(async () => {
+    vi.resetModules();
     vi.clearAllMocks();
 
     TestBed.resetTestingModule();
+
+    vi.doMock('@microsoft/signalr', () => {
+      class HubConnectionBuilder {
+        constructor() {
+          hubConnectionBuilderSpy();
+          return mockBuilder;
+        }
+      }
+
+      return { HubConnectionBuilder };
+    });
 
     const { Signalr } = await import('./signalr');
 
