@@ -10,14 +10,13 @@ defaults:
         shell: bash
 
 on:
-    workflow_run:
-        workflows: ["Build Node.js CI"]
-        types:
-            - completed
+    push:
+        branches: ["master"]
+    pull_request:
+        branches: ["master"]
 
 jobs:
     build:
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
         runs-on: ubuntu-latest
 
         strategy:
