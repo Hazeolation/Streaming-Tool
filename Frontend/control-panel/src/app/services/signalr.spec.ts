@@ -59,6 +59,7 @@ describe('Signalr', () => {
   });
 
   it('should have a tryConnect method', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect(typeof (service as any).tryConnect).toBe('function');
   });
 
