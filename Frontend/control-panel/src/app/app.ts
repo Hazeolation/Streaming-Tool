@@ -27,6 +27,9 @@ export class App implements OnDestroy {
    */
   stateService: BroadcastStateService = inject(BroadcastStateService);
 
+  /**
+   * Injects the `SocialsService` to access social links such as discord server invite, twitter handle, etc. The `socials` signal is used to reactively track changes to the socials state to update the overlay accordingly
+   */
   socialsService: SocialsService = inject(SocialsService);
 
   /**
@@ -40,6 +43,9 @@ export class App implements OnDestroy {
    */
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
+  /**
+   * A writable signal that holds the current socials state. It is initialized by referencing the `socials` signal from the `SocialsService`, allowing the end screen display component to reactively update its UI whenever the socials state changes.
+   */
   socials: WritableSignal<Socials> = this.socialsService.socials;
 
   /**
