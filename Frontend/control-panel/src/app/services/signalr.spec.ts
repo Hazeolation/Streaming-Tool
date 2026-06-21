@@ -32,8 +32,10 @@ vi.mock('@microsoft/signalr', () => ({
   HubConnectionBuilder: MockHubConnectionBuilder,
 }));
 
+import { Signalr } from './signalr';
+
 describe('Signalr', () => {
-  let service: any;
+  let service: Signalr;
 
   beforeEach(async () => {
     vi.resetModules();
@@ -51,8 +53,6 @@ describe('Signalr', () => {
 
       return { HubConnectionBuilder };
     });
-
-    const { Signalr } = await import('./signalr');
 
     TestBed.configureTestingModule({
       providers: [Signalr],
