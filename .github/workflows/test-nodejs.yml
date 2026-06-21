@@ -21,7 +21,7 @@ on:
 
 jobs:
     build:
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        if: ${{ github.event.workflow_run.name == 'Build Node.js CI' && github.event.workflow_run.conclusion == 'success' }}
         runs-on: ubuntu-latest
 
         strategy:
