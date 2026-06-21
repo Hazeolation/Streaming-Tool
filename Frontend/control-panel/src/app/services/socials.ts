@@ -25,12 +25,12 @@ export class SocialsService {
     this.signalr.start();
   }
 
-    /**
+  /**
    * The main socials signal that holds the current socials.
    */
   socials: WritableSignal<Socials> = signal<Socials>({
-    xHandle: "@Temp",
-    discordInvite: "Temp"
+    xHandle: '@Temp',
+    discordInvite: 'Temp',
   });
 
   /**
@@ -40,7 +40,7 @@ export class SocialsService {
   update(partial: Partial<Socials>): void {
     const newSocials = {
       ...this.socials(),
-      ...partial
+      ...partial,
     };
 
     this.socials.set(newSocials);
@@ -51,9 +51,8 @@ export class SocialsService {
    * Loads the initial broadcast state from the backend API and sets it to the state signal. This method is typically called during the initialization of components that depend on the broadcast state to ensure they have the most up-to-date information when they start.
    */
   loadInitialState(): void {
-    this.api.getSocials().subscribe(socials => {
+    this.api.getSocials().subscribe((socials) => {
       this.socials.set(socials);
     });
   }
-
 }
