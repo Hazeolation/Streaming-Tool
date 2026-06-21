@@ -1,18 +1,8 @@
 <div class="map-screen" [class.overlay-hidden]="!state().showMapScreen">
   <div class="header dsb-panel">
-    <div class="match season-division-display">
-      <span class="season-text">
-        Season {{ state().season }}
-      </span>
-          
-      <span class="display-seperator">
-        -
-      </span>
-
-      <span class="division-text">
-        Division {{ state().division }}
-      </span>
-    </div>
+    <span class="match season-division-display">
+      Season {{ state().season }} - Woche {{ state().week }} - Division {{ state().division }}
+    </span>
 
     <div class="team-name-container team-alpha-name-container">
       <span class="ink-splat-logo team-alpha-color"></span>
@@ -22,9 +12,7 @@
       </span>
     </div>
 
-    <span class="match match-score">
-      {{ leftScore }} : {{ rightScore }}
-    </span>
+    <span class="match match-score"> {{ leftScore }} : {{ rightScore }} </span>
 
     <div class="team-name-container team-bravo-name-container">
       <span class="match team-name team-bravo-name">
@@ -34,7 +22,7 @@
       <span class="ink-splat-logo team-bravo-color"></span>
     </div>
 
-    <img class="match dsb-logo" src="assets/dsb/DSB_Logo-Large.png"/>
+    <img class="match dsb-logo" src="assets/dsb/DSB_Logo-Large.png" />
   </div>
 
   <div class="map-grid">
@@ -49,15 +37,12 @@
 
         @if (map.winner) {
           <div class="winner-logo__container">
-            <span
-              class="winner-logo"
-              [ngClass]="setWinnerLogoColor(map.winner)"
-            ></span>
+            <span class="winner-logo" [ngClass]="setWinnerLogoColor(map.winner)"></span>
           </div>
         }
       </div>
     }
   </div>
 
-  <app-commentator-box class="app-commentator-box make-responsive"/>
+  <app-commentator-box class="app-commentator-box make-responsive" />
 </div>
