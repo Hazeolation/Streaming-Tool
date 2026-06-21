@@ -1,8 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  HttpTestingController,
-  provideHttpClientTesting,
-} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { beforeEach, afterEach, describe, expect, it } from 'vitest';
 
@@ -31,15 +28,13 @@ describe('BroadcastApi', () => {
     maps: [],
     season: 10,
     division: 1,
+    startTime: new Date(),
+    week: 1,
   };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        BroadcastApi,
-        provideHttpClient(withFetch()),
-        provideHttpClientTesting(),
-      ],
+      providers: [BroadcastApi, provideHttpClient(withFetch()), provideHttpClientTesting()],
     });
 
     service = TestBed.inject(BroadcastApi);
