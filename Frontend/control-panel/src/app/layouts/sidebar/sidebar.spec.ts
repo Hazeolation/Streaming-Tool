@@ -27,7 +27,8 @@ describe('Sidebar', () => {
     maps: [],
     season: 10,
     division: 1,
-    startTime: new Date()
+    startTime: new Date(),
+    week: 1,
   };
 
   const availableDivisions: Division[] = [
@@ -93,9 +94,7 @@ describe('Sidebar', () => {
   });
 
   it('should expose available divisions from BroadcastStateService', () => {
-    expect(component.availableDivisions).toBe(
-      mockStateService.availableDivisions
-    );
+    expect(component.availableDivisions).toBe(mockStateService.availableDivisions);
 
     expect(component.availableDivisions).toEqual([
       { id: 1, name: 'Division 1' },

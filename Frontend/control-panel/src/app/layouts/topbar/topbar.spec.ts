@@ -27,7 +27,8 @@ describe('Topbar', () => {
     maps: [],
     season: 10,
     division: 1,
-    startTime: new Date()
+    startTime: new Date(),
+    week: 1,
   };
 
   const mockState = signal<BroadcastState>(defaultState);

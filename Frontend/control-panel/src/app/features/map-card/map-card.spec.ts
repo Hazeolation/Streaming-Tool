@@ -52,7 +52,8 @@ describe('MapCard', () => {
     maps: [map, secondMap],
     season: 10,
     division: 1,
-    startTime: new Date()
+    startTime: new Date(),
+    week: 1,
   };
 
   const availableMaps: Map[] = [
@@ -264,17 +265,12 @@ describe('MapCard', () => {
   });
 
   it('should not update map when selected map does not exist', () => {
-    const consoleErrorSpy = vi
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     component.updateMap('unknown-map');
 
     expect(mockStateService.update).not.toHaveBeenCalled();
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      'Selected map not found:',
-      'unknown-map'
-    );
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Selected map not found:', 'unknown-map');
 
     consoleErrorSpy.mockRestore();
   });
@@ -295,17 +291,12 @@ describe('MapCard', () => {
   });
 
   it('should not update mode when selected mode does not exist', () => {
-    const consoleErrorSpy = vi
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     component.updateMode('unknown-mode');
 
     expect(mockStateService.update).not.toHaveBeenCalled();
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      'Selected mode not found:',
-      'unknown-mode'
-    );
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Selected mode not found:', 'unknown-mode');
 
     consoleErrorSpy.mockRestore();
   });
