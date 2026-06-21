@@ -52,6 +52,7 @@ describe('MapCard', () => {
     maps: [map, secondMap],
     season: 10,
     division: 1,
+    startTime: new Date()
   };
 
   const availableMaps: Map[] = [

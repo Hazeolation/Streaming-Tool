@@ -78,4 +78,9 @@ public class BroadcastStateDto
     /// Gets or sets the current division number.
     /// </summary>
     public int Division { get; set; }
+
+    /// <summary>
+    /// Gets or sets the start time of the match
+    /// </summary>
+    public DateTime StartTime { get; set; }
 }

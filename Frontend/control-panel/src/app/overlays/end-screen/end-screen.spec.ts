@@ -1,21 +1,19 @@
-import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-
-import { InfoboxDisplay } from './infobox-display';
-import { BroadcastStateService } from '../../services/broadcast-state';
+import { EndScreen } from './end-screen';
 import { BroadcastState } from '../../models/broadcast-state';
+import { signal } from '@angular/core';
+import { BroadcastStateService } from '../../services/broadcast-state';
 
-describe('InfoboxDisplay', () => {
-  let component: InfoboxDisplay;
-  let fixture: ComponentFixture<InfoboxDisplay>;
+describe('EndScreen', () => {
+  let component: EndScreen;
+  let fixture: ComponentFixture<EndScreen>;
 
   const defaultState: BroadcastState = {
     teamAlphaName: 'Team Alpha',
     teamBravoName: 'Team Bravo',
     alphaIsLeft: true,
-    scoreAlpha: 0,
-    scoreBravo: 0,
+    scoreAlpha: 2,
+    scoreBravo: 1,
     streamer: '',
     commentator1: '',
     commentator2: '',
@@ -26,7 +24,7 @@ describe('InfoboxDisplay', () => {
     maps: [],
     season: 10,
     division: 1,
-    startTime: new Date()
+    startTime: new Date(),
   };
 
   const mockState = signal<BroadcastState>(defaultState);
@@ -41,7 +39,7 @@ describe('InfoboxDisplay', () => {
     mockState.set(defaultState);
 
     await TestBed.configureTestingModule({
-      imports: [InfoboxDisplay],
+      imports: [EndScreen],
       providers: [
         {
           provide: BroadcastStateService,
@@ -50,7 +48,7 @@ describe('InfoboxDisplay', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(InfoboxDisplay);
+    fixture = TestBed.createComponent(EndScreen);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -72,21 +70,7 @@ describe('InfoboxDisplay', () => {
     expect(component.state()).toEqual(defaultState);
   });
 
-  it('should call loadInitialState on init', () => {
+  it('should load initial state on init', () => {
     expect(mockStateService.loadInitialState).toHaveBeenCalledOnce();
-  });
-
-  it('should reflect state changes from BroadcastStateService', () => {
-    const updatedState: BroadcastState = {
-      ...defaultState,
-      streamer: 'Test Streamer',
-      commentator1: 'Caster One',
-      commentator2: 'Caster Two',
-      showInfobox: false,
-    };
-
-    mockState.set(updatedState);
-
-    expect(component.state()).toEqual(updatedState);
   });
 });

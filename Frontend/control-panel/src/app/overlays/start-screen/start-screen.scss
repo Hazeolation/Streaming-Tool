@@ -1,0 +1,72 @@
+@use '../overlay-theme.scss';
+
+:host {
+  --standard-font-size: 4rem;
+}
+
+.start-screen {
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  border: 0.5rem solid var(--current-division-color);
+  background-color: transparent;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.dsb-logo {
+  height: 41.25rem;
+  width: auto;
+  border-right: 0.5rem solid black;
+  padding: 0rem 6rem;
+}
+
+.match-info__container {
+  flex: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+.division__container {
+  position: relative;
+  padding: 10rem 0;
+}
+
+.division-bg-splat {
+  position: absolute;
+  aspect-ratio: 439 / 363;
+  width: auto;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  mask-image: url("/assets/misc/Division_Bg_Splat.png");
+  mask-size: cover;
+  mask-repeat: no-repeat;
+  background-color: var(--current-division-color);
+  z-index: -1;
+}
+
+.current-match-text, .team-name, .versus-text, .division-text, .countdown-timer {
+  --text-border-color: black;
+  font-size: var(--standard-font-size);
+  filter:
+    drop-shadow(0.046875em 0 0.03125em var(--text-border-color))
+    drop-shadow(0 0.046875em 0.03125em var(--text-border-color))
+    drop-shadow(-0.046875em 0 0.03125em var(--text-border-color))
+    drop-shadow(0 -0.046875em 0.03125em var(--text-border-color));
+}
+
+.versus-text {
+  font-size: calc(var(--standard-font-size) * 0.667);
+}
+
+.team-name, .countdown-timer {
+  font-weight: bold;
+}
+
+.countdown-timer {
+  padding-top: 6rem;
+}

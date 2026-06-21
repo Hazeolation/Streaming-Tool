@@ -25,10 +25,18 @@ Overlays run as Browser Sources in OBS and are controlled through a dedicated Co
 
 There are start scripts for both Windows and Linux/macOS. They check for required dependencies (Node.js, .NET 9 SDK), start the frontend and backend, and open the Control Panel in your browser automatically.
 
-| Platform      | Script                   |
+<<<<<<< HEAD
+| Platform | Script |
+| ------------- | ----------- |
+| Windows | `start.bat` |
+| Linux / macOS | `start.sh` |
+=======
+| Platform | Script |
 | ------------- | ------------------------ |
-| Windows       | `start.bat`, `start.exe` |
-| Linux / macOS | `start.sh`               |
+| Windows | `start.bat`, `start.exe` |
+| Linux / macOS | `start.sh` |
+
+> > > > > > > master
 
 > [!NOTE]
 > The scripts will prompt you to install missing dependencies via WinGet (Windows) or your system package manager (Linux/macOS).
@@ -74,12 +82,24 @@ For in-depth technical documentation, see the [`docs/`](docs/) folder.
 
 ### Overlay Routes (HTTP)
 
-| Route                      | Description                  |
+<<<<<<< HEAD
+| Route | Description |
+| -------------------------- | ------------------------------------------------ |
+| `/overlay/score-box` | Score display for both teams |
+| `/overlay/map-screen` | Map overview |
+| `/overlay/commentator-box` | Commentator names |
+| `/overlay/info-box` | General info box |
+| `/overlay/start-screen` | Start screen with team names and countdown timer |
+| `/overlay/end-screen` | End screen with Discord and Twitter/X socials |
+=======
+| Route | Description |
 | -------------------------- | ---------------------------- |
-| `/overlay/score-box`       | Score display for both teams |
-| `/overlay/map-screen`      | Map overview                 |
-| `/overlay/commentator-box` | Commentator names            |
-| `/overlay/info-box`        | General info box             |
+| `/overlay/score-box` | Score display for both teams |
+| `/overlay/map-screen` | Map overview |
+| `/overlay/commentator-box` | Commentator names |
+| `/overlay/info-box` | General info box |
+
+> > > > > > > master
 
 ---
 
@@ -96,9 +116,9 @@ For in-depth technical documentation, see the [`docs/`](docs/) folder.
 
 4. **Enter the overlay URL.** Each overlay has its own route (see [Overlay Routes](#overlay-routes-http)). For example, to add the score box:
 
-    ```
-    http://localhost:4200/overlay/score-box
-    ```
+```
+http://localhost:4200/overlay/score-box
+```
 
 5. **Set the resolution** to match your canvas (typically **1920 × 1080**).
 
@@ -125,6 +145,11 @@ http://localhost:4200/
 
 **Map Overview Overlay**  
 ![Map Overview](docs/screenshots/map-screen.png)
+
+**Start Screen**
+![Start Screen](docs/screenshots/start-screen.png)
+**End Screen**
+![End Screen](docs/screenshots/end-screen.png)
 
 ---
 
