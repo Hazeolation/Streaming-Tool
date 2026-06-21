@@ -17,7 +17,10 @@ describe('SocialsApi', () => {
   };
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
+    vi.clearAllMocks();
+
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
       providers: [SocialsApi, provideHttpClient(withFetch()), provideHttpClientTesting()],
     });
 

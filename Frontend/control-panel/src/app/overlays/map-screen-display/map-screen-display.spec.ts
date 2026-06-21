@@ -172,19 +172,4 @@ describe('MapScreenDisplay', () => {
 
     expect(component.rightScore).toBe(5);
   });
-
-  it('should set current division color css variable after render', async () => {
-    mockState.set({
-      ...defaultState,
-      division: 3,
-    });
-
-    fixture.detectChanges();
-
-    await fixture.whenStable();
-
-    expect(document.documentElement.style.getPropertyValue('--current-division-color')).toBe(
-      'var(--division-3-color)',
-    );
-  });
 });

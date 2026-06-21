@@ -32,7 +32,10 @@ describe('BroadcastApi', () => {
     week: 1,
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    vi.clearAllMocks();
+
+    TestBed.resetTestingModule();
     TestBed.configureTestingModule({
       providers: [BroadcastApi, provideHttpClient(withFetch()), provideHttpClientTesting()],
     });

@@ -38,7 +38,6 @@ describe('InfoboxDisplay', () => {
   };
 
   beforeEach(async () => {
-    vi.clearAllMocks();
     mockState.set(defaultState);
 
     await TestBed.configureTestingModule({
@@ -50,6 +49,8 @@ describe('InfoboxDisplay', () => {
         },
       ],
     }).compileComponents();
+
+    vi.clearAllMocks();
 
     fixture = TestBed.createComponent(InfoboxDisplay);
     component = fixture.componentInstance;
@@ -74,6 +75,8 @@ describe('InfoboxDisplay', () => {
   });
 
   it('should call loadInitialState on init', () => {
+    vi.clearAllMocks();
+    component.ngOnInit();
     expect(mockStateService.loadInitialState).toHaveBeenCalledOnce();
   });
 

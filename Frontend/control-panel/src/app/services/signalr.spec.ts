@@ -1,37 +1,50 @@
 import { TestBed } from '@angular/core/testing';
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 
-const mockConnection = {
-  start: vi.fn().mockResolvedValue(undefined),
-  on: vi.fn(),
-  onreconnecting: vi.fn(),
-  onreconnected: vi.fn(),
-  onclose: vi.fn(),
-};
+const { mockConnection, mockBuilder, hubConnectionBuilderSpy, MockHubConnectionBuilder } =
+  vi.hoisted(() => {
+    const hubConnectionBuilderSpy = vi.fn();
+    const mockConnection = {
+      on: vi.fn(),
+      onreconnecting: vi.fn(),
+      onreconnected: vi.fn(),
+      onclose: vi.fn(),
+      start: vi.fn().mockResolvedValue(undefined),
+    };
 
-const mockBuilder = {
-  withUrl: vi.fn().mockReturnThis(),
-  withAutomaticReconnect: vi.fn().mockReturnThis(),
-  build: vi.fn().mockReturnValue(mockConnection),
-};
+    const mockBuilder = {
+      withUrl: vi.fn().mockReturnThis(),
+      withAutomaticReconnect: vi.fn().mockReturnThis(),
+      build: vi.fn(() => mockConnection),
+    };
 
-vi.mock('@microsoft/signalr', () => {
-  return {
-    HubConnectionBuilder: vi.fn(function () {
-      return mockBuilder;
-    }),
-  };
-});
+    class MockHubConnectionBuilder {
+      constructor() {
+        hubConnectionBuilderSpy();
+        return mockBuilder;
+      }
+    }
+
+    return { mockConnection, mockBuilder, hubConnectionBuilderSpy, MockHubConnectionBuilder };
+  });
+
+vi.mock('@microsoft/signalr', () => ({
+  HubConnectionBuilder: MockHubConnectionBuilder,
+}));
+
 import * as signalR from '@microsoft/signalr';
 import { Signalr } from './signalr';
 
 describe('Signalr', () => {
   let service: Signalr;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
 
-    TestBed.configureTestingModule({});
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      providers: [Signalr],
+    });
     service = TestBed.inject(Signalr);
   });
 
@@ -65,19 +78,14 @@ describe('Signalr', () => {
   it('should build a SignalR connection', async () => {
     await service.start();
 
-    expect(signalR.HubConnectionBuilder).toHaveBeenCalled();
+    expect(hubConnectionBuilderSpy).toHaveBeenCalledOnce();
 
-    expect(mockBuilder.withUrl).toHaveBeenCalledWith(
-      'http://localhost:7000/overlayHub'
-    );
+    expect(mockBuilder.withUrl).toHaveBeenCalledWith('http://localhost:7000/overlayHub');
 
     expect(mockBuilder.withAutomaticReconnect).toHaveBeenCalled();
     expect(mockBuilder.build).toHaveBeenCalled();
 
-    expect(mockConnection.on).toHaveBeenCalledWith(
-      'broadcastStateUpdated',
-      expect.any(Function)
-    );
+    expect(mockConnection.on).toHaveBeenCalledWith('broadcastStateUpdated', expect.any(Function));
 
     expect(mockConnection.onreconnecting).toHaveBeenCalled();
     expect(mockConnection.onreconnected).toHaveBeenCalled();
@@ -94,9 +102,7 @@ describe('Signalr', () => {
       .mockRejectedValueOnce(new Error('Connection failed'))
       .mockResolvedValueOnce(undefined);
 
-    const consoleErrorSpy = vi
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     await service.start();
 

@@ -43,9 +43,11 @@ describe('Topbar', () => {
   };
 
   beforeEach(async () => {
+    vi.resetAllMocks();
     mockState.set(defaultState);
     mockIsConnected.set(false);
 
+    TestBed.resetTestingModule();
     await TestBed.configureTestingModule({
       imports: [Topbar],
       providers: [
