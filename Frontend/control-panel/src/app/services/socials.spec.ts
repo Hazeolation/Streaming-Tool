@@ -7,14 +7,12 @@ import { of } from 'rxjs';
 import { SocialsApi } from './socials-api';
 import { Signalr } from './signalr';
 
-
-
 describe('Socials', () => {
   let service: SocialsService;
 
   const defaultSocials: Socials = {
-    xHandle: "@Testing",
-    discordInvite: "Testing"
+    xHandle: '@Temp',
+    discordInvite: 'Testing',
   };
 
   const mockApi = {
@@ -27,7 +25,7 @@ describe('Socials', () => {
   const mockSignalr = {
     liveSocials: mockLiveSocials,
     start: vi.fn(),
-  };   
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -65,7 +63,7 @@ describe('Socials', () => {
   it('should load initial socials from api', () => {
     const apiSocials: Socials = {
       ...defaultSocials,
-      discordInvite: "/DSB"
+      discordInvite: '/DSB',
     };
 
     mockApi.getSocials.mockReturnValue(of(apiSocials));
@@ -78,12 +76,12 @@ describe('Socials', () => {
 
   it('should update socials and persist it through api', () => {
     service.update({
-      discordInvite: ".gg/DSB"
+      discordInvite: '.gg/DSB',
     });
 
     const expectedSocials: Socials = {
       ...defaultSocials,
-      discordInvite: ".gg/DSB"
+      discordInvite: '.gg/DSB',
     };
 
     expect(service.socials()).toEqual(expectedSocials);
