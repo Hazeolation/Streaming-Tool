@@ -42,6 +42,11 @@ jobs:
             - name: Install dependencies
               run: npm ci
               working-directory: ${{ env.FRONTEND_PATH }}
+            - name: Install Angular CLI
+              run: npm install -g @angular/cli
+              working-directory: ${{ env.FRONTEND_PATH }}
+            - name: Install @vitest/browser-playwright
+              run: npm install @vitest/browser-playwright
             - name: Run Node.js Tests
               run: npm test
               working-directory: ${{ env.FRONTEND_PATH }}
