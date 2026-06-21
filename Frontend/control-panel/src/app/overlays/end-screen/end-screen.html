@@ -9,15 +9,21 @@
     <img
       alt="Twitter Profile"
       class="socials-icon twitter-icon"
+      [class.hide-social]="socials().xHandle === ''"
       src="assets/socials/twitter-logo.svg"
     />
-    <span class="socials-text twitter-link">{{ socials().xHandle }}</span>
+    <span [class.hide-social]="socials().xHandle === ''" class="socials-text twitter-link">{{
+      socials().xHandle
+    }}</span>
 
     <img
       alt="Discord Server"
       class="socials-icon discord-icon"
+      [class.hide-social]="socials().discordInvite === ''"
       src="assets/socials/discord-logo.svg"
     />
-    <span class="socials-text discord-invite">discord.gg/{{ socials().discordInvite }}</span>
+    <span [class.hide-social]="socials().discordInvite === ''" class="socials-text discord-invite"
+      >discord.gg/{{ socials().discordInvite }}</span
+    >
   </div>
 </div>
