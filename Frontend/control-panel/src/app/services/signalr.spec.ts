@@ -51,7 +51,9 @@ describe('Signalr', () => {
   it('should build a SignalR connection', async () => {
     await service.start();
 
-    expect(mockBuilder.withUrl).toHaveBeenCalledWith('http://localhost:7000/overlayHub');
+    await vi.waitFor(() => {
+      expect(mockBuilder.withUrl).toHaveBeenCalledWith('http://localhost:7000/overlayHub');
+    });
 
     expect(mockBuilder.withAutomaticReconnect).toHaveBeenCalled();
     expect(mockBuilder.build).toHaveBeenCalled();
@@ -60,5 +62,31 @@ describe('Signalr', () => {
 
     expect(mockConnection.start).toHaveBeenCalled();
     expect(service.isConnected()).toBe(true);
+  });
+
+  it('should retry connection after 5 seconds when start fails', async () => {
+    vi.useFakeTimers();
+
+    mockConnection.start
+      .mockRejectedValueOnce(new Error('Connection failed'))
+      .mockResolvedValueOnce(undefined);
+
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    await service.start();
+
+    await vi.waitFor(() => {
+      expect(mockConnection.start).toHaveBeenCalledTimes(1);
+    });
+
+    await vi.advanceTimersByTimeAsync(5000);
+
+    await vi.waitFor(() => {
+      expect(mockConnection.start).toHaveBeenCalledTimes(2);
+    });
+
+    expect(service.isConnected()).toBe(true);
+
+    vi.useRealTimers();
   });
 });
