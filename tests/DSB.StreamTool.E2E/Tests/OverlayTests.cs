@@ -5,7 +5,7 @@ namespace DSB.StreamTool.E2E.Tests;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
-public class OverlayTests : PageTest
+public partial class OverlayTests : PageTest
 {
     private const string BaseUrl = "http://localhost:4200";
 
@@ -90,7 +90,7 @@ public class OverlayTests : PageTest
     public async Task Infobox_ShowsLeagueText()
     {
         await Page.GotoAsync($"{BaseUrl}/overlay/info-box");
-        await Expect(Page.Locator(".infobox .league")).ToContainTextAsync("Deutsche Splatoon Bundesliga");
+        await Expect(Page.Locator(".infobox .tourney-name")).ToContainTextAsync(SeasonWeekDivisionRegex());
     }
 
     [Test]
@@ -149,8 +149,7 @@ public class OverlayTests : PageTest
     public async Task MapScreen_Header_ShowsSeasonDivisionText()
     {
         await Page.GotoAsync($"{BaseUrl}/overlay/map-screen");
-        await Expect(Page.Locator(".map-screen .season-text")).ToBeAttachedAsync();
-        await Expect(Page.Locator(".map-screen .division-text")).ToBeAttachedAsync();
+        await Expect(Page.Locator(".map-screen .season-division-display")).ToBeAttachedAsync();
     }
 
     [Test]
@@ -190,4 +189,7 @@ public class OverlayTests : PageTest
 
         await overlayPage.CloseAsync();
     }
+
+    [GeneratedRegex(@"^Season [0-9]?[0-9] - Woche \d - Division [1-8]")]
+    private static partial Regex SeasonWeekDivisionRegex();
 }

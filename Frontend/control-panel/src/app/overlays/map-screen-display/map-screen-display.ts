@@ -33,11 +33,14 @@ export class MapScreenDisplay implements OnInit {
    * @returns {'team-alpha-color' | 'team-bravo-color'}
    */
   setWinnerLogoColor(winner: 'alpha' | 'bravo'): string {
-    if(winner === 'alpha' && this.state().alphaIsLeft || winner === 'bravo' && !this.state().alphaIsLeft) {
+    if (
+      (winner === 'alpha' && this.state().alphaIsLeft) ||
+      (winner === 'bravo' && !this.state().alphaIsLeft)
+    ) {
       return 'team-alpha-color';
     }
 
-    return 'team-bravo-color'
+    return 'team-bravo-color';
   }
 
   /**
