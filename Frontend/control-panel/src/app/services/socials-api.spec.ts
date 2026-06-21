@@ -12,17 +12,13 @@ describe('SocialsApi', () => {
   const baseUrl = 'http://localhost:7000/api/socials';
 
   const mockSocials: Socials = {
-    xHandle: "@Testing",
-    discordInvite: "Testing"
+    xHandle: '@Testing',
+    discordInvite: 'Testing',
   };
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        SocialsApi,
-        provideHttpClient(withFetch()),
-        provideHttpClientTesting(),
-      ],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      providers: [SocialsApi, provideHttpClient(withFetch()), provideHttpClientTesting()],
     });
 
     service = TestBed.inject(SocialsApi);
@@ -48,7 +44,7 @@ describe('SocialsApi', () => {
   it('should update the socials', () => {
     const updatedSocials: Socials = {
       ...mockSocials,
-      discordInvite: "/DSB"
+      discordInvite: '/DSB',
     };
 
     service.updateSocials(updatedSocials).subscribe((socials) => {
