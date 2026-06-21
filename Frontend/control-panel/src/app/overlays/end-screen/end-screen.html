@@ -1,15 +1,23 @@
 <div class="end-screen">
-  <img class="dsb-logo" src="assets/dsb/DSB_Logo-Large.png"/>
+  <img class="dsb-logo" src="assets/dsb/DSB_Logo-Large.png" />
   <span class="ending-text">
-    GGs und danke fürs Mitfiebern! <br/>
+    GGs und danke fürs Mitfiebern! <br />
     Bis zum nächsten Match - Stay Fresh!
   </span>
 
   <div class="socials__container">
-    <img alt="Twitter Profile" class="socials-icon twitter-icon" src="assets/socials/twitter-logo.svg">
-    <span class="socials-text twitter-link">@Test</span>
+    <img
+      alt="Twitter Profile"
+      class="socials-icon twitter-icon"
+      src="assets/socials/twitter-logo.svg"
+    />
+    <span class="socials-text twitter-link">{{ socials().xHandle }}</span>
 
-    <img alt="Discord Server" class="socials-icon discord-icon" src="assets/socials/discord-logo.svg">
-    <span class="socials-text discord-invite">Test</span>
+    <img
+      alt="Discord Server"
+      class="socials-icon discord-icon"
+      src="assets/socials/discord-logo.svg"
+    />
+    <span class="socials-text discord-invite">{{ socials().discordInvite }}</span>
   </div>
 </div>
