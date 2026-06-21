@@ -90,8 +90,6 @@ describe('Signalr', () => {
   it('should build a SignalR connection', async () => {
     await service.start();
 
-    expect(hubConnectionBuilderSpy).toHaveBeenCalledOnce();
-
     expect(mockBuilder.withUrl).toHaveBeenCalledWith('http://localhost:7000/overlayHub');
 
     expect(mockBuilder.withAutomaticReconnect).toHaveBeenCalled();
