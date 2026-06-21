@@ -51,7 +51,7 @@ public class SocialsControllerTests
 
         Assert.That(result.Result, Is.InstanceOf<OkObjectResult>());
         var ok = (OkObjectResult)result.Result!;
-        Assert.That(ok.Value, Is.InstanceOf<BroadcastStateDto>());
+        Assert.That(ok.Value, Is.InstanceOf<SocialsDto>());
     }
 
     [Test]
