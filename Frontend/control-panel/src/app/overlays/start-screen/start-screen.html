@@ -1,32 +1,26 @@
 <div class="start-screen">
-  <img class="dsb-logo" src="assets/dsb/DSB_Logo-Large.png"/>
+  <img class="dsb-logo" src="assets/dsb/DSB_Logo-Large.png" />
   <div class="match-info__container">
-      <span class="current-match-text">
-        Nächstes Match:
+    <span class="current-match-text"> Nächstes Match: </span>
+
+    <div class="division__container">
+      <span class="division-text">
+        Woche {{ state().week }} - Division {{ state().division }}
       </span>
 
-      <div class="division__container">
-        <span class="division-text">
-          Division {{ state().division }}
-        </span>
+      <span class="division-bg-splat"></span>
+    </div>
 
-        <span class="division-bg-splat"></span>
-      </div>
+    <span class="team-name">
+      {{ state().teamAlphaName }}
+    </span>
 
-      <span class="team-name">
-        {{ state().teamAlphaName }}
-      </span>
+    <span class="versus-text"> VS. </span>
 
-      <span class="versus-text">
-        VS.
-      </span>
+    <span class="team-name">
+      {{ state().teamBravoName }}
+    </span>
 
-      <span class="team-name">
-        {{ state().teamBravoName }}
-      </span>
-
-      <span class="countdown-timer">
-        00:00
-      </span>
+    <span class="countdown-timer"> 00:00 </span>
   </div>
 </div>
