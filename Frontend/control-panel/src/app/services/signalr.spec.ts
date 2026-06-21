@@ -32,7 +32,6 @@ vi.mock('@microsoft/signalr', () => ({
   HubConnectionBuilder: MockHubConnectionBuilder,
 }));
 
-import * as signalR from '@microsoft/signalr';
 import { Signalr } from './signalr';
 
 describe('Signalr', () => {
@@ -106,7 +105,7 @@ describe('Signalr', () => {
 
     await service.start();
 
-    expect(mockConnection.start).toHaveBeenCalledTimes(1);
+    expect(mockConnection.start).toHaveBeenCalledOnce();
     expect(service.isConnected()).toBe(false);
 
     await vi.advanceTimersByTimeAsync(5000);
