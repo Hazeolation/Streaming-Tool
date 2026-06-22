@@ -58,9 +58,9 @@ export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
         return;
       }
 
-      let hours = (diffTime.getHours() - 1).toString();
-      let minutes = diffTime.getMinutes().toString();
-      let seconds = diffTime.getSeconds().toString();
+      let hours = diffTime.getUTCHours().toString();
+      let minutes = diffTime.getUTCMinutes().toString();
+      let seconds = diffTime.getUTCSeconds().toString();
       hours = hours.length > 1 ? hours : '0' + hours;
       minutes = minutes.length > 1 ? minutes : '0' + minutes;
       seconds = seconds.length > 1 ? seconds : '0' + seconds;
