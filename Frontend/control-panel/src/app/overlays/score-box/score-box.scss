@@ -11,12 +11,7 @@
   min-height: 78px;
   padding: 10px 22px;
   background: rgba(241, 146, 56, 1);
-  background: linear-gradient(
-    0deg,
-    rgba(241, 146, 56, 1) 0%,
-    rgba(144, 73, 42, 1) 11%,
-    rgba(25, 12, 38, 1) 24%
-  );
+  background: linear-gradient(0deg, var(--current-division-color) 0%, rgba(25, 12, 38, 1) 24%);
   border: 4px solid black;
   transition:
     opacity 180ms ease,
