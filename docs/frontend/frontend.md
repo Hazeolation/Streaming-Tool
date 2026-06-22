@@ -75,12 +75,19 @@ Foreign Key `BroadcastStateEntityId → BroadcastStates.Id` with `ON DELETE CASC
 | Column                | Type            | Description        |
 | --------------------- | --------------- | ------------------ |
 | `id`                  | `string` (GUID) | Primary Key        |
-| `prder`               | `int`           | Order              |
+| `order`               | `int`           | Order              |
 | `mapId` / `mapName`   | `string`        | Map Reference      |
 | `modeId` / `modeName` | `string`        | Mode Reference     |
 | `imageUrl`            | `string`        | Preview Image      |
 | `winner`              | `string?`       | `null` = No Result |
 | `isVisible`           | `bool`          | Overlay Visibility |
+
+### `Socials`
+
+| Column          | Type     | Description              |
+| --------------- | -------- | ------------------------ |
+| `xHandle`       | `string` | Twitter/X Handle for DSB |
+| `discordInvite` | `string` | Invite to Discord Server |
 
 ---
 
@@ -123,50 +130,3 @@ public interface IOverlayClient
 | Event                   | Triggered By                | Payload             |
 | ----------------------- | --------------------------- | ------------------- |
 | `BroadcastStateUpdated` | `POST /api/broadcast/state` | `BroadcastStateDto` |
-
----
-
-## Service Layer
-
-`BroadcastStateService` is registered as **Scoped** (befitting of the `DbContext` lifetime).
-
-Core Methods:
-
-- `GetOrCreateStateAsync()` — private Upsert Helper, adds the Singleton Row, if it doesn't exist
-- `GetStateAsync()` — reads and returns the State as a DTO
-- `UpdateStateAsync(dto)` — writes State + Maps, returns updated State
-- `UpdateMaps(entity, dtoMaps)` — Upset Logic for the Map List
-- `ToDto(entity)` — static Mapping Method Entity → DTO
-
----
-
-## CORS
-
-Allows Origins (configured in `Program.cs`):
-
-- `http://localhost:4200` (Angular Dev)
-- `http://localhost:4201`
-
-`AllowCredentials()` is set — required for SignalR with Cookies/Auth.
-
----
-
-## Startup Behaviour
-
-EF Migrations are automatically applied on start:
-
-```csharp
-using var scope = app.Services.CreateScope();
-var db = scope.ServiceProvider.GetRequiredService<StreamToolDbContext>();
-db.Database.Migrate();
-```
-
-The SQLite file (`dsb-stream-tool.db`) gets created in the working directory of the process.
-
----
-
-## Add New Migration
-
-```bash
-dotnet ef migrations add <Name> --project Backend/DSB.StreamBackend
-```
