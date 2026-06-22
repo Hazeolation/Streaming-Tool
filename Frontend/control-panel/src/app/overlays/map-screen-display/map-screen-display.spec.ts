@@ -6,7 +6,6 @@ import { MapScreenDisplay } from './map-screen-display';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
 
-
 describe('MapScreenDisplay', () => {
   let component: MapScreenDisplay;
   let fixture: ComponentFixture<MapScreenDisplay>;
@@ -27,7 +26,8 @@ describe('MapScreenDisplay', () => {
     maps: [],
     season: 10,
     division: 1,
-    startTime: new Date()
+    startTime: new Date(),
+    week: 1,
   };
 
   const mockState = signal<BroadcastState>(defaultState);
@@ -171,31 +171,5 @@ describe('MapScreenDisplay', () => {
     });
 
     expect(component.rightScore).toBe(5);
-  });
-
-  it('should set current division color css variable after render', async () => {
-    mockState.set({
-      ...defaultState,
-      division: 3,
-    });
-
-    fixture.detectChanges();
-
-    await fixture.whenStable();
-
-    expect(
-      document.documentElement.style.getPropertyValue(
-        '--current-division-color'
-      )
-    ).toBe('var(--division-3-color)');
-  });
-
-  it('should destroy division effect on destroy', () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const destroySpy = vi.spyOn((component as any).divisionEffect, 'destroy');
-
-    component.ngOnDestroy();
-
-    expect(destroySpy).toHaveBeenCalledOnce();
   });
 });

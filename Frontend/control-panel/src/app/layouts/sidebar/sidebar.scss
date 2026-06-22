@@ -20,11 +20,13 @@ img {
   margin: auto 0 0 auto;
 }
 
-h2 {
+h2,
+h3 {
   margin-bottom: 0;
 }
 
-section {
+section,
+.socials-inputs__container {
   display: flex;
   flex-direction: column;
   gap: 12px;

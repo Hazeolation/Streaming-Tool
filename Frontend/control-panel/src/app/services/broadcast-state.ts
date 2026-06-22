@@ -218,7 +218,8 @@ export class BroadcastStateService {
     showInfobox: true,
     maps: [],
     season: 10,
-    division: 1
+    division: 1,
+    week: 1
   });
 
   /**

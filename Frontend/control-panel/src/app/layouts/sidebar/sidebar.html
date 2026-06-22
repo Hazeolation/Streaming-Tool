@@ -1,118 +1,177 @@
 <div class="sidebar">
-    <section>
-        <h2>Division</h2>
-        <select
-            [ngModel]="state().division"
-            (ngModelChange)="
-                stateService.update({
-                    division: $event
-                })">
-            @for (division of availableDivisions; track division) {
-            <option [ngValue]="division.id">
-                {{ division.name }}
-            </option>
-            }
-        </select>
-    </section>
-    <section>
-        <h2>Startzeit</h2>
+  <section>
+    <h2>Division</h2>
+    <select
+      [ngModel]="state().division"
+      (ngModelChange)="
+        stateService.update({
+          division: $event,
+        })
+      "
+    >
+      @for (division of availableDivisions; track division) {
+        <option [ngValue]="division.id">
+          {{ division.name }}
+        </option>
+      }
+    </select>
+  </section>
+  <section>
+    <h2>Startzeit</h2>
+    <input
+      type="datetime-local"
+      [ngModel]="state().startTime"
+      (ngModelChange)="
+        stateService.update({
+          startTime: $event,
+        })
+      "
+    />
+  </section>
+  <section>
+    <h2>Woche</h2>
+    <input
+      type="number"
+      [ngModel]="state().week"
+      (ngModelChange)="
+        stateService.update({
+          week: $event,
+        })
+      "
+    />
+  </section>
+  <section>
+    <h2>Teams</h2>
+    <input
+      [ngModel]="state().teamAlphaName"
+      (ngModelChange)="
+        stateService.update({
+          teamAlphaName: $event,
+        })
+      "
+      maxLength="13"
+    />
+    <input
+      [ngModel]="state().teamBravoName"
+      (ngModelChange)="
+        stateService.update({
+          teamBravoName: $event,
+        })
+      "
+      maxLength="13"
+    />
+  </section>
+  <section>
+    <div class="swap-sides">
+      <h2>Seiten wechseln</h2>
+      <label>
         <input
-            type="datetime-local"
-            [ngModel]="state().startTime"
-            (ngModelChange)="
-                stateService.update({
-                    startTime: $event
-                })">
-    </section>
-    <section>
-        <h2>Teams</h2>
+          type="checkbox"
+          [ngModel]="state().alphaIsLeft"
+          (ngModelChange)="
+            stateService.update({
+              alphaIsLeft: $event,
+            })
+          "
+        />
+        Alpha links
+      </label>
+    </div>
+  </section>
+  <section>
+    <h2>Streamer</h2>
+    <input
+      placeholder="@streamer"
+      [ngModel]="state().streamer"
+      (ngModelChange)="
+        stateService.update({
+          streamer: $event,
+        })
+      "
+    />
+  </section>
+  <section>
+    <h2>Kommentatoren</h2>
+    <input
+      placeholder="@caster1"
+      [ngModel]="state().commentator1"
+      (ngModelChange)="
+        stateService.update({
+          commentator1: $event,
+        })
+      "
+    />
+    <input
+      placeholder="@caster2"
+      [ngModel]="state().commentator2"
+      (ngModelChange)="
+        stateService.update({
+          commentator2: $event,
+        })
+      "
+    />
+  </section>
+  <section>
+    <h2>Sichtbarkeit des Overlays</h2>
+    <button
+      [class.active]="state().showMapScreen"
+      (click)="
+        stateService.update({
+          showMapScreen: !state().showMapScreen,
+        })
+      "
+    >
+      Kartenanzeige
+    </button>
+    <button
+      [class.active]="state().showScoreBox"
+      (click)="
+        stateService.update({
+          showScoreBox: !state().showScoreBox,
+        })
+      "
+    >
+      Spielstand
+    </button>
+    <button
+      [class.active]="state().showCommentatorBox"
+      (click)="
+        stateService.update({
+          showCommentatorBox: !state().showCommentatorBox,
+        })
+      "
+    >
+      Kommentatoren
+    </button>
+  </section>
+  <section>
+    <h2>Socials</h2>
+    <details>
+      <summary>Socials</summary>
+      <div class="socials-inputs__container">
+        <h3>Twitter/X</h3>
         <input
-            [ngModel]="state().teamAlphaName"
-            (ngModelChange)="
-                stateService.update({
-                    teamAlphaName: $event
-                })"
-            maxLength="13">
-        <input
-            [ngModel]="state().teamBravoName"
-            (ngModelChange)="
-                stateService.update({
-                    teamBravoName: $event
-                })"
-            maxLength="13">
-    </section>
-    <section>
-        <div class="swap-sides">
-            <h2>Seiten wechseln</h2>
-            <label>
-                <input
-                    type="checkbox"
-                    [ngModel]="state().alphaIsLeft"
-                    (ngModelChange)="
-                        stateService.update({
-                            alphaIsLeft: $event
-                        })">
-                Alpha links
-            </label>
-        </div>
-    </section>
-    <section>
-        <h2>Streamer</h2>
-        <input
-            placeholder="@streamer"
-            [ngModel]="state().streamer"
-            (ngModelChange)="
-                stateService.update({
-                    streamer: $event
-                })"/>
-    </section>
-    <section>
-        <h2>Kommentatoren</h2>
-        <input
-            placeholder="@caster1"
-            [ngModel]="state().commentator1"
-            (ngModelChange)="
-                stateService.update({
-                    commentator1: $event
-                })">
-        <input
-            placeholder="@caster2"
-            [ngModel]="state().commentator2"
-            (ngModelChange)="
-                stateService.update({
-                    commentator2: $event
-                })">
-    </section>
-    <section>
-        <h2>Sichtbarkeit des Overlays</h2>
-        <button
-            [class.active]="state().showMapScreen"
-            (click)="
-                stateService.update({
-                    showMapScreen:
-                        !state().showMapScreen
-                })">
+          placeholder="@Test"
+          [ngModel]="socials().xHandle"
+          (ngModelChange)="
+            socialsService.update({
+              xHandle: $event,
+            })
+          "
+        />
 
-            Kartenanzeige
-        </button>
-        <button
-            [class.active]="state().showScoreBox"
-            (click)="
-                stateService.update({
-                    showScoreBox:
-                        !state().showScoreBox
-                })">
-            Spielstand
-        </button>
-        <button
-            [class.active]="state().showCommentatorBox"
-            (click)="
-                stateService.update({
-                    showCommentatorBox:
-                        !state().showCommentatorBox
-                })">
-            Kommentatoren
-        </button>
-    </section>
-    <img src="assets/dsb/DSB_Logo.png" width="100px">
+        <h3>Discord-Invite</h3>
+        <input
+          placeholder="@Test"
+          [ngModel]="socials().discordInvite"
+          (ngModelChange)="
+            socialsService.update({
+              discordInvite: $event,
+            })
+          "
+        />
+      </div>
+    </details>
+  </section>
+  <img src="assets/dsb/DSB_Logo.png" width="100px" />
 </div>

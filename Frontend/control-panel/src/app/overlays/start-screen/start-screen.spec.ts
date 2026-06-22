@@ -25,13 +25,14 @@ describe('StartScreen', () => {
     season: 10,
     division: 1,
     startTime: new Date(),
+    week: 1,
   };
 
   const mockState = signal<BroadcastState>(defaultState);
 
   const mockStateService = {
     state: mockState,
-    loadInitialState: vi.fn()
+    loadInitialState: vi.fn(),
   };
 
   beforeEach(async () => {
@@ -78,7 +79,7 @@ describe('StartScreen', () => {
     const testDate = new Date('2026-05-24');
     mockState.set({
       ...defaultState,
-      startTime: testDate
+      startTime: testDate,
     });
 
     expect(component.state().startTime).toBe(testDate);

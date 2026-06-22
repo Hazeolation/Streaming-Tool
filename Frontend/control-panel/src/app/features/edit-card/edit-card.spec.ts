@@ -8,6 +8,7 @@ describe('EditCard', () => {
   let fixture: ComponentFixture<EditCard>;
 
   beforeEach(async () => {
+    TestBed.resetTestingModule();
     await TestBed.configureTestingModule({
       imports: [EditCard],
     })

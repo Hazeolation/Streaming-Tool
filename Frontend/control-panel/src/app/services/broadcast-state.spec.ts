@@ -27,7 +27,8 @@ describe('BroadcastStateService', () => {
     maps: [],
     season: 10,
     division: 1,
-    startTime: new Date()
+    startTime: new Date(0),
+    week: 1,
   };
 
   const mockApi = {
@@ -90,7 +91,7 @@ describe('BroadcastStateService', () => {
 
     mockLiveState.set(incomingState);
 
-    TestBed.flushEffects();
+    TestBed.tick();
 
     expect(service.state()).toEqual(incomingState);
   });

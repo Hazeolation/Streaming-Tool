@@ -57,20 +57,10 @@
   display: flex;
   flex-flow: row nowrap;
   padding: 0rem 2rem;
-  column-gap: 1rem;
   justify-content: center;
   align-items: flex-start;
   font-size: 1.875rem;
   color: #c4c4c4;
-}
-
-.season-text,
-.division-text {
-  flex: 1;
-}
-
-.season-text {
-  text-align: right;
 }
 
 .match-score {
@@ -81,7 +71,7 @@
   aspect-ratio: 439 / 363;
   width: 4.5rem;
   height: auto;
-  mask-image: url("/assets/misc/Division_Bg_Splat.png");
+  mask-image: url('/assets/misc/Division_Bg_Splat.png');
   mask-size: cover;
   mask-repeat: no-repeat;
   background-color: white;
@@ -102,10 +92,6 @@
 
 .team-alpha-name-container {
   justify-content: flex-end;
-}
-
-.team-name {
-  text-transform: uppercase;
 }
 
 .map-grid {

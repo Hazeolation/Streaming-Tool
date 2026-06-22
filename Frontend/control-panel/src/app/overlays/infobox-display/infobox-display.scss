@@ -1,59 +1,68 @@
 @use '../overlay-theme.scss';
 
+:host {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  padding: 2rem 0rem;
+}
+
 .infobox {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 920px;
-  padding: 16px 13px 70px 13px;
+  min-width: 57.5rem;
+  padding: 1rem 0.75rem 3rem 0.75rem;
   text-align: center;
-  border: 6px solid black;
-  background: rgba(241, 146, 56, 1);
-  background: linear-gradient(
-    0deg,
-    rgba(241, 146, 56, 1) 0%,
-    rgba(144, 73, 42, 1) 17%,
-    rgba(25, 12, 38, 1) 34%
-  );
+  border: 0.375rem solid black;
+  background: linear-gradient(0deg, var(--current-division-color) 0%, rgba(25, 12, 38, 1) 34%);
   transition:
     opacity 180ms ease,
     transform 180ms ease;
 }
 
-.league {
-  font-size: 22px;
+.tourney-name {
+  font-size: 1.375rem;
   font-weight: 900;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #e57231;
+  color: #c4c4c4;
 }
 
 .versus {
-  margin-top: 28px;
+  margin-top: 1.75rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 32px;
-  font-size: 36px;
+  gap: 2rem;
+  font-size: 2.25rem;
   font-weight: 900;
 }
 
 .versus strong {
-  color: #e57231;
+  color: #c4c4c4;
 }
 
 .score {
   display: flex;
-  font-size: 44px;
+  font-size: 2.75rem;
   font-weight: 900;
   justify-content: center;
-  padding-right: 17px;
+}
+
+.team-name {
+  flex: 1;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.team-bravo-name {
+  justify-content: flex-start;
 }
 
 img {
   position: absolute;
   bottom: 0;
   right: 0;
-  margin-right: 7px;
+  margin-right: 0.5rem;
 }

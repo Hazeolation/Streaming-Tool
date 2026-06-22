@@ -35,6 +35,7 @@ export class EditCard {
    */
   changeMode(mode: string): void {
     this.onModeChange.emit(mode);
+    this.onCloseClick.emit();
   }
 
   /**

@@ -1,6 +1,8 @@
 import { Component, inject, OnInit, WritableSignal } from '@angular/core';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
+import { SocialsService } from '../../services/socials';
+import { Socials } from '../../models/socials';
 
 @Component({
   selector: 'end-screen',
@@ -20,9 +22,20 @@ export class EndScreen implements OnInit {
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
   /**
+   * Injects the `SocialsService` to access social links such as discord server invite, twitter handle, etc. The `socials` signal is used to reactively track changes to the socials state to update the overlay accordingly
+   */
+  socialsService: SocialsService = inject(SocialsService);
+
+  /**
+   * A writable signal that holds the current socials state. It is initialized by referencing the `socials` signal from the `SocialsService`, allowing the end screen display component to reactively update its UI whenever the socials state changes.
+   */
+  socials: WritableSignal<Socials> = this.socialsService.socials;
+
+  /**
    * Initializes the score box component by calling the `loadInitialState` method on the `BroadcastStateService`. This ensures that the component has the initial broadcast state loaded and ready to display when it is first rendered. The `ngOnInit` lifecycle hook is used to perform this initialization logic, which is a common practice in Angular components to set up necessary data or state before the component is displayed to the user.
    */
   ngOnInit(): void {
     this.stateService.loadInitialState();
+    this.socialsService.loadInitialState();
   }
 }

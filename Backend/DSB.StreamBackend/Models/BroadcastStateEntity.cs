@@ -44,7 +44,7 @@ public class BroadcastStateEntity
     /// <summary>
     /// Gets or sets the name of the first commentator.
     /// </summary>
-    public string Commentator1 { get; set; } = "";
+    public string Commentator1 { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the name of the second commentator.
@@ -85,6 +85,11 @@ public class BroadcastStateEntity
     /// Gets or sets the current division number for the broadcast.
     /// </summary>
     public int Division { get; set; }
+
+    /// <summary>
+    /// Gets or sets the current week number for the broadcast.
+    /// </summary>
+    public int Week { get; set; }
 
     /// <summary>
     /// Gets or sets the start time of the match

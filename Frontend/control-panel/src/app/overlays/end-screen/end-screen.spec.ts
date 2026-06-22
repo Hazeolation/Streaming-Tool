@@ -3,6 +3,8 @@ import { EndScreen } from './end-screen';
 import { BroadcastState } from '../../models/broadcast-state';
 import { signal } from '@angular/core';
 import { BroadcastStateService } from '../../services/broadcast-state';
+import { Socials } from '../../models/socials';
+import { SocialsService } from '../../services/socials';
 
 describe('EndScreen', () => {
   let component: EndScreen;
@@ -25,18 +27,31 @@ describe('EndScreen', () => {
     season: 10,
     division: 1,
     startTime: new Date(),
+    week: 1,
+  };
+
+  const defaultSocials: Socials = {
+    xHandle: '@Test',
+    discordInvite: 'Test',
   };
 
   const mockState = signal<BroadcastState>(defaultState);
+  const mockSocials = signal<Socials>(defaultSocials);
 
   const mockStateService = {
     state: mockState,
     loadInitialState: vi.fn(),
   };
 
+  const mockSocialsService = {
+    socials: mockSocials,
+    loadInitialState: vi.fn(),
+  };
+
   beforeEach(async () => {
     vi.clearAllMocks();
     mockState.set(defaultState);
+    mockSocials.set(defaultSocials);
 
     await TestBed.configureTestingModule({
       imports: [EndScreen],
@@ -44,6 +59,10 @@ describe('EndScreen', () => {
         {
           provide: BroadcastStateService,
           useValue: mockStateService,
+        },
+        {
+          provide: SocialsService,
+          useValue: mockSocialsService,
         },
       ],
     }).compileComponents();
@@ -65,12 +84,25 @@ describe('EndScreen', () => {
     expect(component.stateService).toBe(mockStateService);
   });
 
+  it('should inject SocialsService', () => {
+    expect(component.socialsService).toBe(mockSocialsService);
+  });
+
   it('should expose the state signal from BroadcastStateService', () => {
     expect(component.state).toBe(mockStateService.state);
     expect(component.state()).toEqual(defaultState);
   });
 
+  it('should expose the socials signal from SocialsService', () => {
+    expect(component.socials).toBe(mockSocialsService.socials);
+    expect(component.socials()).toEqual(defaultSocials);
+  });
+
   it('should load initial state on init', () => {
     expect(mockStateService.loadInitialState).toHaveBeenCalledOnce();
+  });
+
+  it('should load initial socials on init', () => {
+    expect(mockSocialsService.loadInitialState).toHaveBeenCalledOnce();
   });
 });

@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { MainLayout } from './main-layout';
 import { BroadcastStateService } from '../../services/broadcast-state';
+import { SocialsService } from '../../services/socials';
 
 @Component({
   selector: 'app-sidebar',
@@ -28,9 +29,14 @@ describe('MainLayout', () => {
     loadInitialState: vi.fn(),
   };
 
+  const mockSocialsService = {
+    loadInitialState: vi.fn(),
+  };
+
   beforeEach(async () => {
     vi.clearAllMocks();
 
+    TestBed.resetTestingModule();
     await TestBed.configureTestingModule({
       imports: [MainLayout],
       providers: [
@@ -38,6 +44,10 @@ describe('MainLayout', () => {
         {
           provide: BroadcastStateService,
           useValue: mockStateService,
+        },
+        {
+          provide: SocialsService,
+          useValue: mockSocialsService,
         },
       ],
     })
@@ -61,7 +71,11 @@ describe('MainLayout', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call loadInitialState on init', () => {
+  it('should call loadInitialState for BroadcastState on init', () => {
     expect(mockStateService.loadInitialState).toHaveBeenCalledOnce();
+  });
+
+  it('should call loadInitialState for Socials on init', () => {
+    expect(mockSocialsService.loadInitialState).toHaveBeenCalledOnce();
   });
 });

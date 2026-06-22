@@ -1,13 +1,23 @@
-import { Component, signal, afterRenderEffect, inject, NgZone, WritableSignal, OnDestroy } from '@angular/core';
+import {
+  Component,
+  signal,
+  afterRenderEffect,
+  inject,
+  NgZone,
+  WritableSignal,
+  OnDestroy,
+} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { BroadcastState } from './models/broadcast-state';
 import { BroadcastStateService } from './services/broadcast-state';
+import { SocialsService } from './services/socials';
+import { Socials } from './models/socials';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
 export class App implements OnDestroy {
   protected readonly title = signal('control-panel');
@@ -16,6 +26,11 @@ export class App implements OnDestroy {
    * Injects the `BroadcastStateService` to access the current broadcast state and available maps, modes, and divisions. The `state` signal is used to reactively track changes to the broadcast state, allowing the score box component to update its UI accordingly whenever the state changes. This setup enables the score box to display the current team names and scores based on the latest broadcast state received from the service.
    */
   stateService: BroadcastStateService = inject(BroadcastStateService);
+
+  /**
+   * Injects the `SocialsService` to access social links such as discord server invite, twitter handle, etc. The `socials` signal is used to reactively track changes to the socials state to update the overlay accordingly
+   */
+  socialsService: SocialsService = inject(SocialsService);
 
   /**
    * Injects `NgZone` to run DOM manipulations outside of Angular's change detection zone.
@@ -29,6 +44,11 @@ export class App implements OnDestroy {
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
   /**
+   * A writable signal that holds the current socials state. It is initialized by referencing the `socials` signal from the `SocialsService`, allowing the end screen display component to reactively update its UI whenever the socials state changes.
+   */
+  socials: WritableSignal<Socials> = this.socialsService.socials;
+
+  /**
    * Effect that watches for division changes and updates the CSS custom property
    * `--current-division-color` to match the corresponding division color variable.
    * This ensures the header background gradient always reflects the current division's color scheme.
@@ -36,10 +56,10 @@ export class App implements OnDestroy {
   private divisionColorEffect = afterRenderEffect(() => {
     const division = this.state().division;
     if (!division) return;
-    
+
     document.documentElement.style.setProperty(
       '--current-division-color',
-      `var(--division-${division}-color)`
+      `var(--division-${division}-color)`,
     );
   });
 

@@ -8,10 +8,16 @@ on:
         workflows: ["Build .NET CI"]
         types:
             - completed
+    pull_request:
+        branches:
+            - master
+    push:
+        branches:
+            - master
 
 jobs:
     test:
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        if: ${{ (github.event_name == 'workflow_run' && github.event.workflow_run.name == 'Build .NET CI' && github.event.workflow_run.conclusion == 'success') || github.event_name == 'pull_request' }}
         runs-on: ubuntu-latest
 
         steps:

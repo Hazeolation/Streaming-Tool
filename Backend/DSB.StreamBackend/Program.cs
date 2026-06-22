@@ -18,6 +18,7 @@ builder.Services.AddDbContext<StreamToolDbContext>(options =>
 });
 
 builder.Services.AddScoped<BroadcastStateService>();
+builder.Services.AddScoped<SocialsService>();
 
 builder.Services.AddCors(options =>
 {
