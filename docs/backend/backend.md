@@ -2,13 +2,13 @@
 
 ## Stack
 
-| Component | Technology |
-|---|---|
-| Framework | ASP.NET Core 9.0 |
-| Real-Time | SignalR |
-| ORM | Entity Framework Core 9 |
-| Database | SQLite (`dsb-stream-tool.db`) |
-| API-Documentation | Swagger / Swashbuckle |
+| Component         | Technology                    |
+| ----------------- | ----------------------------- |
+| Framework         | ASP.NET Core 9.0              |
+| Real-Time         | SignalR                       |
+| ORM               | Entity Framework Core 9       |
+| Database          | SQLite (`dsb-stream-tool.db`) |
+| API-Documentation | Swagger / Swashbuckle         |
 
 ---
 
@@ -42,36 +42,36 @@ The entire Broadcast State is held in the database as **a single row** (`Broadca
 
 ### `BroadcastStates` (1 Column)
 
-| Column | Type | Description |
-|---|---|---|
-| `Id` | `int` | Always `1` (Singleton) |
-| `TeamAlphaName` | `string` | Name Team Alpha |
-| `TeamBravoName` | `string` | Name Team Bravo |
-| `AlphaIsLeft` | `bool` | Side Display Alpha |
-| `ScoreAlpha` | `int` | Point Score Alpha |
-| `ScoreBravo` | `int` | Point Score Bravo |
-| `Streamer` | `string` | Streamer Name |
-| `Commentator1/2` | `string` | Commentator Names |
-| `ShowMapScreen` | `bool` | Overlay Visibility |
-| `ShowScoreBox` | `bool` | |
-| `ShowCommentatorBox` | `bool` | |
-| `ShowInfobox` | `bool` | |
-| `Season` | `int` | Current Season |
-| `Division` | `int` | Current Division |
+| Column               | Type     | Description            |
+| -------------------- | -------- | ---------------------- |
+| `Id`                 | `int`    | Always `1` (Singleton) |
+| `TeamAlphaName`      | `string` | Name Team Alpha        |
+| `TeamBravoName`      | `string` | Name Team Bravo        |
+| `AlphaIsLeft`        | `bool`   | Side Display Alpha     |
+| `ScoreAlpha`         | `int`    | Point Score Alpha      |
+| `ScoreBravo`         | `int`    | Point Score Bravo      |
+| `Streamer`           | `string` | Streamer Name          |
+| `Commentator1/2`     | `string` | Commentator Names      |
+| `ShowMapScreen`      | `bool`   | Overlay Visibility     |
+| `ShowScoreBox`       | `bool`   |                        |
+| `ShowCommentatorBox` | `bool`   |                        |
+| `ShowInfobox`        | `bool`   |                        |
+| `Season`             | `int`    | Current Season         |
+| `Division`           | `int`    | Current Division       |
 
 ### `MapStates` (0..N Columns)
 
 Foreign Key `BroadcastStateEntityId → BroadcastStates.Id` with `ON DELETE CASCADE`.
 
-| Column | Type | Description |
-|---|---|---|
-| `Id` | `string` (GUID) | Primary Ke |
-| `Order` | `int` | Order |
-| `MapId` / `MapName` | `string` | Map Reference |
-| `ModeId` / `ModeName` | `string` | Mode Reference |
-| `ImageUrl` | `string` | Preview Image |
-| `Winner` | `string?` | `null` = No Result |
-| `IsVisible` | `bool` | Overlay Visibility |
+| Column                | Type            | Description        |
+| --------------------- | --------------- | ------------------ |
+| `Id`                  | `string` (GUID) | Primary Key        |
+| `Order`               | `int`           | Order              |
+| `MapId` / `MapName`   | `string`        | Map Reference      |
+| `ModeId` / `ModeName` | `string`        | Mode Reference     |
+| `ImageUrl`            | `string`        | Preview Image      |
+| `Winner`              | `string?`       | `null` = No Result |
+| `IsVisible`           | `bool`          | Overlay Visibility |
 
 ---
 
@@ -111,15 +111,15 @@ public interface IOverlayClient
 }
 ```
 
-| Event | Triggered By | Payload |
-|---|---|---|
+| Event                   | Triggered By                | Payload             |
+| ----------------------- | --------------------------- | ------------------- |
 | `BroadcastStateUpdated` | `POST /api/broadcast/state` | `BroadcastStateDto` |
 
 ---
 
 ## Service Layer
 
-`BroadcastStateService` is registered as **Scoped** (befitting of the `DbContext` lifetime).  
+`BroadcastStateService` is registered as **Scoped** (befitting of the `DbContext` lifetime).
 
 Core Methods:
 
@@ -152,7 +152,7 @@ var db = scope.ServiceProvider.GetRequiredService<StreamToolDbContext>();
 db.Database.Migrate();
 ```
 
-The SQLite file (`dsb-stream-tool.db`)  gets created in the working directory of the process.
+The SQLite file (`dsb-stream-tool.db`) gets created in the working directory of the process.
 
 ---
 

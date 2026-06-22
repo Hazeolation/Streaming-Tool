@@ -2,131 +2,218 @@
 
 ## Stack
 
-### Still needs to be adjusted
-
-| Component         | Technology                    |
-| ----------------- | ----------------------------- |
-| Framework         | ASP.NET Core 9.0              |
-| Real-Time         | SignalR                       |
-| ORM               | Entity Framework Core 9       |
-| Database          | SQLite (`dsb-stream-tool.db`) |
-| API-Documentation | Swagger / Swashbuckle         |
+| Component | Technology                   |
+| --------- | ---------------------------- |
+| Framework | Angular 22.0.1               |
+| Language  | TypeScript 6.0               |
+| Runtime   | Node / Express (SSR)         |
+| Real-Time | SignalR (@microsoft/signalr) |
+| Testing   | Vitest                       |
+| Linting   | ESLint                       |
 
 ---
 
 ## Project Structure
 
 ```
-control-panel/
-├── public/                      # Images and vector graphics for displaying
+Frontend/control-panel/
 ├── src/
 │   ├── app/
-│   │   ├── feature/             # Control panel specific components
-│   │   ├── layouts/             # Main layout components for dashboard (Sidebar, ...)
-│   │   ├── models/              # Interfaces for map data types, broadcast state, ...
-│   │   ├── overlay/             # Overlays that get integrated in OBS as browser sources
-│   │   ├── pages/               # Components to display specific pages like the dashboard
-│   │   ├── services/            # Frontend APIs to retrieve and modify data
-│   │   │
-│   │   │ # Config settings and registration of main app, as well as router settings
-│   │   ├── app.config.server.ts
-│   │   ├── app.config.ts
-│   │   ├── app.html
-│   │   ├── app.routes.server.ts
-│   │   ├── app.routes.ts
-│   │   ├── app.scss
-│   │   ├── app.spec.ts
-│   │   └── app.ts
-│   │
-│   │ # Bootstrap application registration
+│   │   ├── layouts/                # layout components
+│   │   ├── overlays/               # overlay preview components
+│   │   ├── pages/                  # app pages
+│   │   ├── services/               # frontend state, API, and SignalR services
+│   │   ├── models/                 # shared frontend state models
+│   │   ├── app.routes.ts           # client and overlay routes
+│   │   ├── app.ts                  # app root component
+│   │   ├── app.config.ts           # browser app providers
+│   │   └── app.config.server.ts    # SSR bootstrap config
 │   ├── main.ts
-│   ├── mainserver.ts
-│   └── server.ts
+│   ├── main.server.ts
+│   ├── server.ts                   # Express server for SSR
+│   └── public/                     # static assets
+├── angular.json
+├── package.json
+├── tsconfig.json
+├── tsconfig.app.json
+└── eslint.config.mjs
 ```
 
 ---
 
-## Data Models
+## Frontend Architecture
 
-### `BroadcastStates`
+The control panel is a standalone Angular application built with Angular's modern standalone component model.
 
-| Column               | Type     | Description              |
-| -------------------- | -------- | ------------------------ |
-| `teamAlphaName`      | `string` | Name Team Alpha          |
-| `teamBravoName`      | `string` | Name Team Bravo          |
-| `alphaIsLeft`        | `bool`   | Side Display Alpha       |
-| `scoreAlpha`         | `int`    | Point Score Alpha        |
-| `scoreBravo`         | `int`    | Point Score Bravo        |
-| `streamer`           | `string` | Streamer Name            |
-| `commentator1/2`     | `string` | Commentator Names        |
-| `showMapScreen`      | `bool`   | Overlay Visibility       |
-| `showScoreBox`       | `bool`   |                          |
-| `showCommentatorBox` | `bool`   |                          |
-| `showInfobox`        | `bool`   |                          |
-| `season`             | `int`    | Current Season           |
-| `division`           | `int`    | Current Division         |
-| `week`               | `int`    | Current Season Week      |
-| `startTime`          | `Date`   | Time the match starts at |
+- `bootstrapApplication(App, appConfig)` starts the browser app.
+- `app.routes.ts` defines the main dashboard and overlay preview routes.
+- `src/server.ts` serves SSR output and static assets from `dist/control-panel/browser`.
+- `@angular/platform-browser` hydration is enabled via `provideClientHydration(withEventReplay())`.
 
-### `MapStates`
+### Routes
 
-Foreign Key `BroadcastStateEntityId → BroadcastStates.Id` with `ON DELETE CASCADE`.
+| Route                      | Component          |
+| -------------------------- | ------------------ |
+| `/`                        | `Dashboard`        |
+| `/overlay/map-screen`      | `MapScreenDisplay` |
+| `/overlay/score-box`       | `ScoreBox`         |
+| `/overlay/commentator-box` | `CommentatorBox`   |
+| `/overlay/info-box`        | `InfoboxDisplay`   |
+| `/overlay/start-screen`    | `StartScreen`      |
+| `/overlay/end-screen`      | `EndScreen`        |
 
-| Column                | Type            | Description        |
-| --------------------- | --------------- | ------------------ |
-| `id`                  | `string` (GUID) | Primary Key        |
-| `order`               | `int`           | Order              |
-| `mapId` / `mapName`   | `string`        | Map Reference      |
-| `modeId` / `modeName` | `string`        | Mode Reference     |
-| `imageUrl`            | `string`        | Preview Image      |
-| `winner`              | `string?`       | `null` = No Result |
-| `isVisible`           | `bool`          | Overlay Visibility |
+---
+
+## Shared Frontend Models
+
+### `BroadcastState`
+
+The frontend shares a broadcast state model used for the control panel and overlay previews.
+
+Key properties:
+
+- `teamAlphaName`, `teamBravoName`
+- `alphaIsLeft`
+- `startTime`
+- `scoreAlpha`, `scoreBravo`
+- `streamer`
+- `commentator1`, `commentator2`
+- `showMapScreen`, `showScoreBox`, `showCommentatorBox`, `showInfobox`
+- `maps` (`MapState[]`)
+- `season`, `division`, `week`
 
 ### `Socials`
 
-| Column          | Type     | Description              |
-| --------------- | -------- | ------------------------ |
-| `xHandle`       | `string` | Twitter/X Handle for DSB |
-| `discordInvite` | `string` | Invite to Discord Server |
+- `xHandle`
+- `discordInvite`
 
 ---
 
-## REST API
+## Services
 
-Base URL: `/api/broadcast`
+The app uses three primary frontend services.
 
-### `GET /api/broadcast/state`
+### `Signalr`
 
-Gets the current Broadcast State. Automatically adds the Singleton-Row, if it doesn't exist (Upsert).
+- Connects to `http://localhost:7000/overlayHub`.
+- Uses `HubConnectionBuilder` with automatic reconnect.
+- Exposes reactive signals:
+    - `liveState` for broadcast state updates.
+    - `liveSocials` for socials updates.
+    - `isConnected` for connection status.
+- Listens for incoming events:
+    - `broadcastStateUpdated`
+    - `socialsUpdated`
 
-**Response:** `BroadcastStateDto` (200)
+### `BroadcastStateService`
+
+- Injects `BroadcastApi` and `Signalr`.
+- Starts SignalR and reacts to live state updates.
+- Holds the current `state` signal with default fallback values.
+- Provides frontend-specific data sets:
+    - `availableMaps`
+    - `availableModes`
+    - `availableDivisions`
+- Methods:
+    - `loadInitialState()` fetches the state from the backend.
+    - `update(partial)` merges changes and posts updates.
+    - `addMap()` adds a new map entry to the state.
+
+### `SocialsService`
+
+- Injects `SocialsApi` and `Signalr`.
+- Starts SignalR and reacts to live socials updates.
+- Holds the current `socials` signal.
+- Methods:
+    - `loadInitialState()` fetches socials from the backend.
+    - `update(partial)` merges changes and posts updates.
 
 ---
 
-### `POST /api/broadcast/state`
+## Backend Integration
 
-Overwrites the Broadcast State und broadcasts the Result to all connected Overlay Clients via SignalR.
+The frontend depends on the backend running separately on `http://localhost:7000`.
 
-**Body:** `BroadcastStateDto`  
-**Response:** `BroadcastStateDto` (200)
+### Broadcast API
 
-Maps are handled via Upsert: Existing Maps are matched and updated based on their GUID, missing Maps get deleted, new Maps added.
+- `GET http://localhost:7000/api/broadcast/state`
+- `POST http://localhost:7000/api/broadcast/state`
+
+The `BroadcastApi` service uses `HttpClient` to load and update the broadcast state.
+
+### Socials API
+
+- `GET http://localhost:7000/api/socials/socials`
+- `POST http://localhost:7000/api/socials/socials`
+
+The `SocialsApi` service uses `HttpClient` to load and update socials.
 
 ---
 
-## SignalR
+## Overlay Flow
 
-Hub Endpointt: `/overlayHub`
+Overlay preview components are rendered using dedicated routes and the same frontend state model.
 
-The Interface `IOverlayClient` types all Server→Client Calls:
+- `MapScreenDisplay` renders the map screen overlay.
+- `ScoreBox` renders the score overlay.
+- `CommentatorBox` renders the commentator overlay.
+- `InfoboxDisplay` renders the info overlay.
+- `StartScreen` and `EndScreen` render the start/end screens.
 
-```csharp
-public interface IOverlayClient
-{
-    Task BroadcastStateUpdated(BroadcastStateDto state);
-}
+Overlay components read state from `BroadcastStateService` and update reactively when `Signalr` receives live updates.
+
+---
+
+## Development
+
+### Local development
+
+```bash
+cd Frontend/control-panel
+npm install
+npm start
 ```
 
-| Event                   | Triggered By                | Payload             |
-| ----------------------- | --------------------------- | ------------------- |
-| `BroadcastStateUpdated` | `POST /api/broadcast/state` | `BroadcastStateDto` |
+The app runs on `http://localhost:4200` by default.
+
+### Build
+
+```bash
+npm run build
+```
+
+### Watch
+
+```bash
+npm run watch
+```
+
+### Unit tests
+
+```bash
+npm test
+```
+
+### Linting
+
+```bash
+npm run code-quality
+```
+
+### SSR serve
+
+After build, the SSR server can be started with:
+
+```bash
+npm run serve:ssr:control-panel
+```
+
+The Express SSR server listens on `PORT` or defaults to `4000`.
+
+---
+
+## Notes
+
+- The frontend is a control panel and overlay preview app, not the backend API implementation.
+- SignalR is used for live updates from the backend hub and for syncing both broadcast state and socials.
+- The app uses Angular standalone components and the modern `bootstrapApplication` bootstrap flow.
