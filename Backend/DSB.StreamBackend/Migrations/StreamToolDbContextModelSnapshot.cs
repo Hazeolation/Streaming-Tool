@@ -103,6 +103,23 @@ namespace DSB.StreamBackend.Migrations
                         });
                 });
 
+            modelBuilder.Entity("DSB.StreamBackend.Models.CommentatorBoxTimeDataEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("HideDisplayIntervalInSeconds")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ShowDisplayIntervalInSeconds")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CommentatorBoxTimeData");
+                });
+
             modelBuilder.Entity("DSB.StreamBackend.Models.MapStateEntity", b =>
                 {
                     b.Property<string>("Id")

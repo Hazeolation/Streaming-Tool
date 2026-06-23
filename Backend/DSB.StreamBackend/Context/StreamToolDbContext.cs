@@ -26,6 +26,11 @@ public class StreamToolDbContext(
     public DbSet<SocialsEntity> Socials => Set<SocialsEntity>();
 
     /// <summary>
+    /// DbSet representing the collection of CommentatorBoxTimeData records in the database.
+    /// </summary>
+    public DbSet<CommentatorBoxTimeDataEntity> CommentatorBoxTimeData => Set<CommentatorBoxTimeDataEntity>();
+
+    /// <summary>
     /// Configures the model by defining the relationships and seeding initial data for the BroadcastStateEntity and MapStateEntity tables.
     /// </summary>
     /// <param name="modelBuilder">The ModelBuilder instance used to configure the model.</param>

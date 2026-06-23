@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DSB.StreamBackend.Migrations
 {
     [DbContext(typeof(StreamToolDbContext))]
-    [Migration("20260622195513_addCommentatorBoxTimeData")]
-    partial class addCommentatorBoxTimeData
+    [Migration("20260623051911_AddCommentatorBoxTimeData")]
+    partial class AddCommentatorBoxTimeData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,6 +104,23 @@ namespace DSB.StreamBackend.Migrations
                             TeamBravoName = "Team Bravo",
                             Week = 0
                         });
+                });
+
+            modelBuilder.Entity("DSB.StreamBackend.Models.CommentatorBoxTimeDataEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("HideDisplayIntervalInSeconds")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ShowDisplayIntervalInSeconds")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CommentatorBoxTimeData");
                 });
 
             modelBuilder.Entity("DSB.StreamBackend.Models.MapStateEntity", b =>
