@@ -24,6 +24,11 @@
     transform 180ms ease;
 }
 
+:host(.interval-hidden) .commentator-box {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .streamer-text,
 .casters-text {
   font-size: 1.875rem;
