@@ -151,8 +151,8 @@
       <div class="commentator-box-display-inputs__container">
         <h3>Zeit einblenden (In Sekunden)</h3>
         <input
-          placeholder="@TwitterHandle"
           type="number"
+          min="0"
           [ngModel]="commentatorBoxTimeData().showDisplayIntervalInSeconds"
           (ngModelChange)="
             commentatorBoxTimeDataService.update({
@@ -163,8 +163,8 @@
 
         <h3>Zeit ausblenden (In Sekunden)</h3>
         <input
-          placeholder="Invite"
           type="number"
+          min="0"
           [ngModel]="commentatorBoxTimeData().hideDisplayIntervalInSeconds"
           (ngModelChange)="
             commentatorBoxTimeDataService.update({
