@@ -33,6 +33,10 @@ export class Signalr {
       this.liveSocials.set(socials);
     });
 
+    this.connection.on('commentatorBoxTimeDataUpdated', (timeData: CommentatorBoxTimeData) => {
+      this.liveCommentatorBoxTimeData.set(timeData);
+    });
+
     this.connection.onreconnecting(() => this.isConnected.set(false));
     this.connection.onreconnected(() => this.isConnected.set(true));
     this.connection.onclose(() => this.isConnected.set(false));
