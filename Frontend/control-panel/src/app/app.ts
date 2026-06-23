@@ -12,6 +12,8 @@ import { BroadcastState } from './models/broadcast-state';
 import { BroadcastStateService } from './services/broadcast-state';
 import { SocialsService } from './services/socials';
 import { Socials } from './models/socials';
+import { CommentatorBoxTimeDataService } from './services/commentator-box-time-data';
+import { CommentatorBoxTimeData } from './models/commentator-box-time-data';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +35,13 @@ export class App implements OnDestroy {
   socialsService: SocialsService = inject(SocialsService);
 
   /**
+   * Injects the `CommentatorBoxTimeDataService` to access the display and hide times for the commentator box on the map screen overlay
+   */
+  commentatorBoxTimeDataService: CommentatorBoxTimeDataService = inject(
+    CommentatorBoxTimeDataService,
+  );
+
+  /**
    * Injects `NgZone` to run DOM manipulations outside of Angular's change detection zone.
    * This prevents ExpressionChangedAfterItHasBeenCheckedError when updating CSS properties.
    */
@@ -47,6 +56,12 @@ export class App implements OnDestroy {
    * A writable signal that holds the current socials state. It is initialized by referencing the `socials` signal from the `SocialsService`, allowing the end screen display component to reactively update its UI whenever the socials state changes.
    */
   socials: WritableSignal<Socials> = this.socialsService.socials;
+
+  /**
+   * A writable signal the holds the current commentator box time data state. It is initialized by referencing the `commentatorBoxTimeData` signal from the `CommentatorBoxTimeDataService`, allowing the display times for the commentator box to be updated reactively
+   */
+  commentatorBoxTimeData: WritableSignal<CommentatorBoxTimeData> =
+    this.commentatorBoxTimeDataService.commentatorBoxTimeData;
 
   /**
    * Effect that watches for division changes and updates the CSS custom property

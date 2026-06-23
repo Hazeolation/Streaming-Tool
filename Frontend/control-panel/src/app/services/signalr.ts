@@ -2,6 +2,7 @@ import { Injectable, signal, WritableSignal } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BroadcastState } from '../models/broadcast-state';
 import { Socials } from '../models/socials';
+import { CommentatorBoxTimeData } from '../models/commentator-box-time-data';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,8 @@ export class Signalr {
 
   liveState: WritableSignal<BroadcastState | null> = signal<BroadcastState | null>(null);
   liveSocials: WritableSignal<Socials | null> = signal<Socials | null>(null);
+  liveCommentatorBoxTimeData: WritableSignal<CommentatorBoxTimeData | null> =
+    signal<CommentatorBoxTimeData | null>(null);
   isConnected: WritableSignal<boolean> = signal<boolean>(false);
 
   /**
@@ -18,9 +21,9 @@ export class Signalr {
    */
   async start() {
     this.connection = new signalR.HubConnectionBuilder()
-    .withUrl('http://localhost:7000/overlayHub')
-    .withAutomaticReconnect()
-    .build();
+      .withUrl('http://localhost:7000/overlayHub')
+      .withAutomaticReconnect()
+      .build();
 
     this.connection.on('broadcastStateUpdated', (state: BroadcastState) => {
       this.liveState.set(state);
