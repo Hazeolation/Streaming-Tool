@@ -145,13 +145,44 @@
     </button>
   </section>
   <section>
+    <h2>Ein/Ausblende-Zeiten Kommentatoren Box</h2>
+    <details>
+      <summary>Zeiten</summary>
+      <div class="commentator-box-display-inputs__container">
+        <h3>Zeit einblenden (In Sekunden)</h3>
+        <input
+          placeholder="@TwitterHandle"
+          type="number"
+          [ngModel]="commentatorBoxTimeData().showDisplayIntervalInSeconds"
+          (ngModelChange)="
+            commentatorBoxTimeDataService.update({
+              showDisplayIntervalInSeconds: $event,
+            })
+          "
+        />
+
+        <h3>Zeit ausblenden (In Sekunden)</h3>
+        <input
+          placeholder="Invite"
+          type="number"
+          [ngModel]="commentatorBoxTimeData().hideDisplayIntervalInSeconds"
+          (ngModelChange)="
+            commentatorBoxTimeDataService.update({
+              hideDisplayIntervalInSeconds: $event,
+            })
+          "
+        />
+      </div>
+    </details>
+  </section>
+  <section>
     <h2>Socials</h2>
     <details>
       <summary>Socials</summary>
       <div class="socials-inputs__container">
         <h3>Twitter/X</h3>
         <input
-          placeholder="@Test"
+          placeholder="@TwitterHandle"
           [ngModel]="socials().xHandle"
           (ngModelChange)="
             socialsService.update({
@@ -162,7 +193,7 @@
 
         <h3>Discord-Invite</h3>
         <input
-          placeholder="@Test"
+          placeholder="Invite"
           [ngModel]="socials().discordInvite"
           (ngModelChange)="
             socialsService.update({
