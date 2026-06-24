@@ -5,6 +5,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { CommentatorBox } from './commentator-box';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
+import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
+import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
 
 describe('CommentatorBox', () => {
   let component: CommentatorBox;
@@ -30,10 +32,21 @@ describe('CommentatorBox', () => {
     week: 1,
   };
 
+  const defaultTimeData: CommentatorBoxTimeData = {
+    showDisplayIntervalInSeconds: 1,
+    hideDisplayIntervalInSeconds: 2,
+  };
+
   const mockState = signal<BroadcastState>(defaultState);
+  const mockTimeData = signal<CommentatorBoxTimeData>(defaultTimeData);
 
   const mockStateService = {
     state: mockState,
+    loadInitialState: vi.fn(),
+  };
+
+  const mockTimeDataService = {
+    commentatorBoxTimeData: mockTimeData,
     loadInitialState: vi.fn(),
   };
 
@@ -47,6 +60,10 @@ describe('CommentatorBox', () => {
         {
           provide: BroadcastStateService,
           useValue: mockStateService,
+        },
+        {
+          provide: CommentatorBoxTimeDataService,
+          useValue: mockTimeDataService,
         },
       ],
     }).compileComponents();
@@ -91,5 +108,19 @@ describe('CommentatorBox', () => {
     expect(component.state().streamer).toBe('Streamer');
     expect(component.state().commentator1).toBe('Commentator One');
     expect(component.state().commentator2).toBe('Commentator Two');
+  });
+
+  it('should reflect commentator box time data changes from CommentatorBoxTimeDataService', () => {
+    const updatedTimeData: CommentatorBoxTimeData = {
+      ...defaultState,
+      showDisplayIntervalInSeconds: 6,
+      hideDisplayIntervalInSeconds: 12,
+    };
+
+    mockTimeData.set(updatedTimeData);
+
+    expect(component.commentatorBoxTimeData()).toEqual(updatedTimeData);
+    expect(component.commentatorBoxTimeData().hideDisplayIntervalInSeconds).toBe(12);
+    expect(component.commentatorBoxTimeData().showDisplayIntervalInSeconds).toBe(6);
   });
 });
