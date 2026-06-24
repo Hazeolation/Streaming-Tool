@@ -82,13 +82,13 @@ describe('CommentatorBoxTimeData', () => {
       hideDisplayIntervalInSeconds: 23,
     });
 
-    const expectedSocials: CommentatorBoxTimeData = {
+    const expectedTimeData: CommentatorBoxTimeData = {
       ...defaultTimeData,
       showDisplayIntervalInSeconds: 35,
       hideDisplayIntervalInSeconds: 23,
     };
 
-    expect(timeData.commentatorBoxTimeData()).toEqual(expectedSocials);
-    expect(mockApi.updateCommentatorBoxTimeData).toHaveBeenCalledWith(expectedSocials);
+    expect(timeData.commentatorBoxTimeData()).toEqual(expectedTimeData);
+    expect(mockApi.updateCommentatorBoxTimeData).toHaveBeenCalledWith(expectedTimeData);
   });
 });
