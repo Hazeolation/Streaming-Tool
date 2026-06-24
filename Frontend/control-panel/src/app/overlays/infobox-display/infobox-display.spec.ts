@@ -1,10 +1,14 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { InfoboxDisplay } from './infobox-display';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
+import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
+import { SocialsService } from '../../services/socials';
+import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
+import { Socials } from '../../models/socials';
 
 describe('InfoboxDisplay', () => {
   let component: InfoboxDisplay;
@@ -31,9 +35,27 @@ describe('InfoboxDisplay', () => {
   };
 
   const mockState = signal<BroadcastState>(defaultState);
+  const mockTimeData = signal<CommentatorBoxTimeData>({
+    showDisplayIntervalInSeconds: 1,
+    hideDisplayIntervalInSeconds: 2,
+  });
+  const mockSocials = signal<Socials>({
+    xHandle: '@Temp',
+    discordInvite: 'Temp',
+  });
 
   const mockStateService = {
     state: mockState,
+    loadInitialState: vi.fn(),
+  };
+
+  const mockTimeDataService = {
+    commentatorBoxTimeData: mockTimeData,
+    loadInitialState: vi.fn(),
+  };
+
+  const mockSocialsService = {
+    socials: mockSocials,
     loadInitialState: vi.fn(),
   };
 
@@ -46,6 +68,14 @@ describe('InfoboxDisplay', () => {
         {
           provide: BroadcastStateService,
           useValue: mockStateService,
+        },
+        {
+          provide: CommentatorBoxTimeDataService,
+          useValue: mockTimeDataService,
+        },
+        {
+          provide: SocialsService,
+          useValue: mockSocialsService,
         },
       ],
     }).compileComponents();

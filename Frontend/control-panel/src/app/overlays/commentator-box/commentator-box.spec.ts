@@ -1,12 +1,14 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { CommentatorBox } from './commentator-box';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
 import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
+import { SocialsService } from '../../services/socials';
+import { Socials } from '../../models/socials';
 
 describe('CommentatorBox', () => {
   let component: CommentatorBox;
@@ -39,6 +41,10 @@ describe('CommentatorBox', () => {
 
   const mockState = signal<BroadcastState>(defaultState);
   const mockTimeData = signal<CommentatorBoxTimeData>(defaultTimeData);
+  const mockSocials = signal<Socials>({
+    xHandle: '@Temp',
+    discordInvite: 'Temp',
+  });
 
   const mockStateService = {
     state: mockState,
@@ -47,6 +53,11 @@ describe('CommentatorBox', () => {
 
   const mockTimeDataService = {
     commentatorBoxTimeData: mockTimeData,
+    loadInitialState: vi.fn(),
+  };
+
+  const mockSocialsService = {
+    socials: mockSocials,
     loadInitialState: vi.fn(),
   };
 
@@ -64,6 +75,10 @@ describe('CommentatorBox', () => {
         {
           provide: CommentatorBoxTimeDataService,
           useValue: mockTimeDataService,
+        },
+        {
+          provide: SocialsService,
+          useValue: mockSocialsService,
         },
       ],
     }).compileComponents();
