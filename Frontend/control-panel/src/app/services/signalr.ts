@@ -16,26 +16,41 @@ export class Signalr {
     signal<CommentatorBoxTimeData | null>(null);
   isConnected: WritableSignal<boolean> = signal<boolean>(false);
 
+  /**
+   * Add connection listener for broadcast state updates
+   */
   private connectToState = () => {
     this.connection?.on('broadcastStateUpdated', (state: BroadcastState) => {
       this.liveState.set(state);
     });
   };
 
+  /**
+   * Add connection listener for broadcast state updates
+   */
   private connectToSocials = () => {
     this.connection?.on('socialsUpdated', (socials: Socials) => {
       this.liveSocials.set(socials);
     });
   };
 
+  /**
+   * Add connection listener for broadcast state updates
+   */
   private connectToCommentatorBoxTimeData = () => {
     this.connection?.on('commentatorBoxTimeDataUpdated', (timeData: CommentatorBoxTimeData) => {
       this.liveCommentatorBoxTimeData.set(timeData);
     });
   };
 
+  /**
+   * Property that specifies which type of service is using the signalr connection, and what connection listener it should subscribe
+   */
   connectionType: SignalrServiceConnection = SignalrServiceConnection.None;
 
+  /**
+   * Map that holds all functions that will subscribe the specific connection listener upon execution. The map is indexed with the enum `SignalrServiceConnection`
+   */
   private serviceConnections: Map<SignalrServiceConnection, () => void> = new Map([
     [SignalrServiceConnection.BroadcastState, this.connectToState],
     [SignalrServiceConnection.Socials, this.connectToSocials],
