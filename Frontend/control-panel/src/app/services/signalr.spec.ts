@@ -87,7 +87,7 @@ describe('Signalr', () => {
     expect(service.isConnected()).toBe(true);
   });
 
-  /*it('should retry connection after 5 seconds when start fails', async () => {
+  it('should retry connection after 5 seconds when start fails', async () => {
     vi.useFakeTimers();
 
     mockConnection.start
@@ -108,5 +108,5 @@ describe('Signalr', () => {
     expect(service.isConnected()).toBe(true);
 
     consoleErrorSpy.mockRestore();
-  });*/
+  });
 });

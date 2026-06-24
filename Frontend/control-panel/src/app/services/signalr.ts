@@ -67,7 +67,6 @@ export class Signalr {
       this.isConnected.set(true);
       console.log('SignalR connected');
     } catch {
-      this.connection?.stop();
       this.isConnected.set(false);
       console.error('SignalR connection failed, retrying in 5s...');
       setTimeout(() => this.tryConnect(), 5000);
