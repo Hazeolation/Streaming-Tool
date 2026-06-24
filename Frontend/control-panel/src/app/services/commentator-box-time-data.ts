@@ -2,6 +2,7 @@ import { effect, inject, Injectable, signal, WritableSignal } from '@angular/cor
 import { CommentatorBoxTimeDataApi } from './commentator-box-time-data-api';
 import { Signalr } from './signalr';
 import { CommentatorBoxTimeData } from '../models/commentator-box-time-data';
+import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,7 @@ export class CommentatorBoxTimeDataService {
       this.commentatorBoxTimeData.set(incoming);
     });
 
+    this.signalr.connectionType = SignalrServiceConnection.CommentatorBoxTimeData;
     this.signalr.start();
   }
 

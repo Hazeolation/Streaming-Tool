@@ -3,18 +3,44 @@ import * as signalR from '@microsoft/signalr';
 import { BroadcastState } from '../models/broadcast-state';
 import { Socials } from '../models/socials';
 import { CommentatorBoxTimeData } from '../models/commentator-box-time-data';
+import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Signalr {
   private connection?: signalR.HubConnection;
-
   liveState: WritableSignal<BroadcastState | null> = signal<BroadcastState | null>(null);
   liveSocials: WritableSignal<Socials | null> = signal<Socials | null>(null);
   liveCommentatorBoxTimeData: WritableSignal<CommentatorBoxTimeData | null> =
     signal<CommentatorBoxTimeData | null>(null);
   isConnected: WritableSignal<boolean> = signal<boolean>(false);
+
+  private connectToState = () => {
+    this.connection?.on('broadcastStateUpdated', (state: BroadcastState) => {
+      this.liveState.set(state);
+    });
+  };
+
+  private connectToSocials = () => {
+    this.connection?.on('socialsUpdated', (socials: Socials) => {
+      this.liveSocials.set(socials);
+    });
+  };
+
+  private connectToCommentatorBoxTimeData = () => {
+    this.connection?.on('commentatorBoxTimeDataUpdated', (timeData: CommentatorBoxTimeData) => {
+      this.liveCommentatorBoxTimeData.set(timeData);
+    });
+  };
+
+  connectionType: SignalrServiceConnection = SignalrServiceConnection.None;
+
+  private serviceConnections: Map<SignalrServiceConnection, () => void> = new Map([
+    [SignalrServiceConnection.BroadcastState, this.connectToState],
+    [SignalrServiceConnection.Socials, this.connectToSocials],
+    [SignalrServiceConnection.CommentatorBoxTimeData, this.connectToCommentatorBoxTimeData],
+  ]);
 
   /**
    * Starts the SignalR connection to the backend hub and sets up a listener for incoming broadcast state updates. When a new state is received from the 'broadcastStateUpdated' event, it updates the `liveState` signal with the new broadcast state. This allows components that depend on the `liveState` signal to reactively update their UI based on the latest broadcast state received from the backend.
@@ -25,17 +51,8 @@ export class Signalr {
       .withAutomaticReconnect()
       .build();
 
-    this.connection.on('broadcastStateUpdated', (state: BroadcastState) => {
-      this.liveState.set(state);
-    });
-
-    this.connection.on('socialsUpdated', (socials: Socials) => {
-      this.liveSocials.set(socials);
-    });
-
-    this.connection.on('commentatorBoxTimeDataUpdated', (timeData: CommentatorBoxTimeData) => {
-      this.liveCommentatorBoxTimeData.set(timeData);
-    });
+    const connectionFunction = this.serviceConnections.get(this.connectionType);
+    connectionFunction?.();
 
     this.connection.onreconnecting(() => this.isConnected.set(false));
     this.connection.onreconnected(() => this.isConnected.set(true));
@@ -46,10 +63,11 @@ export class Signalr {
 
   private async tryConnect(): Promise<void> {
     try {
-      await this.connection!.start();
+      await this.connection?.start();
       this.isConnected.set(true);
       console.log('SignalR connected');
     } catch {
+      this.connection?.stop();
       this.isConnected.set(false);
       console.error('SignalR connection failed, retrying in 5s...');
       setTimeout(() => this.tryConnect(), 5000);
