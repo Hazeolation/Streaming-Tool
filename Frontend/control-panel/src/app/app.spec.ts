@@ -4,6 +4,10 @@ import { App } from './app';
 import { signal } from '@angular/core';
 import { BroadcastStateService } from './services/broadcast-state';
 import { BroadcastState } from './models/broadcast-state';
+import { Socials } from './models/socials';
+import { CommentatorBoxTimeData } from './models/commentator-box-time-data';
+import { SocialsService } from './services/socials';
+import { CommentatorBoxTimeDataService } from './services/commentator-box-time-data';
 
 describe('App', () => {
   const mockState = signal<BroadcastState>({
@@ -26,6 +30,16 @@ describe('App', () => {
     week: 1,
   });
 
+  const mockSocials = signal<Socials>({
+    xHandle: '@Test',
+    discordInvite: 'DSB',
+  });
+
+  const mockTimeData = signal<CommentatorBoxTimeData>({
+    hideDisplayIntervalInSeconds: 6,
+    showDisplayIntervalInSeconds: 4,
+  });
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
@@ -34,6 +48,18 @@ describe('App', () => {
           provide: BroadcastStateService,
           useValue: {
             state: mockState,
+          },
+        },
+        {
+          provide: SocialsService,
+          useValue: {
+            socials: mockSocials,
+          },
+        },
+        {
+          provide: CommentatorBoxTimeDataService,
+          useValue: {
+            commentatorBoxTimeData: mockTimeData,
           },
         },
       ],
