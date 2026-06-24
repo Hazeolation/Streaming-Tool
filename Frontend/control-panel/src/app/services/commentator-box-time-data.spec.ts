@@ -4,6 +4,7 @@ import { CommentatorBoxTimeDataApi } from './commentator-box-time-data-api';
 import { CommentatorBoxTimeData } from '../models/commentator-box-time-data';
 import { signal } from '@angular/core';
 import { of } from 'rxjs';
+import { Signalr } from './signalr';
 
 describe('CommentatorBoxTimeData', () => {
   let timeData: CommentatorBoxTimeDataService;
@@ -33,12 +34,18 @@ describe('CommentatorBoxTimeData', () => {
     mockApi.getCommentatorBoxTimeData.mockReturnValue(of(defaultTimeData));
     mockApi.updateCommentatorBoxTimeData.mockReturnValue(of(undefined));
 
+    mockSignalR.start.mockResolvedValue(undefined);
+
     TestBed.configureTestingModule({
       providers: [
         CommentatorBoxTimeDataService,
         {
           provide: CommentatorBoxTimeDataApi,
           useValue: mockApi,
+        },
+        {
+          provide: Signalr,
+          useValue: mockSignalR,
         },
       ],
     });
@@ -52,5 +59,36 @@ describe('CommentatorBoxTimeData', () => {
 
   it('should be created', async () => {
     expect(timeData).toBeTruthy();
+  });
+
+  it('should load initial time data from api', () => {
+    const apiTimeData: CommentatorBoxTimeData = {
+      ...defaultTimeData,
+      showDisplayIntervalInSeconds: 50,
+    };
+
+    mockApi.getCommentatorBoxTimeData.mockReturnValue(of(apiTimeData));
+
+    timeData.loadInitialState();
+
+    expect(mockApi.getCommentatorBoxTimeData).toHaveBeenCalled();
+    expect(timeData.commentatorBoxTimeData()).toEqual(apiTimeData);
+  });
+
+  it('should update time data and persist it through api', () => {
+    timeData.update({
+      ...defaultTimeData,
+      showDisplayIntervalInSeconds: 35,
+      hideDisplayIntervalInSeconds: 23,
+    });
+
+    const expectedSocials: CommentatorBoxTimeData = {
+      ...defaultTimeData,
+      showDisplayIntervalInSeconds: 35,
+      hideDisplayIntervalInSeconds: 23,
+    };
+
+    expect(timeData.commentatorBoxTimeData()).toEqual(expectedSocials);
+    expect(mockApi.updateCommentatorBoxTimeData).toHaveBeenCalledWith(expectedSocials);
   });
 });
