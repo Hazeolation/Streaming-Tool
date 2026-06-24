@@ -25,18 +25,16 @@ Overlays run as Browser Sources in OBS and are controlled through a dedicated Co
 
 There are start scripts for both Windows and Linux/macOS. They check for required dependencies (Node.js, .NET 9 SDK), start the frontend and backend, and open the Control Panel in your browser automatically.
 
-<<<<<<< HEAD
-| Platform | Script |
+| Platform      | Script      |
 | ------------- | ----------- |
-| Windows | `start.bat` |
-| Linux / macOS | `start.sh` |
+| Windows       | `start.bat` |
+| Linux / macOS | `start.sh`  |
+
 =======
 | Platform | Script |
 | ------------- | ------------------------ |
 | Windows | `start.bat`, `start.exe` |
 | Linux / macOS | `start.sh` |
-
-> > > > > > > master
 
 > [!NOTE]
 > The scripts will prompt you to install missing dependencies via WinGet (Windows) or your system package manager (Linux/macOS).
@@ -82,15 +80,15 @@ For in-depth technical documentation, see the [`docs/`](docs/) folder.
 
 ### Overlay Routes (HTTP)
 
-<<<<<<< HEAD
-| Route | Description |
+| Route                      | Description                                      |
 | -------------------------- | ------------------------------------------------ |
-| `/overlay/score-box` | Score display for both teams |
-| `/overlay/map-screen` | Map overview |
-| `/overlay/commentator-box` | Commentator names |
-| `/overlay/info-box` | General info box |
-| `/overlay/start-screen` | Start screen with team names and countdown timer |
-| `/overlay/end-screen` | End screen with Discord and Twitter/X socials |
+| `/overlay/score-box`       | Score display for both teams                     |
+| `/overlay/map-screen`      | Map overview                                     |
+| `/overlay/commentator-box` | Commentator names                                |
+| `/overlay/info-box`        | General info box                                 |
+| `/overlay/start-screen`    | Start screen with team names and countdown timer |
+| `/overlay/end-screen`      | End screen with Discord and Twitter/X socials    |
+
 =======
 | Route | Description |
 | -------------------------- | ---------------------------- |
@@ -98,8 +96,6 @@ For in-depth technical documentation, see the [`docs/`](docs/) folder.
 | `/overlay/map-screen` | Map overview |
 | `/overlay/commentator-box` | Commentator names |
 | `/overlay/info-box` | General info box |
-
-> > > > > > > master
 
 ---
 
