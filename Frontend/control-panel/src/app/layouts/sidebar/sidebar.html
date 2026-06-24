@@ -146,11 +146,12 @@
   </section>
   <section>
     <h2>Ein/Ausblende-Zeiten Kommentatoren Box</h2>
-    <details>
+    <details class="comm-box-time-data__details-container">
       <summary>Zeiten</summary>
       <div class="commentator-box-display-inputs__container">
         <h3>Zeit einblenden (In Sekunden)</h3>
         <input
+          class="show-comm-box-interval-input"
           type="number"
           min="0"
           [ngModel]="commentatorBoxTimeData().showDisplayIntervalInSeconds"
@@ -163,6 +164,7 @@
 
         <h3>Zeit ausblenden (In Sekunden)</h3>
         <input
+          class="hide-comm-box-interval-input"
           type="number"
           min="0"
           [ngModel]="commentatorBoxTimeData().hideDisplayIntervalInSeconds"
@@ -177,11 +179,12 @@
   </section>
   <section>
     <h2>Socials</h2>
-    <details>
+    <details class="socials__details-container">
       <summary>Socials</summary>
       <div class="socials-inputs__container">
         <h3>Twitter/X</h3>
         <input
+          class="twitter-handle-input"
           placeholder="@TwitterHandle"
           [ngModel]="socials().xHandle"
           (ngModelChange)="
@@ -193,6 +196,7 @@
 
         <h3>Discord-Invite</h3>
         <input
+          class="discord-invite-input"
           placeholder="Invite"
           [ngModel]="socials().discordInvite"
           (ngModelChange)="
