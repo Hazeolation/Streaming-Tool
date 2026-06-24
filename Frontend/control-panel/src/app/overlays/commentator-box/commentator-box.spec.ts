@@ -100,6 +100,10 @@ describe('CommentatorBox', () => {
     expect(component.stateService).toBe(mockStateService);
   });
 
+  it('should inject CommentatorBoxTimeDataService', () => {
+    expect(component.commentatorBoxTimeDataService).toBe(mockTimeDataService);
+  });
+
   it('should expose the state signal from BroadcastStateService', () => {
     expect(component.state).toBe(mockStateService.state);
     expect(component.state()).toEqual(defaultState);
