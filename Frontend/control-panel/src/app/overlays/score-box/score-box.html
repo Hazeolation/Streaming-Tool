@@ -1,16 +1,18 @@
 <div class="score-box dsb-panel" [class.overlay-hidden]="!state().showScoreBox">
-  <div class="team left">
-    {{ leftTeamName }}
+  <div class="team-left__container">
+    <span class="team team-left-name">{{ leftTeamName }}</span>
+
+    <span class="team team-left-score">{{ leftScore }}</span>
   </div>
 
-  <div class="score">
-    <span>{{ leftScore }}</span>
-    <span class="separator">:</span>
-    <span>{{ rightScore }}</span>
+  <div class="team-right__container">
+    <span class="team team-right-name">{{ rightTeamName }}</span>
+
+    <span class="team team-right-score">{{ rightScore }}</span>
   </div>
 
-  <div class="team right">
-    {{ rightTeamName }}
-  </div>
+  <span class="team tourney-info-text">
+    Division {{ state().division }} - Woche {{ state().week }}
+  </span>
 </div>
 <app-commentator-box class="make-responsive" [onMapScreen]="true"></app-commentator-box>

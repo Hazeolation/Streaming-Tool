@@ -7,15 +7,17 @@
   flex-flow: column nowrap;
   align-items: center;
   justify-content: space-between;
-  padding: 1.875rem 0rem 1.25rem 0rem;
+  padding: 1.875rem 2rem 1.25rem 2rem;
 }
 
 .score-box {
-  display: grid;
-  grid-template-columns: 260px 140px 260px;
+  align-self: start;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  width: 40rem;
   align-items: center;
-  min-height: 78px;
-  padding: 10px 22px;
+  padding: 1.25rem;
   background: rgba(241, 146, 56, 1);
   background: linear-gradient(0deg, var(--current-division-color) 0%, rgba(25, 12, 38, 1) 24%);
   border: 4px solid black;
@@ -24,11 +26,30 @@
     transform 180ms ease;
 }
 
+.team-left__container,
+.team-right__container {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.team-left__container {
+  margin-bottom: 0.75rem;
+  background: linear-gradient(90deg, var(--team-alpha-color) 30%, black);
+}
+
+.team-right__container {
+  margin-bottom: 1.25rem;
+  background: linear-gradient(90deg, var(--team-bravo-color) 30%, black);
+}
+
 .team {
   font-size: 25px;
   font-weight: 800;
   letter-spacing: 0.04em;
-  text-transform: uppercase;
 }
 
 .team.left {
