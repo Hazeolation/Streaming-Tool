@@ -5,6 +5,8 @@ import { Division } from '../../models/division';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { Socials } from '../../models/socials';
 import { SocialsService } from '../../services/socials';
+import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
+import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
 
 @Component({
   selector: 'app-sidebar',
@@ -32,6 +34,19 @@ export class Sidebar {
    * A writable signal that holds the current socials state. It is initialized by referencing the `socials` signal from the `SocialsService`, allowing the end screen display component to reactively update its UI whenever the socials state changes.
    */
   socials: WritableSignal<Socials> = this.socialsService.socials;
+
+  /**
+   * Injects the `CommentatorBoxTimeDataService` to access the display and hide times for the commentator box on the map screen overlay
+   */
+  commentatorBoxTimeDataService: CommentatorBoxTimeDataService = inject(
+    CommentatorBoxTimeDataService,
+  );
+
+  /**
+   * A writable signal the holds the current commentator box time data state. It is initialized by referencing the `commentatorBoxTimeData` signal from the `CommentatorBoxTimeDataService`, allowing the display times for the commentator box to be updated reactively
+   */
+  commentatorBoxTimeData: WritableSignal<CommentatorBoxTimeData> =
+    this.commentatorBoxTimeDataService.commentatorBoxTimeData;
 
   /**
    * An array of `Division` objects representing the available divisions in the broadcasting tool. This property is populated by referencing the `availableDivisions` property from the `BroadcastStateService`, allowing the sidebar component to display a list of divisions for users to select or view. The `Division` interface includes properties such as `id` and `name`, which are used to structure and display division information in the user interface.

@@ -1,10 +1,16 @@
 @use '../overlay-theme.scss';
 
+:host {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.875rem 0rem 1.25rem 0rem;
+}
+
 .score-box {
-  position: absolute;
-  top: 36px;
-  left: 50%;
-  transform: translateX(-50%);
   display: grid;
   grid-template-columns: 260px 140px 260px;
   align-items: center;
@@ -45,11 +51,4 @@
 
 .separator {
   color: white;
-}
-
-img {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  margin-right: 7px;
 }

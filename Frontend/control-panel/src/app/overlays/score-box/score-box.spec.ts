@@ -49,7 +49,13 @@ describe('ScoreBox', () => {
           useValue: mockStateService,
         },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ScoreBox, {
+        set: {
+          template: '',
+        },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(ScoreBox);
     component = fixture.componentInstance;

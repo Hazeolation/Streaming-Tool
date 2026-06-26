@@ -87,6 +87,11 @@ Key properties:
 - `xHandle`
 - `discordInvite`
 
+### `CommentatorBoxTimeData`
+
+- `hideDisplayIntervalInSeconds`
+- `showDisplayIntervalInSeconds`
+
 ---
 
 ## Services
@@ -98,12 +103,13 @@ The app uses three primary frontend services.
 - Connects to `http://localhost:7000/overlayHub`.
 - Uses `HubConnectionBuilder` with automatic reconnect.
 - Exposes reactive signals:
-    - `liveState` for broadcast state updates.
-    - `liveSocials` for socials updates.
-    - `isConnected` for connection status.
+  - `liveState` for broadcast state updates.
+  - `liveSocials` for socials updates.
+  - `isConnected` for connection status.
 - Listens for incoming events:
-    - `broadcastStateUpdated`
-    - `socialsUpdated`
+  - `broadcastStateUpdated`
+  - `socialsUpdated`
+  - `commentatorBoxTimeDataUpdated`
 
 ### `BroadcastStateService`
 
@@ -111,13 +117,13 @@ The app uses three primary frontend services.
 - Starts SignalR and reacts to live state updates.
 - Holds the current `state` signal with default fallback values.
 - Provides frontend-specific data sets:
-    - `availableMaps`
-    - `availableModes`
-    - `availableDivisions`
+  - `availableMaps`
+  - `availableModes`
+  - `availableDivisions`
 - Methods:
-    - `loadInitialState()` fetches the state from the backend.
-    - `update(partial)` merges changes and posts updates.
-    - `addMap()` adds a new map entry to the state.
+  - `loadInitialState()` fetches the state from the backend.
+  - `update(partial)` merges changes and posts updates.
+  - `addMap()` adds a new map entry to the state.
 
 ### `SocialsService`
 
@@ -125,8 +131,17 @@ The app uses three primary frontend services.
 - Starts SignalR and reacts to live socials updates.
 - Holds the current `socials` signal.
 - Methods:
-    - `loadInitialState()` fetches socials from the backend.
-    - `update(partial)` merges changes and posts updates.
+  - `loadInitialState()` fetches socials from the backend.
+  - `update(partial)` merges changes and posts updates.
+
+### `CommentatorBoxTimeDataService`
+
+- Injects `CommentatorBoxTimeDataApi` and `Signalr`.
+- Starts SignalR and reacts to live time data updates.
+- Holds the current `commentatorBoxTimeData` signal.
+- Methods:
+  - `loadInitialState()` fetches time data from the backend.
+  - `update(partial)` merges changes and posts updates.
 
 ---
 
@@ -147,6 +162,13 @@ The `BroadcastApi` service uses `HttpClient` to load and update the broadcast st
 - `POST http://localhost:7000/api/socials/socials`
 
 The `SocialsApi` service uses `HttpClient` to load and update socials.
+
+### Commentator Box Time Data API
+
+- `GET http://localhost:7000/api/commentator-box-time-data/commentator-box-time-data`
+- `POST http://localhost:7000/api/commentator-box-time-data/commentator-box-time-data`
+
+The `CommentatorBoxTimeDataApi` service uses `HttpClient` to load and time data socials.
 
 ---
 

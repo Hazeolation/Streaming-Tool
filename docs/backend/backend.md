@@ -73,6 +73,22 @@ Foreign Key `BroadcastStateEntityId → BroadcastStates.Id` with `ON DELETE CASC
 | `Winner`              | `string?`       | `null` = No Result |
 | `IsVisible`           | `bool`          | Overlay Visibility |
 
+### `Socials` (1 Column)
+
+| Column          | Type     | Description               |
+| --------------- | -------- | ------------------------- |
+| `Id`            | `int`    | Always `1` (Singleton)    |
+| `XHandle`       | `string` | DSB X/Twitter Handle      |
+| `DiscordInvite` | `string` | DSB Discord Server Invite |
+
+### `CommentatorBoxTimeData` (1 Column)
+
+| Column                         | Type  | Description                                                                  |
+| ------------------------------ | ----- | ---------------------------------------------------------------------------- |
+| `Id`                           | `int` | Always `1` (Singleton)                                                       |
+| `ShowDisplayIntervalInSeconds` | `int` | How long the commentator box gets displayed on scorebox overlay (In seconds) |
+| `HideDisplayIntervalInSeconds` | `int` | How long the commentator box is hidden on scorebox overlay (In seconds)      |
+
 ---
 
 ## REST API
@@ -95,6 +111,36 @@ Overwrites the Broadcast State und broadcasts the Result to all connected Overla
 **Response:** `BroadcastStateDto` (200)
 
 Maps are handled via Upsert: Existing Maps are matched and updated based on their GUID, missing Maps get deleted, new Maps added.
+
+### `GET /api/socials/socials`
+
+Gets the current Socials. Automatically adds the Singleton-Row, if it doesn't exist (Upsert).
+
+**Response:** `SocialsDto` (200)
+
+---
+
+### `POST /api/socials/socials`
+
+Overwrites the Socials and broadcasts the result to all connected Overlay Clients via SignalR.
+
+**Body:** `SocialsDto`  
+**Response:** `SocialsDto` (200)
+
+### `GET /api/commentator-box-time-data/commentator-box-time-data`
+
+Gets the current Commentator Box Time Data. Automatically adds the Singleton-Row, if it doesn't exist (Upsert).
+
+**Response:** `CommentatorBoxTimeDataDto` (200)
+
+---
+
+### `POST /api/commentator-box-time-data/commentator-box-time-data`
+
+Overwrites the Commentator Box Time Data and broadcasts the result to all connected Overlay Clients via SignalR.
+
+**Body:** `CommentatorBoxTimeDataDto`  
+**Response:** `CommentatorBoxTimeDataDto` (200)
 
 ---
 

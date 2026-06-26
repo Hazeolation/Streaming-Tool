@@ -5,6 +5,7 @@ import { BroadcastState } from '../models/broadcast-state';
 import { Division } from '../models/division';
 import { Map } from '../models/map';
 import { Mode } from '../models/mode';
+import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +26,7 @@ export class BroadcastStateService {
       this.state.set(incoming);
     });
 
+    this.signalr.connectionType = SignalrServiceConnection.BroadcastState;
     this.signalr.start();
   }
 
@@ -35,128 +37,128 @@ export class BroadcastStateService {
     {
       id: 'scorch-gorge',
       mapName: 'Sengkluft',
-      imageUrl: 'assets/maps/scorch-gorge.png'
+      imageUrl: 'assets/maps/scorch-gorge.png',
     },
     {
       id: 'eeltail-alley',
       mapName: 'Streifenaal-Straße',
-      imageUrl: 'assets/maps/eeltail-alley.png'
+      imageUrl: 'assets/maps/eeltail-alley.png',
     },
     {
       id: 'hagglefish-market',
       mapName: 'Schnapperchen-Basar',
-      imageUrl: 'assets/maps/hagglefish-market.png'
+      imageUrl: 'assets/maps/hagglefish-market.png',
     },
     {
       id: 'undertow-spillway',
       mapName: 'Schwertmuschel-Reservoir',
-      imageUrl: 'assets/maps/undertow-spillway.png'
+      imageUrl: 'assets/maps/undertow-spillway.png',
     },
     {
       id: 'mincemeat-metalworks',
       mapName: 'Aalstahl-Metallwerk',
-      imageUrl: 'assets/maps/Mincemeat-Metalworks.png'
+      imageUrl: 'assets/maps/Mincemeat-Metalworks.png',
     },
     {
       id: 'hammerhead-bridge',
       mapName: 'Makrelenbrücke',
-      imageUrl: 'assets/maps/hammerhead-bridge.png'
+      imageUrl: 'assets/maps/hammerhead-bridge.png',
     },
     {
       id: 'museum-dalfonsino',
       mapName: 'Pinakoithek',
-      imageUrl: 'assets/maps/museum-dalfonsino.png'
+      imageUrl: 'assets/maps/museum-dalfonsino.png',
     },
     {
       id: 'mahi-mahi-resort',
       mapName: 'Mahi-Mahi-Resort',
-      imageUrl: 'assets/maps/mahi-mahi-resort.png'
+      imageUrl: 'assets/maps/mahi-mahi-resort.png',
     },
     {
       id: 'inkblot-art-academy',
       mapName: 'Perlmutt-Akademie',
-      imageUrl: 'assets/maps/Inkblot-Art-Academy.png'
+      imageUrl: 'assets/maps/Inkblot-Art-Academy.png',
     },
     {
       id: 'sturgeon-shipyard',
       mapName: 'Störwerft',
-      imageUrl: 'assets/maps/Sturgeon-Shipyard.png'
+      imageUrl: 'assets/maps/Sturgeon-Shipyard.png',
     },
     {
       id: 'makomart',
       mapName: 'Cetacea-Markt',
-      imageUrl: 'assets/maps/MakoMart.png'
+      imageUrl: 'assets/maps/MakoMart.png',
     },
     {
       id: 'wahoo-world',
       mapName: 'Flunder-Funpark',
-      imageUrl: 'assets/maps/Wahoo-World.png'
+      imageUrl: 'assets/maps/Wahoo-World.png',
     },
     {
       id: 'brinewater-springs',
       mapName: 'Kusaya-Quellen',
-      imageUrl: 'assets/maps/Brinewater-Springs.png'
+      imageUrl: 'assets/maps/Brinewater-Springs.png',
     },
     {
       id: 'flounder-heights',
       mapName: 'Schollensiedlung',
-      imageUrl: 'assets/maps/Flounder-Heights.png'
+      imageUrl: 'assets/maps/Flounder-Heights.png',
     },
     {
       id: 'umami-ruins',
-      mapName: 'Um\'ami-Ruinen',
-      imageUrl: 'assets/maps/umami-ruins.png'
+      mapName: "Um'ami-Ruinen",
+      imageUrl: 'assets/maps/umami-ruins.png',
     },
     {
       id: 'manta-maria',
       mapName: 'Manta Maria',
-      imageUrl: 'assets/maps/manta-maria.png'
+      imageUrl: 'assets/maps/manta-maria.png',
     },
     {
       id: 'barnacle-dime',
       mapName: 'Talerfisch & Pock',
-      imageUrl: 'assets/maps/Barnacle__Dime.png'
+      imageUrl: 'assets/maps/Barnacle__Dime.png',
     },
     {
       id: 'humpback-pump-track',
       mapName: 'Buckelwal-Piste',
-      imageUrl: 'assets/maps/Humpback_Pump_Track.png'
+      imageUrl: 'assets/maps/Humpback_Pump_Track.png',
     },
     {
       id: 'crableg-capital',
       mapName: 'Seespinnen-Skyline',
-      imageUrl: 'assets/maps/Crableg-Capital.png'
+      imageUrl: 'assets/maps/Crableg-Capital.png',
     },
     {
       id: 'shipshape-cargo-co',
       mapName: 'Frachtschiff Schwerfisch',
-      imageUrl: 'assets/maps/Shipshape-Cargo-Co.png'
+      imageUrl: 'assets/maps/Shipshape-Cargo-Co.png',
     },
     {
       id: 'robo-romen',
       mapName: 'ROM & RAMen',
-      imageUrl: 'assets/maps/Robo-ROM-en.png'
+      imageUrl: 'assets/maps/Robo-ROM-en.png',
     },
     {
       id: 'bluefin-depot',
       mapName: 'Blauflossen-Depot',
-      imageUrl: 'assets/maps/bluefin-depot.png'
+      imageUrl: 'assets/maps/bluefin-depot.png',
     },
     {
       id: 'marlin-airport',
       mapName: 'La Ola Airport',
-      imageUrl: 'assets/maps/marlin-airport.png'
+      imageUrl: 'assets/maps/marlin-airport.png',
     },
     {
       id: 'lemuria-hub',
       mapName: 'Bahnhof Lemuria',
-      imageUrl: 'assets/maps/Lemuria-Hub.png'
+      imageUrl: 'assets/maps/Lemuria-Hub.png',
     },
     {
       id: 'urchin-underpass',
       mapName: 'Dekabahnstation',
-      imageUrl: 'assets/maps/Urchin_Underpass.png'
-    }
+      imageUrl: 'assets/maps/Urchin_Underpass.png',
+    },
   ];
 
   /**
@@ -165,25 +167,25 @@ export class BroadcastStateService {
   availableModes: Mode[] = [
     {
       id: 'tw',
-      name: 'Revierkampf'
+      name: 'Revierkampf',
     },
     {
       id: 'sz',
-      name: 'Herrschaft'
+      name: 'Herrschaft',
     },
     {
       id: 'tc',
-      name: 'Turm-Kommando'
+      name: 'Turm-Kommando',
     },
     {
       id: 'rm',
-      name: 'Operation Goldfisch' 
+      name: 'Operation Goldfisch',
     },
     {
       id: 'cb',
-      name: 'Muschelchaos'
-    }
-  ]
+      name: 'Muschelchaos',
+    },
+  ];
 
   /**
    * A predefined list of divisions that can be selected for the broadcast. Each division has a unique ID and a name. This list is used to populate dropdowns or selection components in the UI where the user can choose the division for the current broadcast state.
@@ -196,7 +198,7 @@ export class BroadcastStateService {
     { id: 5, name: 'Division 5' },
     { id: 6, name: 'Division 6' },
     { id: 7, name: 'Division 7' },
-    { id: 8, name: 'Division 8' }
+    { id: 8, name: 'Division 8' },
   ];
 
   /**
@@ -219,14 +221,14 @@ export class BroadcastStateService {
     maps: [],
     season: 10,
     division: 1,
-    week: 1
+    week: 1,
   });
 
   /**
    * Loads the initial broadcast state from the backend API and sets it to the state signal. This method is typically called during the initialization of components that depend on the broadcast state to ensure they have the most up-to-date information when they start.
    */
   loadInitialState(): void {
-    this.api.getState().subscribe(state => {
+    this.api.getState().subscribe((state) => {
       this.state.set(state);
     });
   }
@@ -238,7 +240,7 @@ export class BroadcastStateService {
   update(partial: Partial<BroadcastState>): void {
     const newState = {
       ...this.state(),
-      ...partial
+      ...partial,
     };
 
     this.state.set(newState);
@@ -261,7 +263,7 @@ export class BroadcastStateService {
       modeId: defaultMode.id,
       modeName: defaultMode.name,
       imageUrl: defaultMap.imageUrl,
-      isVisible: true
+      isVisible: true,
     };
 
     this.update({ maps: [...state.maps, newMap] });
@@ -272,13 +274,14 @@ export class BroadcastStateService {
    * @param {string} id The unique identifier of the map to be removed.
    */
   removeMap(id: string): void {
-    const maps = this.state().maps.filter(x => x.id !== id);
+    const maps = this.state().maps.filter((x) => x.id !== id);
     const reordered = maps.map((map, index) => ({
-      ...map, order: index + 1
+      ...map,
+      order: index + 1,
     }));
 
-    const scoreAlpha = reordered.filter(x => x.winner === 'alpha').length;
-    const scoreBravo = reordered.filter(x => x.winner === 'bravo').length;
+    const scoreAlpha = reordered.filter((x) => x.winner === 'alpha').length;
+    const scoreBravo = reordered.filter((x) => x.winner === 'bravo').length;
 
     this.update({ maps: reordered, scoreAlpha, scoreBravo });
   }

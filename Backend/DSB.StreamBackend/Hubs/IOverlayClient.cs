@@ -18,4 +18,10 @@ public interface IOverlayClient
     /// </summary>
     /// <param name="socials">The latest socials data.</param>
     Task SocialsUpdated(SocialsDto socials);
+
+    /// <summary>
+    /// Sends updated commentator box time data to connected overlay clients.
+    /// </summary>
+    /// <param name="timeData">The latest commentator box time data.</param>
+    Task CommentatorBoxTimeDataUpdated(CommentatorBoxTimeDataDto timeData);
 }

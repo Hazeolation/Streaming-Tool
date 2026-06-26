@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterOutlet, provideRouter } from '@angular/router';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { MainLayout } from './main-layout';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { SocialsService } from '../../services/socials';
+import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
 
 @Component({
   selector: 'app-sidebar',
@@ -33,6 +34,10 @@ describe('MainLayout', () => {
     loadInitialState: vi.fn(),
   };
 
+  const mockCommentatorBoxTimeDataService = {
+    loadInitialState: vi.fn(),
+  };
+
   beforeEach(async () => {
     vi.clearAllMocks();
 
@@ -48,6 +53,10 @@ describe('MainLayout', () => {
         {
           provide: SocialsService,
           useValue: mockSocialsService,
+        },
+        {
+          provide: CommentatorBoxTimeDataService,
+          useValue: mockCommentatorBoxTimeDataService,
         },
       ],
     })

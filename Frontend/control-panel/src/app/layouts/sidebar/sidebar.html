@@ -145,13 +145,47 @@
     </button>
   </section>
   <section>
+    <h2>Ein/Ausblende-Zeiten Kommentatoren Box</h2>
+    <details class="comm-box-time-data__details-container">
+      <summary>Zeiten</summary>
+      <div class="commentator-box-display-inputs__container">
+        <h3>Zeit einblenden (In Sekunden)</h3>
+        <input
+          class="show-comm-box-interval-input"
+          type="number"
+          min="0"
+          [ngModel]="commentatorBoxTimeData().showDisplayIntervalInSeconds"
+          (ngModelChange)="
+            commentatorBoxTimeDataService.update({
+              showDisplayIntervalInSeconds: $event,
+            })
+          "
+        />
+
+        <h3>Zeit ausblenden (In Sekunden)</h3>
+        <input
+          class="hide-comm-box-interval-input"
+          type="number"
+          min="0"
+          [ngModel]="commentatorBoxTimeData().hideDisplayIntervalInSeconds"
+          (ngModelChange)="
+            commentatorBoxTimeDataService.update({
+              hideDisplayIntervalInSeconds: $event,
+            })
+          "
+        />
+      </div>
+    </details>
+  </section>
+  <section>
     <h2>Socials</h2>
-    <details>
+    <details class="socials__details-container">
       <summary>Socials</summary>
       <div class="socials-inputs__container">
         <h3>Twitter/X</h3>
         <input
-          placeholder="@Test"
+          class="twitter-handle-input"
+          placeholder="@TwitterHandle"
           [ngModel]="socials().xHandle"
           (ngModelChange)="
             socialsService.update({
@@ -162,7 +196,8 @@
 
         <h3>Discord-Invite</h3>
         <input
-          placeholder="@Test"
+          class="discord-invite-input"
+          placeholder="Invite"
           [ngModel]="socials().discordInvite"
           (ngModelChange)="
             socialsService.update({
