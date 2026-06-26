@@ -15,7 +15,7 @@
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
-  width: 40rem;
+  width: 30rem;
   align-items: center;
   padding: 1.25rem;
   background: rgba(241, 146, 56, 1);
@@ -38,12 +38,12 @@
 
 .team-left__container {
   margin-bottom: 0.75rem;
-  background: linear-gradient(90deg, var(--team-alpha-color) 30%, black);
+  background: linear-gradient(90deg, var(--team-alpha-color), black);
 }
 
 .team-right__container {
   margin-bottom: 1.25rem;
-  background: linear-gradient(90deg, var(--team-bravo-color) 30%, black);
+  background: linear-gradient(90deg, var(--team-bravo-color), black);
 }
 
 .team {

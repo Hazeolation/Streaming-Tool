@@ -3,6 +3,7 @@ import { CommentatorBox } from '../commentator-box/commentator-box';
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { NgClass } from '@angular/common';
+import { TeamNameSwitchingService } from '../../services/team-name-switching';
 
 @Component({
   selector: 'app-map-screen-display',
@@ -28,6 +29,11 @@ export class MapScreenDisplay implements OnInit {
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
   /**
+   * Service for switching the team names around if `state().alphaIsLeft` changes from `true` to `false`, or vice versa
+   */
+  teamNameSwitchingService: TeamNameSwitchingService = inject(TeamNameSwitchingService);
+
+  /**
    * Sets the color for the winner logo depending on which team won, and if the alpha is team is on the left or not.
    * @param {'alpha' | 'bravo'} winner - Winner team, either `alpha` or `bravo`
    * @returns {'team-alpha-color' | 'team-bravo-color'}
@@ -48,33 +54,5 @@ export class MapScreenDisplay implements OnInit {
    */
   ngOnInit(): void {
     this.stateService.loadInitialState();
-  }
-
-  /**
-   * Computed property that returns the name of the team on the left side of the score box based on the current broadcast state. It checks the `alphaIsLeft` boolean in the state to determine which team is on the left and returns the appropriate team name accordingly. This allows the score box to dynamically display the correct team names based on the current configuration of the broadcast state.
-   */
-  get leftTeamName(): string {
-    return this.state().alphaIsLeft ? this.state().teamAlphaName : this.state().teamBravoName;
-  }
-
-  /**
-   * Computed property that returns the name of the team on the right side of the score box based on the current broadcast state. Similar to `leftTeamName`, it checks the `alphaIsLeft` boolean in the state to determine which team is on the right and returns the appropriate team name accordingly. This ensures that the score box accurately reflects the team names based on the current configuration of the broadcast state.
-   */
-  get rightTeamName(): string {
-    return this.state().alphaIsLeft ? this.state().teamBravoName : this.state().teamAlphaName;
-  }
-
-  /**
-   * Computed property that returns the score of the team on the left side of the score box based on the current broadcast state. It checks the `alphaIsLeft` boolean in the state to determine which team's score should be displayed on the left and returns the appropriate score accordingly. This allows the score box to dynamically display the correct scores based on the current configuration of the broadcast state.
-   */
-  get leftScore(): number {
-    return this.state().alphaIsLeft ? this.state().scoreAlpha : this.state().scoreBravo;
-  }
-
-  /**
-   * Computed property that returns the score of the team on the right side of the score box based on the current broadcast state. Similar to `leftScore`, it checks the `alphaIsLeft` boolean in the state to determine which team's score should be displayed on the right and returns the appropriate score accordingly. This ensures that the score box accurately reflects the scores based on the current configuration of the broadcast state.
-   */
-  get rightScore(): number {
-    return this.state().alphaIsLeft ? this.state().scoreBravo : this.state().scoreAlpha;
   }
 }

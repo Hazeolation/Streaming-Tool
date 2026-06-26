@@ -8,15 +8,17 @@
       <span class="ink-splat-logo team-alpha-color"></span>
 
       <span class="match team-name team-alpha-name">
-        {{ leftTeamName }}
+        {{ teamNameSwitchingService.leftTeamName }}
       </span>
     </div>
 
-    <span class="match match-score"> {{ leftScore }} : {{ rightScore }} </span>
+    <span class="match match-score">
+      {{ teamNameSwitchingService.leftScore }} : {{ teamNameSwitchingService.rightScore }}
+    </span>
 
     <div class="team-name-container team-bravo-name-container">
       <span class="match team-name team-bravo-name">
-        {{ rightTeamName }}
+        {{ teamNameSwitchingService.rightTeamName }}
       </span>
 
       <span class="ink-splat-logo team-bravo-color"></span>

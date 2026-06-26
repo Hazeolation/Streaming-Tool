@@ -1,14 +1,14 @@
 <div class="score-box dsb-panel" [class.overlay-hidden]="!state().showScoreBox">
   <div class="team-left__container">
-    <span class="team team-left-name">{{ leftTeamName }}</span>
+    <span class="team team-left-name">{{ teamNameSwitchingService.leftTeamName }}</span>
 
-    <span class="team team-left-score">{{ leftScore }}</span>
+    <span class="team team-left-score">{{ teamNameSwitchingService.leftScore }}</span>
   </div>
 
   <div class="team-right__container">
-    <span class="team team-right-name">{{ rightTeamName }}</span>
+    <span class="team team-right-name">{{ teamNameSwitchingService.rightTeamName }}</span>
 
-    <span class="team team-right-score">{{ rightScore }}</span>
+    <span class="team team-right-score">{{ teamNameSwitchingService.rightScore }}</span>
   </div>
 
   <span class="team tourney-info-text">
