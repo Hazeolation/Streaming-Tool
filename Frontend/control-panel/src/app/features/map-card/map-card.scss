@@ -25,7 +25,8 @@
   margin: auto 16px auto 0;
 }
 
-.map-won .map-image, .map-won .mode-image {
+.map-won .map-image,
+.map-won .mode-image {
   filter: grayscale(100%);
 }
 
@@ -83,8 +84,8 @@ select {
   color: white;
   border: none;
   border-radius: 10px;
-  height: 37px;
-  width: 140px;
+  height: 3rem;
+  width: 8.75rem;
   font-weight: 900;
   letter-spacing: 0.05em;
   cursor: pointer;

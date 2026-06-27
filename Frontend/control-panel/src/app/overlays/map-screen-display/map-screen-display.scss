@@ -44,8 +44,6 @@
 .match {
   font-size: 2.25rem;
   font-weight: 800;
-  display: flex;
-  align-items: center;
 }
 
 .season-division-display {
@@ -79,6 +77,13 @@
 
 .ink-splat-logo.team-bravo-color {
   transform: scaleX(-1);
+}
+
+.team-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(25rem);
 }
 
 .team-name-container {
@@ -163,7 +168,8 @@
 .dsb-logo {
   --image-size: 17.1875rem;
   position: absolute;
-  right: -7.25rem;
+  top: -5rem;
+  right: -12rem;
   width: var(--image-size);
   height: var(--image-size);
 }

@@ -52,24 +52,10 @@
   letter-spacing: 0.04em;
 }
 
-.team.left {
-  text-align: right;
-}
-
-.team.right {
-  text-align: left;
-}
-
-.score {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  font-size: 34px;
-  font-weight: 900;
-  color: white;
-}
-
-.separator {
-  color: white;
+.team-left-name,
+.team-right-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: calc(100% - 1.5rem);
 }
