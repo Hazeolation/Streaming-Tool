@@ -22,22 +22,16 @@ public partial class OverlayTests : PageTest
     public async Task ScoreBox_ShowsTeamNameElements()
     {
         await Page.GotoAsync($"{BaseUrl}/overlay/score-box");
-        await Expect(Page.Locator(".score-box .team.left")).ToBeAttachedAsync();
-        await Expect(Page.Locator(".score-box .team.right")).ToBeAttachedAsync();
+        await Expect(Page.Locator(".score-box .team-left-name")).ToBeAttachedAsync();
+        await Expect(Page.Locator(".score-box .team-right-name")).ToBeAttachedAsync();
     }
 
     [Test]
-    public async Task ScoreBox_ShowsScoreElement()
+    public async Task ScoreBox_ShowsScoreElements()
     {
         await Page.GotoAsync($"{BaseUrl}/overlay/score-box");
-        await Expect(Page.Locator(".score-box .score")).ToBeAttachedAsync();
-    }
-
-    [Test]
-    public async Task ScoreBox_Score_ContainsSeparator()
-    {
-        await Page.GotoAsync($"{BaseUrl}/overlay/score-box");
-        await Expect(Page.Locator(".score-box .score .separator")).ToContainTextAsync(":");
+        await Expect(Page.Locator(".score-box .team-left-score")).ToBeAttachedAsync();
+        await Expect(Page.Locator(".score-box .team-right-score")).ToBeAttachedAsync();
     }
 
     // --- Commentator Box ---

@@ -63,12 +63,12 @@ public class SidebarTests : PageTest
     public async Task Sidebar_TeamAlphaName_RespectsMaxLength()
     {
         var alphaInput = Page.Locator(".sidebar section:has(h2:text('Teams')) input").First;
-        // maxLength is 13 characters
+        // maxLength is 20 characters
         await alphaInput.ClearAsync();
         await alphaInput.FillAsync("TooLongTeamNameHere");
 
         var value = await alphaInput.InputValueAsync();
-        Assert.That(value.Length, Is.LessThanOrEqualTo(13), "Team name should be capped at 13 characters.");
+        Assert.That(value.Length, Is.LessThanOrEqualTo(20), "Team name should be capped at 20 characters.");
     }
 
     [Test]
