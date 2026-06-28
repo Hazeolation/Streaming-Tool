@@ -1,0 +1,128 @@
+import { Injectable } from '@angular/core';
+import { LogScope } from '../models/log-scope';
+import { HttpClient } from '@angular/common/http';
+import { LogLevel } from '../enums/log-level';
+import { LogEntry } from '../models/log-entry';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class LogService {
+  private scopeStack: string[] = [];
+
+  constructor(private http: HttpClient) {}
+
+  beginScope(name: string): LogScope {
+    this.scopeStack.push(name);
+
+    return {
+      dispose: () => {
+        this.scopeStack.pop();
+      },
+    };
+  }
+
+  /**
+   * Computed property that gets the log scope.
+   */
+  private get scope(): string | undefined {
+    return this.scopeStack.at(-1);
+  }
+
+  /**
+   * Logs a Trace log
+   * @param message {string} The message to log
+   * @param data {any} (optional) The data to log
+   */
+  trace(message: string, data?: any): void {
+    this.log(LogLevel.Trace, message, data);
+  }
+
+  /**
+   * Logs a Debug log
+   * @param message {string} The message to log
+   * @param data {any} (optional) The data to log
+   */
+  debug(message: string, data?: any): void {
+    this.log(LogLevel.Debug, message, data);
+  }
+
+  /**
+   * Logs an Info log
+   * @param message {string} The message to log
+   * @param data {any} (optional) The data to log
+   */
+  info(message: string, data?: any): void {
+    this.log(LogLevel.Info, message, data);
+  }
+
+  /**
+   * Logs a Warn log
+   * @param message {string} The message to log
+   * @param data {any} (optional) The data to log
+   */
+  warn(message: string, data?: any): void {
+    this.log(LogLevel.Warning, message, data);
+  }
+
+  /**
+   * Logs an Error log
+   * @param message {string} The message to log
+   * @param error {any} (optional) The error to log
+   * @param data {any} (optional) The data to log
+   */
+  error(message: string, error?: any, data?: any): void {
+    this.log(LogLevel.Error, message, data, error);
+  }
+
+  /**
+   * Logs a Critical Error log
+   * @param message {string} The message to log
+   * @param error {any} The error to log
+   * @param data {any} The data to log
+   */
+  critical(message: string, error?: any, data?: any): void {
+    this.log(LogLevel.Critical, message, data, error);
+  }
+
+  /**
+   * Logs an error with the given Log Level
+   * @param level {LogLevel} The log level
+   * @param message {string} The message to log
+   * @param data {any} (optional) The data to log
+   * @param error {any} (optional) The error to log
+   */
+  private log(level: LogLevel, message: string, data?: any, error?: any): void {
+    const entry: LogEntry = {
+      timestamp: new Date().toISOString(),
+      level,
+      message,
+      data,
+      error,
+      scope: this.scope,
+    };
+
+    this.writeToConsole(entry);
+  }
+
+  /**
+   * Writes the provided Log Entry to the console
+   * @param entry {LogEntry} The log entry to write to the console
+   */
+  private writeToConsole(entry: LogEntry): void {
+    const prefix = `[${LogLevel[entry.level]}]`;
+
+    switch (entry.level) {
+      case LogLevel.Error:
+      case LogLevel.Critical:
+        console.error(prefix, entry.message, entry);
+        break;
+      case LogLevel.Warning:
+        console.warn(prefix, entry.message, entry);
+        break;
+      default:
+        console.log(prefix, entry.message, entry);
+        break;
+    }
+  }
+}
