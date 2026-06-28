@@ -1,7 +1,9 @@
 using DSB.StreamBackend.Context;
 using DSB.StreamBackend.Dtos;
+using DSB.StreamBackend.Logging;
 using DSB.StreamBackend.Models;
 using DSB.StreamBackend.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
@@ -11,6 +13,8 @@ namespace DSB.StreamBackend.Tests.Services;
 public class BroadcastStateServiceTests
 {
     private StreamToolDbContext _db = null!;
+    private LogService _log = null!;
+    private ILogSink[] _logSinks = null!;
     private BroadcastStateService _service = null!;
 
     [SetUp]
@@ -21,7 +25,9 @@ public class BroadcastStateServiceTests
             .Options;
 
         _db = new StreamToolDbContext(options);
-        _service = new BroadcastStateService(_db);
+        _logSinks = [new ConsoleLogSink()];
+        _log = new LogService(_logSinks);
+        _service = new BroadcastStateService(_db, _log);
     }
 
     [TearDown]

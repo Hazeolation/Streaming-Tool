@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using DSB.StreamBackend.Logging;
 
 namespace DSB.StreamBackend.Services;
@@ -10,7 +9,7 @@ namespace DSB.StreamBackend.Services;
 /// Initializes a new logging service.
 /// </remarks>
 /// <param name="sinks">A list of all sinks to connect to the logging service.</param>
-public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment env) : ILogService
+public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment? env = null) : ILogService
 {
 
     /// <summary>
@@ -109,7 +108,7 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment env) : 
     /// <returns>True if the log should be logged, otherwise false</returns>
     private bool ShouldLog(Logging.LogLevel level)
     {
-        if (env.IsDevelopment()) return true;
+        if (env is null || env!.IsDevelopment()) return true;
         return level > Logging.LogLevel.Debug;
     }
 }
