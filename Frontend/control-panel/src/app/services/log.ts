@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { LogScope } from '../models/log-scope';
-import { HttpClient } from '@angular/common/http';
 import { LogLevel } from '../enums/log-level';
 import { LogEntry } from '../models/log-entry';
 
@@ -9,8 +8,6 @@ import { LogEntry } from '../models/log-entry';
 })
 export class LogService {
   private scopeStack: string[] = [];
-
-  constructor(private http: HttpClient) {}
 
   beginScope(name: string): LogScope {
     this.scopeStack.push(name);
@@ -85,6 +82,11 @@ export class LogService {
     this.log(LogLevel.Critical, message, data, error);
   }
 
+  private shouldLog(level: LogLevel): boolean {
+    if (isDevMode()) return true;
+    return level > LogLevel.Info;
+  }
+
   /**
    * Logs an error with the given Log Level
    * @param level {LogLevel} The log level
@@ -93,6 +95,8 @@ export class LogService {
    * @param error {any} (optional) The error to log
    */
   private log(level: LogLevel, message: string, data?: any, error?: any): void {
+    if (!this.shouldLog(level)) return;
+
     const entry: LogEntry = {
       timestamp: new Date().toISOString(),
       level,
