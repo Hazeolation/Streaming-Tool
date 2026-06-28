@@ -1,56 +1,63 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { Injectable, signal, WritableSignal, inject } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BroadcastState } from '../models/broadcast-state';
 import { Socials } from '../models/socials';
 import { CommentatorBoxTimeData } from '../models/commentator-box-time-data';
 import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
+import { LogService } from './log';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Signalr {
+  private readonly log = inject(LogService);
+
   private connection?: signalR.HubConnection;
-  liveState: WritableSignal<BroadcastState | null> = signal<BroadcastState | null>(null);
-  liveSocials: WritableSignal<Socials | null> = signal<Socials | null>(null);
-  liveCommentatorBoxTimeData: WritableSignal<CommentatorBoxTimeData | null> =
-    signal<CommentatorBoxTimeData | null>(null);
-  isConnected: WritableSignal<boolean> = signal<boolean>(false);
 
   /**
-   * Add connection listener for broadcast state updates
+   * Connects the SignalR client to the broadcastStateUpdated stream
    */
   private connectToState = () => {
     this.connection?.on('broadcastStateUpdated', (state: BroadcastState) => {
+      this.log.debug('SignalR broadcastStateUpdated received', state);
+
       this.liveState.set(state);
     });
   };
 
   /**
-   * Add connection listener for broadcast state updates
+   * Connects the SignalR client to the socialsUpdated stream
    */
   private connectToSocials = () => {
     this.connection?.on('socialsUpdated', (socials: Socials) => {
+      this.log.debug('SignalR socialsUpdated received', socials);
+
       this.liveSocials.set(socials);
     });
   };
 
   /**
-   * Add connection listener for broadcast state updates
+   * Connects the SignalR client to the commentatorBoxTimeDataUpdated stream
    */
   private connectToCommentatorBoxTimeData = () => {
     this.connection?.on('commentatorBoxTimeDataUpdated', (timeData: CommentatorBoxTimeData) => {
+      this.log.debug('SignalR commentatorBoxTimeDataUpdated received', timeData);
+
       this.liveCommentatorBoxTimeData.set(timeData);
     });
   };
 
-  /**
-   * Property that specifies which type of service is using the signalr connection, and what connection listener it should subscribe
-   */
+  liveState: WritableSignal<BroadcastState | null> = signal<BroadcastState | null>(null);
+
+  liveSocials: WritableSignal<Socials | null> = signal<Socials | null>(null);
+
+  liveCommentatorBoxTimeData: WritableSignal<CommentatorBoxTimeData | null> =
+    signal<CommentatorBoxTimeData | null>(null);
+
+  isConnected: WritableSignal<boolean> = signal<boolean>(false);
+
   connectionType: SignalrServiceConnection = SignalrServiceConnection.None;
 
-  /**
-   * Map that holds all functions that will subscribe the specific connection listener upon execution. The map is indexed with the enum `SignalrServiceConnection`
-   */
   private serviceConnections: Map<SignalrServiceConnection, () => void> = new Map([
     [SignalrServiceConnection.BroadcastState, this.connectToState],
     [SignalrServiceConnection.Socials, this.connectToSocials],
@@ -58,32 +65,71 @@ export class Signalr {
   ]);
 
   /**
-   * Starts the SignalR connection to the backend hub and sets up a listener for incoming broadcast state updates. When a new state is received from the 'broadcastStateUpdated' event, it updates the `liveState` signal with the new broadcast state. This allows components that depend on the `liveState` signal to reactively update their UI based on the latest broadcast state received from the backend.
+   * Starts SignalR connection
    */
   async start() {
+    const scope = this.log.beginScope('Signalr.start');
+
+    this.log.info('Initializing SignalR connection', {
+      connectionType: this.connectionType,
+    });
+
     this.connection = new signalR.HubConnectionBuilder()
       .withUrl('http://localhost:7000/overlayHub')
       .withAutomaticReconnect()
       .build();
 
     const connectionFunction = this.serviceConnections.get(this.connectionType);
-    connectionFunction?.();
 
-    this.connection.onreconnecting(() => this.isConnected.set(false));
-    this.connection.onreconnected(() => this.isConnected.set(true));
-    this.connection.onclose(() => this.isConnected.set(false));
+    if (!connectionFunction) {
+      this.log.warn('No SignalR connection handler registered', {
+        connectionType: this.connectionType,
+      });
+    } else {
+      this.log.debug('Registering SignalR handlers', {
+        connectionType: this.connectionType,
+      });
+
+      connectionFunction();
+    }
+
+    this.connection.onreconnecting(() => {
+      this.isConnected.set(false);
+      this.log.warn('SignalR reconnecting...');
+    });
+
+    this.connection.onreconnected(() => {
+      this.isConnected.set(true);
+      this.log.info('SignalR reconnected');
+    });
+
+    this.connection.onclose(() => {
+      this.isConnected.set(false);
+      this.log.error('SignalR connection closed');
+    });
 
     await this.tryConnect();
+
+    scope.dispose();
   }
 
+  /**
+   * Connection retry logic
+   */
   private async tryConnect(): Promise<void> {
     try {
+      this.log.info('Starting SignalR connection attempt');
+
       await this.connection?.start();
+
       this.isConnected.set(true);
-      console.log('SignalR connected');
-    } catch {
+
+      this.log.info('SignalR connected successfully');
+    } catch (err) {
       this.isConnected.set(false);
-      console.error('SignalR connection failed, retrying in 5s...');
+
+      this.log.error('SignalR connection failed, retrying...', err);
+
       setTimeout(() => this.tryConnect(), 5000);
     }
   }

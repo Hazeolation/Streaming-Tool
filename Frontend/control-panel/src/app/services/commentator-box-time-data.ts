@@ -3,32 +3,18 @@ import { CommentatorBoxTimeDataApi } from './commentator-box-time-data-api';
 import { Signalr } from './signalr';
 import { CommentatorBoxTimeData } from '../models/commentator-box-time-data';
 import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
+import { LogService } from './log';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CommentatorBoxTimeDataService {
-  private readonly api: CommentatorBoxTimeDataApi = inject(CommentatorBoxTimeDataApi);
-  private readonly signalr: Signalr = inject(Signalr);
+  private readonly api = inject(CommentatorBoxTimeDataApi);
+  private readonly signalr = inject(Signalr);
+  private readonly log = inject(LogService);
 
   /**
-   * Initializes the `CommentatorBoxTimeDataService` by setting up an effect that listens for incoming commentator box time data updates from the SignalR service.
-   */
-  constructor() {
-    effect(() => {
-      const incoming = this.signalr.liveCommentatorBoxTimeData();
-
-      if (!incoming) return;
-
-      this.commentatorBoxTimeData.set(incoming);
-    });
-
-    this.signalr.connectionType = SignalrServiceConnection.CommentatorBoxTimeData;
-    this.signalr.start();
-  }
-
-  /**
-   * The main commentator box time data signal that holds the current commentator box time data.
+   * Main state signal
    */
   commentatorBoxTimeData: WritableSignal<CommentatorBoxTimeData> = signal<CommentatorBoxTimeData>({
     hideDisplayIntervalInSeconds: 0,
@@ -36,25 +22,90 @@ export class CommentatorBoxTimeDataService {
   });
 
   /**
-   * Updates the commentator box time data by merging the existing time data with the provided partial time data, then sends the updated time data to the backend API.
-   * @param {Partial<CommentatorBoxTimeData>} partial The partial commentator box time data containing the properties to be updated in the current commentator box time data.
+   * Initializes service + SignalR subscription
    */
-  update(partial: Partial<CommentatorBoxTimeData>): void {
-    const newTimeData = {
-      ...this.commentatorBoxTimeData(),
-      ...partial,
-    };
+  constructor() {
+    const scope = this.log.beginScope('CommentatorBoxTimeDataService');
 
-    this.commentatorBoxTimeData.set(newTimeData);
-    this.api.updateCommentatorBoxTimeData(newTimeData).subscribe();
+    this.log.info('Initializing CommentatorBoxTimeDataService');
+
+    effect(() => {
+      const incoming = this.signalr.liveCommentatorBoxTimeData();
+
+      if (!incoming) return;
+
+      this.log.debug('Received SignalR time data update', incoming);
+
+      this.commentatorBoxTimeData.set(incoming);
+
+      this.log.info('CommentatorBoxTimeData updated from SignalR');
+    });
+
+    this.signalr.connectionType = SignalrServiceConnection.CommentatorBoxTimeData;
+
+    this.signalr.start();
+
+    this.log.info('SignalR connection started for CommentatorBoxTimeData');
+
+    scope.dispose();
   }
 
   /**
-   * Loads the initial broadcast state from the backend API and sets it to the state signal. This method is typically called during the initialization of components that depend on the broadcast state to ensure they have the most up-to-date information when they start.
+   * Updates time data (optimistic update + API sync)
+   */
+  update(partial: Partial<CommentatorBoxTimeData>): void {
+    const scope = this.log.beginScope('CommentatorBoxTimeDataService.update');
+
+    try {
+      const before = this.commentatorBoxTimeData();
+
+      const newTimeData = {
+        ...before,
+        ...partial,
+      };
+
+      this.log.debug('Updating commentator box time data', {
+        before,
+        patch: partial,
+        after: newTimeData,
+      });
+
+      this.commentatorBoxTimeData.set(newTimeData);
+
+      this.api.updateCommentatorBoxTimeData(newTimeData).subscribe({
+        next: (result) => {
+          this.log.info('Time data successfully updated via API', result);
+        },
+        error: (err) => {
+          this.log.error('Failed to update time data', err, newTimeData);
+        },
+      });
+    } finally {
+      scope.dispose();
+    }
+  }
+
+  /**
+   * Loads initial state from backend
    */
   loadInitialState(): void {
-    this.api.getCommentatorBoxTimeData().subscribe((timeData) => {
-      this.commentatorBoxTimeData.set(timeData);
+    const scope = this.log.beginScope('CommentatorBoxTimeDataService.loadInitialState');
+
+    this.log.info('Loading initial time data');
+
+    this.api.getCommentatorBoxTimeData().subscribe({
+      next: (timeData) => {
+        this.log.debug('Initial time data received', timeData);
+
+        this.commentatorBoxTimeData.set(timeData);
+
+        this.log.info('Initial time data applied');
+      },
+      error: (err) => {
+        this.log.error('Failed to load initial time data', err);
+      },
     });
+
+    scope.dispose();
   }
 }
