@@ -39,6 +39,13 @@ DSB.StreamBackend/
 │   └── SocialsDto.cs
 ├── Context/
 │   └── StreamToolDbContext.cs              # EF DbContext
+├── Logging/                                # Logging-Related Classes
+│   ├── ConsoleLogSink.cs
+│   ├── ILogService.cs
+│   ├── ILogSink.cs
+│   ├── LogEntry.cs
+│   ├── LoggingScope.cs
+│   └── LogLevel.cs
 └── Migrations/                             # EF-Migrations (auto-apply on Start)
 ```
 
