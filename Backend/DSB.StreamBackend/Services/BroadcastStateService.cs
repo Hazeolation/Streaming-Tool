@@ -1,11 +1,14 @@
+#pragma warning disable CS4014 // Disabled because Logging is intended to not be awaited
+
 using DSB.StreamBackend.Context;
 using DSB.StreamBackend.Dtos;
+using DSB.StreamBackend.Logging;
 using DSB.StreamBackend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DSB.StreamBackend.Services;
 
-public class BroadcastStateService(StreamToolDbContext db)
+public class BroadcastStateService(StreamToolDbContext db, ILogService log)
 {
     /// <summary>
     /// Asynchronously gets the <see cref="BroadcastStateDto"/>
@@ -13,8 +16,27 @@ public class BroadcastStateService(StreamToolDbContext db)
     /// <returns>A <see cref="Task"/> returning the state as <see cref="BroadcastStateDto"/></returns>
     public async Task<BroadcastStateDto> GetStateAsync()
     {
-        var entity = await GetOrCreateStateAsync();
-        return ToDto(entity);
+        using IDisposable scope = log.BeginScope(nameof(GetStateAsync));
+        log.DebugAsync("Loading broadcast state");
+
+        try
+        {
+            BroadcastStateEntity entity = await GetOrCreateStateAsync();
+
+            log.DebugAsync("Broadcast state loaded", new
+            {
+                entity.ScoreAlpha,
+                entity.ScoreBravo,
+                Maps = entity.Maps.Count
+            });
+
+            return ToDto(entity);
+        }
+        catch (Exception ex)
+        {
+            log.ErrorAsync("Failed to load broadcast state", ex);
+            throw;
+        }
     }
 
     /// <summary>
@@ -24,36 +46,61 @@ public class BroadcastStateService(StreamToolDbContext db)
     /// <returns>The updated <see cref="BroadcastStateDto"/></returns>
     public async Task<BroadcastStateDto> UpdateStateAsync(BroadcastStateDto dto)
     {
-        var entity = await GetOrCreateStateAsync();
+        using IDisposable scope = log.BeginScope(nameof(UpdateStateAsync));
 
-        entity.TeamAlphaName = dto.TeamAlphaName;
-        entity.TeamBravoName = dto.TeamBravoName;
-        entity.AlphaIsLeft = dto.AlphaIsLeft;
+        log.InfoAsync("Updating broadcast state", new
+        {
+            dto.TeamAlphaName,
+            dto.TeamBravoName,
+            dto.ScoreAlpha,
+            dto.ScoreBravo
+        });
 
-        entity.ScoreAlpha = dto.ScoreAlpha;
-        entity.ScoreBravo = dto.ScoreBravo;
+        try
+        {
+            BroadcastStateEntity entity = await GetOrCreateStateAsync();
 
-        entity.Streamer = dto.Streamer;
+            entity.TeamAlphaName = dto.TeamAlphaName;
+            entity.TeamBravoName = dto.TeamBravoName;
+            entity.AlphaIsLeft = dto.AlphaIsLeft;
 
-        entity.Commentator1 = dto.Commentator1;
-        entity.Commentator2 = dto.Commentator2;
+            entity.ScoreAlpha = dto.ScoreAlpha;
+            entity.ScoreBravo = dto.ScoreBravo;
 
-        entity.ShowMapScreen = dto.ShowMapScreen;
-        entity.ShowScoreBox = dto.ShowScoreBox;
-        entity.ShowCommentatorBox = dto.ShowCommentatorBox;
-        entity.ShowInfobox = dto.ShowInfobox;
+            entity.Streamer = dto.Streamer;
 
-        entity.Season = dto.Season;
-        entity.Division = dto.Division;
-        entity.Week = dto.Week;
+            entity.Commentator1 = dto.Commentator1;
+            entity.Commentator2 = dto.Commentator2;
 
-        entity.StartTime = dto.StartTime;
+            entity.ShowMapScreen = dto.ShowMapScreen;
+            entity.ShowScoreBox = dto.ShowScoreBox;
+            entity.ShowCommentatorBox = dto.ShowCommentatorBox;
+            entity.ShowInfobox = dto.ShowInfobox;
 
-        UpdateMaps(entity, dto.Maps);
+            entity.Season = dto.Season;
+            entity.Division = dto.Division;
+            entity.Week = dto.Week;
 
-        await db.SaveChangesAsync();
+            entity.StartTime = dto.StartTime;
 
-        return ToDto(entity);
+            UpdateMaps(entity, dto.Maps);
+
+            await db.SaveChangesAsync();
+
+            log.InfoAsync("Broadcast state updated", new
+            {
+                entity.ScoreAlpha,
+                entity.ScoreBravo,
+                Maps = entity.Maps.Count
+            });
+
+            return ToDto(entity);
+        }
+        catch (Exception ex)
+        {
+            log.ErrorAsync("Failed to update broadcast state", ex, dto);
+            throw;
+        }
     }
 
     /// <summary>
@@ -62,16 +109,31 @@ public class BroadcastStateService(StreamToolDbContext db)
     /// <returns>The <see cref="BroadcastStateEntity"/></returns>
     private async Task<BroadcastStateEntity> GetOrCreateStateAsync()
     {
+        log.DebugAsync("Loading broadcast state entity");
+
         var entity = await db.BroadcastStates
             .Include(x => x.Maps)
             .FirstOrDefaultAsync(x => x.Id == 1);
 
         if (entity != null)
+        {
+            log.TraceAsync("Broadcast state exists");
             return entity;
+        }
 
-        entity = new BroadcastStateEntity { Id = 1 };
+        log.WarningAsync("Broadcast state not found, creating default");
+
+        entity = new BroadcastStateEntity
+        {
+            Id = 1
+        };
+
         db.BroadcastStates.Add(entity);
+
         await db.SaveChangesAsync();
+
+        log.InfoAsync("Created initial broadcast state");
+
         return entity;
     }
 
@@ -82,12 +144,27 @@ public class BroadcastStateService(StreamToolDbContext db)
     /// <param name="dtoMaps">A <see cref="List"/> of the <see cref="MapStateDto"/>s to update</param>
     private void UpdateMaps(BroadcastStateEntity entity, List<MapStateDto> dtoMaps)
     {
+        log.DebugAsync("Updating map state collection", new
+        {
+            Existing = entity.Maps.Count,
+            Incoming = dtoMaps.Count
+        });
+
         var dtoIds = dtoMaps
             .Where(x => !string.IsNullOrEmpty(x.Id))
             .Select(x => x.Id)
             .ToHashSet();
 
-        db.MapStates.RemoveRange(entity.Maps.Where(x => !dtoIds.Contains(x.Id)));
+        var removed = entity.Maps
+            .Where(x => !dtoIds.Contains(x.Id))
+            .ToList();
+
+        if (removed.Count > 0)
+        {
+            log.InfoAsync("Removing maps", removed.Select(x => x.Id));
+        }
+
+        db.MapStates.RemoveRange(removed);
 
         foreach (var mapDto in dtoMaps.OrderBy(x => x.Order))
         {
@@ -97,6 +174,12 @@ public class BroadcastStateService(StreamToolDbContext db)
 
             if (existing != null)
             {
+                log.TraceAsync("Updating map", new
+                {
+                    existing.Id,
+                    mapDto.MapName
+                });
+
                 existing.Order = mapDto.Order;
                 existing.MapId = mapDto.MapId;
                 existing.MapName = mapDto.MapName;
@@ -108,9 +191,20 @@ public class BroadcastStateService(StreamToolDbContext db)
             }
             else
             {
+                var id = string.IsNullOrEmpty(mapDto.Id)
+                    ? Guid.NewGuid().ToString()
+                    : mapDto.Id;
+
+                log.InfoAsync("Adding map", new
+                {
+                    id,
+                    mapDto.MapName,
+                    mapDto.ModeName
+                });
+
                 entity.Maps.Add(new MapStateEntity
                 {
-                    Id = string.IsNullOrEmpty(mapDto.Id) ? Guid.NewGuid().ToString() : mapDto.Id,
+                    Id = id,
                     Order = mapDto.Order,
                     MapId = mapDto.MapId,
                     MapName = mapDto.MapName,
@@ -137,35 +231,31 @@ public class BroadcastStateService(StreamToolDbContext db)
             TeamAlphaName = entity.TeamAlphaName,
             TeamBravoName = entity.TeamBravoName,
             AlphaIsLeft = entity.AlphaIsLeft,
-
             ScoreAlpha = entity.ScoreAlpha,
             ScoreBravo = entity.ScoreBravo,
-
             Streamer = entity.Streamer,
-
             Commentator1 = entity.Commentator1,
             Commentator2 = entity.Commentator2,
-
             ShowMapScreen = entity.ShowMapScreen,
             ShowScoreBox = entity.ShowScoreBox,
             ShowCommentatorBox = entity.ShowCommentatorBox,
             ShowInfobox = entity.ShowInfobox,
-
-            Maps = [.. entity.Maps
-                .OrderBy(x => x.Order)
-                .Select(x => new MapStateDto
-                {
-                    Id = x.Id,
-                    Order = x.Order,
-                    MapId = x.MapId,
-                    MapName = x.MapName,
-                    ModeId = x.ModeId,
-                    ModeName = x.ModeName,
-                    ImageUrl = x.ImageUrl,
-                    Winner = x.Winner,
-                    IsVisible = x.IsVisible
-                })],
-
+            Maps =
+            [
+                ..entity.Maps.OrderBy(x => x.Order)
+                    .Select(x => new MapStateDto
+                    {
+                        Id = x.Id,
+                        Order = x.Order,
+                        MapId = x.MapId,
+                        MapName = x.MapName,
+                        ModeId = x.ModeId,
+                        ModeName = x.ModeName,
+                        ImageUrl = x.ImageUrl,
+                        Winner = x.Winner,
+                        IsVisible = x.IsVisible
+                    })
+            ],
             Season = entity.Season,
             Division = entity.Division,
             Week = entity.Week,

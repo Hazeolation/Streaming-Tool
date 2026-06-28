@@ -1,3 +1,5 @@
+#pragma warning disable CS4014 // Disabled as method LogAsync() forces an await
+
 using DSB.StreamBackend.Logging;
 
 namespace DSB.StreamBackend.Services;
@@ -8,9 +10,10 @@ namespace DSB.StreamBackend.Services;
 /// <remarks>
 /// Initializes a new logging service.
 /// </remarks>
-/// <param name="sinks">A list of all sinks to connect to the logging service.
-public class LogService(IEnumerable<ILogSink> sinks) : ILogService
+/// <param name="sinks">A list of all sinks to connect to the logging service.</param>
+public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment env) : ILogService
 {
+
     /// <summary>
     /// Logs a Trace log.
     /// </summary>
@@ -19,8 +22,8 @@ public class LogService(IEnumerable<ILogSink> sinks) : ILogService
     /// </remarks>
     /// <param name="message">The log message to display</param>
     /// <param name="data">The object to log</param>
-    public void Trace(string message, object? data = null)
-        => Log(Logging.LogLevel.Trace, message, null, data);
+    public async Task TraceAsync(string message, object? data = null)
+        => LogAsync(Logging.LogLevel.Trace, message, null, data);
 
     /// <summary>
     /// Logs a Debug log.
@@ -30,47 +33,49 @@ public class LogService(IEnumerable<ILogSink> sinks) : ILogService
     /// </remarks>
     /// <param name="message">The log message to display</param>
     /// <param name="data">The object to log</param>
-    public void Debug(string message, object? data = null)
-        => Log(Logging.LogLevel.Debug, message, null, data);
+    public async Task DebugAsync(string message, object? data = null)
+        => LogAsync(Logging.LogLevel.Debug, message, null, data);
 
     /// <summary>
     /// Logs an Info log.
     /// </summary>
     /// <param name="message">The log message to display</param>
     /// <param name="data">The object to log</param>
-    public void Info(string message, object? data = null)
-        => Log(Logging.LogLevel.Info, message, null, data);
+    public async Task InfoAsync(string message, object? data = null)
+        => LogAsync(Logging.LogLevel.Info, message, null, data);
 
     /// <summary>
     /// Logs a Warning log.
     /// </summary>
     /// <param name="message">The log message to display</param>
     /// <param name="data">The object to log</param>
-    public void Warning(string message, object? data = null)
-        => Log(Logging.LogLevel.Warning, message, null, data);
+    public async Task WarningAsync(string message, object? data = null)
+        => LogAsync(Logging.LogLevel.Warning, message, null, data);
 
     /// <summary>
     /// Logs an Error log.
     /// </summary>
     /// <param name="message">The log message to display</param>
     /// <param name="ex">The Exception to log</param>
-    public void Error(string message, Exception? ex = null, object? data = null)
-        => Log(Logging.LogLevel.Error, message, ex, data);
+    public async Task ErrorAsync(string message, Exception? ex = null, object? data = null)
+        => LogAsync(Logging.LogLevel.Error, message, ex, data);
 
     /// <summary>
     /// Logs a Critical Error log.
     /// </summary>
     /// <param name="message">The log message to display</param>
     /// <param name="ex">The Exception to log</param>
-    public void Critical(string message, Exception? ex = null, object? data = null)
-        => Log(Logging.LogLevel.Critical, message, ex, data);
+    public async Task CriticalAsync(string message, Exception? ex = null, object? data = null)
+        => LogAsync(Logging.LogLevel.Critical, message, ex, data);
 
     /// <summary>
     /// Writes a log entry to all configured sinks.
     /// </summary>
-    private void Log(Logging.LogLevel level, string message, Exception? ex, object? data)
+    private async Task LogAsync(Logging.LogLevel level, string message, Exception? ex, object? data)
     {
-        var entry = new LogEntry
+        if (!ShouldLog(level)) return;
+
+        LogEntry entry = new()
         {
             Timestamp = DateTime.UtcNow,
             Level = level,
@@ -80,15 +85,23 @@ public class LogService(IEnumerable<ILogSink> sinks) : ILogService
             Scope = LoggingScope.Current
         };
 
-        foreach (var sink in sinks)
-        {
-            _ = sink.WriteAsync(entry);
-        }
+        await Task.WhenAll(sinks.Select(x => x.WriteAsync(entry)));
     }
 
     /// <inheritdoc />
     public IDisposable BeginScope(string scopeName)
     {
         return new LoggingScope(scopeName);
+    }
+
+    /// <summary>
+    /// Checks whether the provided log should be logged in the current environment.
+    /// </summary>
+    /// <param name="level">The log level to log</param>
+    /// <returns>True if the log should be logged, otherwise false</returns>
+    private bool ShouldLog(Logging.LogLevel level)
+    {
+        if (env.IsDevelopment()) return true;
+        return level > Logging.LogLevel.Debug;
     }
 }

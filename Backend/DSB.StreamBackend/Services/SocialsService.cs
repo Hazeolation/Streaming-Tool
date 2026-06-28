@@ -1,3 +1,5 @@
+#pragma warning disable CS4014 // Disabled because Logging is intended to not be awaited
+
 using DSB.StreamBackend.Context;
 using DSB.StreamBackend.Dtos;
 using DSB.StreamBackend.Models;
@@ -9,7 +11,7 @@ namespace DSB.StreamBackend.Services;
 /// Contains all business logic related to socials
 /// </summary>
 /// <param name="db">The database context</param>
-public class SocialsService(StreamToolDbContext db)
+public class SocialsService(StreamToolDbContext db, LogService log)
 {
     /// <summary>
     /// Asynchronously gets the socials
@@ -17,8 +19,28 @@ public class SocialsService(StreamToolDbContext db)
     /// <returns>A <see cref="Task"/> object returning a <see cref="SocialsDto"/></returns>
     public async Task<SocialsDto> GetSocialsAsync()
     {
-        var entity = await GetOrCreateSocialsAsync();
-        return ToDto(entity);
+        using IDisposable scope = log.BeginScope(nameof(GetSocialsAsync));
+
+        log.DebugAsync(
+            "Loading socials");
+
+        try
+        {
+            SocialsEntity entity = await GetOrCreateSocialsAsync();
+
+            log.InfoAsync("Socials loaded", new
+            {
+                HasXHandle = !string.IsNullOrWhiteSpace(entity.XHandle),
+                HasDiscordInvite = !string.IsNullOrWhiteSpace(entity.DiscordInvite)
+            });
+
+            return ToDto(entity);
+        }
+        catch (Exception ex)
+        {
+            log.ErrorAsync("Failed to load socials", ex);
+            throw;
+        }
     }
 
     /// <summary>
@@ -28,15 +50,36 @@ public class SocialsService(StreamToolDbContext db)
     /// <returns>The updated <see cref="SocialsDto"/> object</returns>
     public async Task<SocialsDto> UpdateSocialsAsync(SocialsDto dto)
     {
-        SocialsEntity entity = await GetOrCreateSocialsAsync();
+        using IDisposable scope = log.BeginScope(nameof(UpdateSocialsAsync));
 
-        entity.Id = dto.Id;
-        entity.XHandle = dto.XHandle;
-        entity.DiscordInvite = dto.DiscordInvite;
+        log.InfoAsync("Updating socials", new
+        {
+            dto.XHandle,
+            HasDiscordInvite = !string.IsNullOrWhiteSpace(dto.DiscordInvite)
+        });
 
-        await db.SaveChangesAsync();
+        try
+        {
+            var entity = await GetOrCreateSocialsAsync();
 
-        return ToDto(entity);
+            entity.XHandle = dto.XHandle;
+            entity.DiscordInvite = dto.DiscordInvite;
+
+            await db.SaveChangesAsync();
+
+            log.InfoAsync("Socials updated", new
+            {
+                entity.XHandle,
+                HasDiscordInvite = !string.IsNullOrWhiteSpace(entity.DiscordInvite)
+            });
+
+            return ToDto(entity);
+        }
+        catch (Exception ex)
+        {
+            log.ErrorAsync("Failed to update socials", ex, dto);
+            throw;
+        }
     }
 
     /// <summary>
@@ -45,14 +88,28 @@ public class SocialsService(StreamToolDbContext db)
     /// <returns>The <see cref="SocialsEntity"/></returns>
     private async Task<SocialsEntity> GetOrCreateSocialsAsync()
     {
-        var entity = await db.Socials
-            .FirstOrDefaultAsync(x => x.Id == 1);
+        log.TraceAsync("Loading socials entity");
 
-        if (entity != null) return entity;
+        var entity = await db.Socials.FirstOrDefaultAsync(x => x.Id == 1);
 
-        entity = new SocialsEntity { Id = 1 };
+        if (entity != null)
+        {
+            return entity;
+        }
+
+        log.WarningAsync("Socials not found, creating default");
+
+        entity = new SocialsEntity
+        {
+            Id = 1
+        };
+
         db.Socials.Add(entity);
+
         await db.SaveChangesAsync();
+
+        log.InfoAsync("Created socials");
+
         return entity;
     }
 
