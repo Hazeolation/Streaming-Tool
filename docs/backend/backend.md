@@ -16,22 +16,30 @@
 
 ```
 DSB.StreamBackend/
-├── Controllers/
-│   └── BroadcastController.cs   # REST-Endpoints
+├── Controllers/                            # REST-Endpoints
+│   ├── BroadcastController.cs
+│   ├── CommentatorBoxTimedataController.cs
+│   └── SocialsController.cs
 ├── Hubs/
-│   ├── IOverlayClient.cs        # SignalR-Interface
-│   └── OverlayHub.cs            # SignalR-Hub
-├── Services/
-│   └── BroadcastStateService.cs # Business Logic + DB Access
-├── Models/
-│   ├── BroadcastStateEntity.cs  # EF-Entity (Main State)
-│   └── MapStateEntity.cs        # EF-Entity (Maps, 1:N)
+│   ├── IOverlayClient.cs                   # SignalR-Interface
+│   └── OverlayHub.cs                       # SignalR-Hub
+├── Services/                               # Business Logic + DB Access
+│   ├── BroadcastStateService.cs
+│   ├── CommentatorBoxTimeDataService.cs
+│   └── LogService.cs
+├── Models/                                 # EF-Entities
+│   ├── BroadcastStateEntity.cs             # Main State
+│   ├── CommentatorBoxTimeDataEntity.cs     # Commentator Box Timing Information
+│   ├── MapStateEntity.cs                   # Maps (1:N)
+│   └── SocialsEntity.cs                    # Socials Information
 ├── Dtos/
 │   ├── BroadcastStateDto.cs
-│   └── MapStateDto.cs
+│   ├── CommentatorBoxTimeDataDto.cs
+│   ├── MapStateDto.cs
+│   └── SocialsDto.cs
 ├── Context/
-│   └── StreamToolDbContext.cs   # EF DbContext
-└── Migrations/                  # EF-Migrations (auto-apply on Start)
+│   └── StreamToolDbContext.cs              # EF DbContext
+└── Migrations/                             # EF-Migrations (auto-apply on Start)
 ```
 
 ---
@@ -157,21 +165,28 @@ public interface IOverlayClient
 }
 ```
 
-| Event                   | Triggered By                | Payload             |
-| ----------------------- | --------------------------- | ------------------- |
-| `BroadcastStateUpdated` | `POST /api/broadcast/state` | `BroadcastStateDto` |
+| Event                           | Triggered By                | Payload                     |
+| ------------------------------- | --------------------------- | --------------------------- |
+| `BroadcastStateUpdated`         | `POST /api/broadcast/state` | `BroadcastStateDto`         |
+| `socialsUpdated`                | `POST /api/socials/socials` | `SocialsDto`                |
+| `commentatorBoxTimeDataUpdated` | `POST /api/broadcast/state` | `CommentatorBoxTimeDataDto` |
 
 ---
 
 ## Service Layer
 
 `BroadcastStateService` is registered as **Scoped** (befitting of the `DbContext` lifetime).
+`SocialsService` is registered as **Scoped** (befitting of the `DbContext` lifetime).
+`CommentatorBoxTimeDataService` is registered as **Scoped** (befitting of the `DbContext` lifetime).
+`LoggingService` is registered as **Singleton**.
 
 Core Methods:
 
-- `GetOrCreateStateAsync()` — private Upsert Helper, adds the Singleton Row, if it doesn't exist
-- `GetStateAsync()` — reads and returns the State as a DTO
-- `UpdateStateAsync(dto)` — writes State + Maps, returns updated State
+Service may be replaced with the desired service, excluding Logging.
+
+- `GetOrCreate[Service]Async()` — private Upsert Helper, adds the Singleton Row, if it doesn't exist
+- `Get[Service]Async()` — reads and returns the State as a DTO
+- `Update[Service]Async(dto)` — writes State + Maps, returns updated State
 - `UpdateMaps(entity, dtoMaps)` — Upset Logic for the Map List
 - `ToDto(entity)` — static Mapping Method Entity → DTO
 
@@ -206,4 +221,5 @@ The SQLite file (`dsb-stream-tool.db`) gets created in the working directory of 
 
 ```bash
 dotnet ef migrations add <Name> --project Backend/DSB.StreamBackend
+dotnet ef database update
 ```

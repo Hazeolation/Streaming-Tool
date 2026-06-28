@@ -53,8 +53,16 @@ public class CommentatorBoxTimeDataController(
     public async Task<ActionResult<CommentatorBoxTimeDataDto>> UpdateCommentatorBoxTimeData(
         CommentatorBoxTimeDataDto timeData)
     {
+        _ = log.InfoAsync("Updating CommentatorBoxTimeData: {@TimeData}", timeData);
+
         CommentatorBoxTimeDataDto updatedTimeData = await timeDataService.UpdateCommentatorBoxTimeDataAsync(timeData);
+
+        _ = log.InfoAsync("CommentatorBoxTimeData updated successfully: {@UpdatedTimeData}", updatedTimeData);
+
         await hub.Clients.All.CommentatorBoxTimeDataUpdated(updatedTimeData);
+
+        _ = log.InfoAsync("Broadcasted CommentatorBoxTimeData update to all clients.");
+
         return Ok(updatedTimeData);
     }
 }
