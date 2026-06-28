@@ -31,6 +31,7 @@ export class LogService {
    * @param message {string} The message to log
    * @param data {any} (optional) The data to log
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   trace(message: string, data?: any): void {
     this.log(LogLevel.Trace, message, data);
   }
@@ -40,6 +41,7 @@ export class LogService {
    * @param message {string} The message to log
    * @param data {any} (optional) The data to log
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   debug(message: string, data?: any): void {
     this.log(LogLevel.Debug, message, data);
   }
@@ -49,6 +51,7 @@ export class LogService {
    * @param message {string} The message to log
    * @param data {any} (optional) The data to log
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   info(message: string, data?: any): void {
     this.log(LogLevel.Info, message, data);
   }
@@ -58,6 +61,7 @@ export class LogService {
    * @param message {string} The message to log
    * @param data {any} (optional) The data to log
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   warn(message: string, data?: any): void {
     this.log(LogLevel.Warning, message, data);
   }
@@ -68,6 +72,7 @@ export class LogService {
    * @param error {any} (optional) The error to log
    * @param data {any} (optional) The data to log
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error(message: string, error?: any, data?: any): void {
     this.log(LogLevel.Error, message, data, error);
   }
@@ -78,6 +83,7 @@ export class LogService {
    * @param error {any} The error to log
    * @param data {any} The data to log
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   critical(message: string, error?: any, data?: any): void {
     this.log(LogLevel.Critical, message, data, error);
   }
@@ -94,6 +100,7 @@ export class LogService {
    * @param data {any} (optional) The data to log
    * @param error {any} (optional) The error to log
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private log(level: LogLevel, message: string, data?: any, error?: any): void {
     if (!this.shouldLog(level)) return;
 

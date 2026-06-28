@@ -58,6 +58,7 @@ describe('LogService', () => {
 
     expect(console.error).toHaveBeenCalledTimes(1);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [prefix, message, entry] = (console.error as any).mock.calls[0];
 
     expect(prefix).toBe('[Error]');
@@ -71,6 +72,7 @@ describe('LogService', () => {
 
     service.info('inside scope');
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [, , entry] = (console.log as any).mock.calls[0];
 
     expect(entry.scope).toBe('TestScope');
@@ -79,6 +81,7 @@ describe('LogService', () => {
 
     service.info('outside scope');
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [, , entry2] = (console.log as any).mock.calls[1];
 
     expect(entry2.scope).toBeUndefined();
@@ -90,6 +93,7 @@ describe('LogService', () => {
 
     service.info('test');
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [, , entry] = (console.log as any).mock.calls[0];
 
     expect(entry.scope).toBe('Scope2');
@@ -98,6 +102,7 @@ describe('LogService', () => {
 
     service.info('after pop');
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [, , entry2] = (console.log as any).mock.calls[1];
 
     expect(entry2.scope).toBe('Scope1');
@@ -108,6 +113,7 @@ describe('LogService', () => {
   it('should include timestamp in ISO format', () => {
     service.info('time test');
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [, , entry] = (console.log as any).mock.calls[0];
 
     expect(entry.timestamp).toBe('2025-01-01T00:00:00.000Z');
@@ -118,6 +124,7 @@ describe('LogService', () => {
 
     service.critical('critical issue', err, { x: 1 });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [, , entry] = (console.error as any).mock.calls[0];
 
     expect(entry.level).toBe(LogLevel.Critical);
