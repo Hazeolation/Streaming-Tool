@@ -12,6 +12,10 @@ import { BroadcastStateService } from '../../services/broadcast-state';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
 import { SocialsService } from '../../services/socials';
 import { LogService } from '../../services/log';
+import { Socials } from '../../models/socials';
+import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
+import { BroadcastState } from '../../models/broadcast-state';
+import { LogScope } from '../../models/log-scope';
 
 @Component({
   host: {
@@ -23,37 +27,70 @@ import { LogService } from '../../services/log';
   styleUrl: './commentator-box.scss',
 })
 export class CommentatorBox implements OnInit, OnDestroy {
-  private readonly log = inject(LogService);
-
-  /** Whether the component is displayed on the map screen. */
+  /**
+   * Whether the component is displayed on the map screen.
+   */
   @Input() onMapScreen: boolean = false;
 
-  /** Signal indicating if the interval is hidden. */
+  /**
+   * Signal indicating if the interval is hidden.
+   */
   intervalHidden: WritableSignal<boolean> = signal<boolean>(false);
 
-  /** Service for managing broadcast state. */
-  stateService = inject(BroadcastStateService);
-  /** Service for managing commentator box time data. */
-  commentatorBoxTimeDataService = inject(CommentatorBoxTimeDataService);
-  /** Service for managing socials data. */
-  socialsService = inject(SocialsService);
+  /**
+   * Service for managing broadcast state.
+   */
+  stateService: BroadcastStateService = inject(BroadcastStateService);
+  /**
+   * Service for managing commentator box time data.
+   */
+  commentatorBoxTimeDataService: CommentatorBoxTimeDataService = inject(
+    CommentatorBoxTimeDataService,
+  );
+  /**
+   * Service for managing socials data.
+   */
+  socialsService: SocialsService = inject(SocialsService);
 
-  /** Current broadcast state. */
-  state = this.stateService.state;
+  /**
+   * Current broadcast state.
+   */
+  state: WritableSignal<BroadcastState> = this.stateService.state;
 
-  /** Commentator box time configuration. */
-  commentatorBoxTimeData = this.commentatorBoxTimeDataService.commentatorBoxTimeData;
+  /**
+   * Commentator box time configuration.
+   */
+  commentatorBoxTimeData: WritableSignal<CommentatorBoxTimeData> =
+    this.commentatorBoxTimeDataService.commentatorBoxTimeData;
 
-  /** Socials data. */
-  socials = this.socialsService.socials;
+  /**
+   * Socials data.
+   */
+  socials: WritableSignal<Socials> = this.socialsService.socials;
 
-  /** Timeout for hiding the display. */
+  /**
+   * Service for logging
+   */
+  private readonly log: LogService = inject(LogService);
+
+  /**
+   * Logging scope created for the CommentatorBox overlay.
+   */
+  private readonly scope: LogScope = this.log.beginScope('CommentatorBox');
+
+  /**
+   * Timeout for hiding the display.
+   */
   private hideDisplayTimeout: ReturnType<typeof setTimeout> | undefined;
 
-  /** Timeout for showing the display. */
+  /**
+   * Timeout for showing the display.
+   */
   private showDisplayTimeout: ReturnType<typeof setTimeout> | undefined;
 
-  /** Reactive effect managing interval-based visibility of the commentator box. */
+  /**
+   * Reactive effect managing interval-based visibility of the commentator box.
+   */
   private commBoxDisplayIntervalEffect = effect(() => {
     const config = this.commentatorBoxTimeData();
 
@@ -116,7 +153,9 @@ export class CommentatorBox implements OnInit, OnDestroy {
     }, this.commentatorBoxTimeData().showDisplayIntervalInSeconds * 1000);
   }
 
-  /** Schedule the timeout to hide the commentator box after the configured interval. */
+  /**
+   * Schedule the timeout to hide the commentator box after the configured interval.
+   */
   private setHideDisplayIntervalTimeout(): void {
     this.log.debug('Scheduling hide interval timeout');
 
@@ -129,7 +168,9 @@ export class CommentatorBox implements OnInit, OnDestroy {
     }, this.commentatorBoxTimeData().hideDisplayIntervalInSeconds * 1000);
   }
 
-  /** Initialize services and load initial state when the component is created. */
+  /**
+   * Initialize services and load initial state when the component is created.
+   */
   ngOnInit(): void {
     this.log.info('CommentatorBox initialized', {
       onMapScreen: this.onMapScreen,
@@ -140,13 +181,16 @@ export class CommentatorBox implements OnInit, OnDestroy {
     this.socialsService.loadInitialState();
   }
 
-  /** Cleanup timeouts and destroy the interval effect when the component is destroyed. */
+  /**
+   * Angular lifecycle hook called when the component is destroyed.
+   */
   ngOnDestroy(): void {
-    this.log.info('CommentatorBox destroyed');
+    this.log.trace('CommentatorBox destroyed');
 
     clearTimeout(this.hideDisplayTimeout);
     clearTimeout(this.showDisplayTimeout);
 
     this.commBoxDisplayIntervalEffect.destroy();
+    this.scope.dispose();
   }
 }

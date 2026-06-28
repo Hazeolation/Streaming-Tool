@@ -3,6 +3,7 @@ import { MapCard } from '../../features/map-card/map-card';
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { LogService } from '../../services/log';
+import { LogScope } from '../../models/log-scope';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,10 +12,18 @@ import { LogService } from '../../services/log';
   styleUrl: './dashboard.scss',
 })
 export class Dashboard {
-  private readonly log = inject(LogService);
+  /**
+   * The log service
+   */
+  private readonly log: LogService = inject(LogService);
 
   /**
-   * Injects the BroadcastStateService
+   * The scope for the Dashboard page
+   */
+  private readonly scope: LogScope = this.log.beginScope('Dashboard');
+
+  /**
+   * The BroadcastStateService
    */
   stateService: BroadcastStateService = inject(BroadcastStateService);
 
@@ -44,5 +53,13 @@ export class Dashboard {
     } catch (err) {
       this.log.error('Failed to add map from Dashboard', err);
     }
+  }
+
+  /**
+   * Angular lifecycle hook called when the component is destroyed.
+   */
+  ngOnDestroy(): void {
+    this.log.trace('Dashboard destroyed');
+    this.scope.dispose();
   }
 }

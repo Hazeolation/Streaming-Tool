@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output, inject, OnDestroy, OnInit } from '@angular/core';
 import { LogService } from '../../services/log';
+import { LogScope } from '../../models/log-scope';
 
 @Component({
   selector: 'app-edit-card',
@@ -8,19 +9,29 @@ import { LogService } from '../../services/log';
   styleUrl: './edit-card.scss',
 })
 export class EditCard implements OnInit, OnDestroy {
-  /** Local logger instance for edit card operations. */
-  private readonly log = inject(LogService);
+  /**
+   * Local logger instance for edit card operations.
+   */
+  private readonly log: LogService = inject(LogService);
 
-  /** Logging scope for this component lifecycle and actions. */
-  private readonly scope = this.log.beginScope('EditCard');
+  /**
+   * Logging scope for this component lifecycle and actions.
+   */
+  private readonly scope: LogScope = this.log.beginScope('EditCard');
 
-  /** Event emitter triggered when the close button of the edit card is clicked. */
+  /**
+   * Event emitter triggered when the close button of the edit card is clicked.
+   */
   @Output() onCloseClick: EventEmitter<void> = new EventEmitter<void>();
 
-  /** Event emitter triggered when the mode selection is changed. */
+  /**
+   * Event emitter triggered when the mode selection is changed.
+   */
   @Output() onModeChange: EventEmitter<string> = new EventEmitter<string>();
 
-  /** Event emitter triggered when the delete action is initiated. */
+  /**
+   * Event emitter triggered when the delete action is initiated.
+   */
   @Output() onDeleteMap: EventEmitter<void> = new EventEmitter<void>();
 
   /**
@@ -69,7 +80,7 @@ export class EditCard implements OnInit, OnDestroy {
    * Angular lifecycle hook called when the component is destroyed.
    */
   ngOnDestroy(): void {
-    this.log.info('EditCard destroyed');
+    this.log.trace('EditCard destroyed');
     this.scope.dispose();
   }
 }

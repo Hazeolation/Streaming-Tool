@@ -37,7 +37,9 @@ describe('StartScreen', () => {
   };
 
   const mockLogService = {
-    beginScope: vi.fn(),
+    beginScope: vi.fn().mockReturnValue({
+      dispose: vi.fn(),
+    }),
     trace: vi.fn(),
     debug: vi.fn(),
     info: vi.fn(),

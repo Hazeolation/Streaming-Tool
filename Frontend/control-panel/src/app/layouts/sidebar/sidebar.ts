@@ -8,6 +8,7 @@ import { SocialsService } from '../../services/socials';
 import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
 import { LogService } from '../../services/log';
+import { LogScope } from '../../models/log-scope';
 
 @Component({
   selector: 'app-sidebar',
@@ -19,12 +20,12 @@ export class Sidebar implements OnInit, OnDestroy {
   /**
    * Logger instance for sidebar lifecycle and actions.
    */
-  private readonly log = inject(LogService);
+  private readonly log: LogService = inject(LogService);
 
   /**
    * Scoped logger instance used for sidebar-specific logs.
    */
-  private readonly scope = this.log.beginScope('Sidebar');
+  private readonly scope: LogScope = this.log.beginScope('Sidebar');
 
   /**
    * Service that manages broadcast state and division data.
@@ -86,11 +87,11 @@ export class Sidebar implements OnInit, OnDestroy {
   }
 
   /**
-   * Clean up sidebar resources when destroyed.
+   * Angular lifecycle hook called when the component is destroyed.
    * @returns void
    */
   ngOnDestroy(): void {
-    this.log.info('Sidebar destroyed');
+    this.log.trace('Sidebar destroyed');
     this.scope.dispose();
   }
 }

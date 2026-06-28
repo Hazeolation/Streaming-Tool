@@ -8,6 +8,7 @@ import { Map } from '../../models/map';
 import { Mode } from '../../models/mode';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { LogService } from '../../services/log';
+import { LogScope } from '../../models/log-scope';
 
 @Component({
   selector: 'app-map-card',
@@ -16,35 +17,53 @@ import { LogService } from '../../services/log';
   styleUrl: './map-card.scss',
 })
 export class MapCard implements OnInit, OnDestroy {
-  /** Logger instance for this component. */
-  private readonly log = inject(LogService);
+  /**
+   * The logging service.
+   */
+  private readonly log: LogService = inject(LogService);
 
-  /** Scoped logger lifecycle manager. */
-  private readonly scope = this.log.beginScope('MapCard');
+  /**
+   * Scoped logger lifecycle manager.
+   */
+  private readonly scope: LogScope = this.log.beginScope('MapCard');
 
-  /** The map state bound to this component. */
+  /**
+   * The map state bound to this component.
+   */
   @Input({ required: true }) map!: MapState;
 
-  /** Service managing broadcast state updates. */
+  /**
+   * Service managing broadcast state updates.
+   */
   stateService: BroadcastStateService = inject(BroadcastStateService);
 
-  /** Signal representing the current broadcast state. */
+  /**
+   * Signal representing the current broadcast state.
+   */
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
-  /** Available maps sorted alphabetically by name. */
+  /**
+   * Available maps sorted alphabetically by name.
+   */
   availableMaps: Map[] = this.stateService.availableMaps.sort((a, b) => {
     if (a.mapName < b.mapName) return -1;
     if (a.mapName > b.mapName) return 1;
     return 0;
   });
 
-  /** Available modes for map selection. */
+  /**
+   * Available modes for map selection.
+   */
   availableModes: Mode[] = this.stateService.availableModes;
 
-  /** Whether the edit menu is visible. */
+  /**
+   * Whether the edit menu is visible.
+   */
   showEditMenu: boolean = false;
 
-  /** Initialize the component and log startup details. */
+  /**
+   * Initialize the component and log startup details.
+   */
   ngOnInit(): void {
     this.log.debug('MapCard initialized', {
       mapId: this.map?.id,
@@ -120,7 +139,9 @@ export class MapCard implements OnInit, OnDestroy {
     });
   }
 
-  /** Remove this map from the broadcast state. */
+  /**
+   * Remove this map from the broadcast state.
+   */
   removeMap(): void {
     this.log.warn('Map removed', {
       mapId: this.map.id,
@@ -196,7 +217,9 @@ export class MapCard implements OnInit, OnDestroy {
     this.stateService.update({ maps: updatedMaps });
   }
 
-  /** Open the edit menu for this map card. */
+  /**
+   * Open the edit menu for this map card.
+   */
   openEditMenu(): void {
     this.log.debug('Edit menu opened', {
       mapId: this.map.id,
@@ -205,7 +228,9 @@ export class MapCard implements OnInit, OnDestroy {
     this.showEditMenu = true;
   }
 
-  /** Close the edit menu for this map card. */
+  /**
+   * Close the edit menu for this map card.
+   */
   closeEditMenu(): void {
     this.log.debug('Edit menu closed', {
       mapId: this.map.id,
@@ -214,12 +239,11 @@ export class MapCard implements OnInit, OnDestroy {
     this.showEditMenu = false;
   }
 
-  /** Cleanup component resources when destroyed. */
+  /**
+   * Angular lifecycle hook called when the component is destroyed.
+   */
   ngOnDestroy(): void {
-    this.log.info('MapCard destroyed', {
-      mapId: this.map.id,
-    });
-
+    this.log.trace('MapCard destroyed');
     this.scope.dispose();
   }
 }

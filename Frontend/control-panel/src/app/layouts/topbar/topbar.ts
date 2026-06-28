@@ -23,16 +23,6 @@ export class Topbar implements OnInit, OnDestroy {
   private readonly scope: LogScope = this.log.beginScope('Topbar');
 
   /**
-   * Broadcast state signal shared across the application.
-   */
-  state: WritableSignal<BroadcastState> = inject(BroadcastStateService).state;
-
-  /**
-   * SignalR connection state signal.
-   */
-  isConnected = inject(Signalr).isConnected;
-
-  /**
    * Effect that logs SignalR connection state changes.
    */
   private connectionEffect = effect(() => {
@@ -42,6 +32,16 @@ export class Topbar implements OnInit, OnDestroy {
       connected,
     });
   });
+
+  /**
+   * Broadcast state signal shared across the application.
+   */
+  state: WritableSignal<BroadcastState> = inject(BroadcastStateService).state;
+
+  /**
+   * SignalR connection state signal.
+   */
+  isConnected: WritableSignal<boolean> = inject(Signalr).isConnected;
 
   /**
    * Angular lifecycle hook called after component initialization.
@@ -58,11 +58,11 @@ export class Topbar implements OnInit, OnDestroy {
   }
 
   /**
-   * Angular lifecycle hook called before component destruction.
+   * Angular lifecycle hook called when the component is destroyed.
    * @returns {void}
    */
   ngOnDestroy(): void {
-    this.log.info('Topbar destroyed');
+    this.log.trace('Topbar destroyed');
 
     this.connectionEffect.destroy();
     this.scope.dispose();

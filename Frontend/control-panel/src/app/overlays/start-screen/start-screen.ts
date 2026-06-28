@@ -9,6 +9,7 @@ import {
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { LogService } from '../../services/log';
+import { LogScope } from '../../models/log-scope';
 
 @Component({
   selector: 'start-screen',
@@ -17,21 +18,33 @@ import { LogService } from '../../services/log';
   styleUrl: './start-screen.scss',
 })
 export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
-  /** Injected logger for lifecycle and countdown diagnostics. */
-  private readonly log = inject(LogService);
+  /**
+   * Injected logger for lifecycle and countdown diagnostics.
+   */
+  private readonly log: LogService = inject(LogService);
 
-  /** Broadcast state service used to load and expose overlay state. */
-  stateService = inject(BroadcastStateService);
+  /**
+   * Scope for StartScreen overlay.
+   */
+  private readonly scope: LogScope = this.log.beginScope('StartScreen');
 
-  /** Current broadcast state signal for the start screen. */
+  /**
+   * Broadcast state service used to load and expose overlay state.
+   */
+  stateService: BroadcastStateService = inject(BroadcastStateService);
+
+  /**
+   * Current broadcast state signal for the start screen.
+   */
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
-  /** Active countdown timer handle, if one is currently running. */
+  /**
+   * Active countdown timer handle, if one is currently running.
+   */
   private countdownInterval: ReturnType<typeof setInterval> | undefined = undefined;
 
   /**
    * Initializes the component and requests the initial broadcast state.
-   * @returns {void}
    */
   ngOnInit(): void {
     const scope = this.log.beginScope('StartScreen.ngOnInit');
@@ -53,7 +66,6 @@ export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
 
   /**
    * Sets up the countdown timer after content initialization.
-   * @returns {void}
    */
   ngAfterContentInit(): void {
     const scope = this.log.beginScope('StartScreen.ngAfterContentInit');
@@ -115,22 +127,10 @@ export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
   }
 
   /**
-   * Cleans up the countdown timer when the component is destroyed.
-   * @returns {void}
+   * Angular lifecycle hook called when the component is destroyed.
    */
   ngOnDestroy(): void {
-    const scope = this.log.beginScope('StartScreen.ngOnDestroy');
-
-    try {
-      this.log.info('Cleaning up countdown timer');
-
-      clearInterval(this.countdownInterval);
-
-      this.log.info('StartScreen destroyed');
-    } catch (err) {
-      this.log.error('Error during StartScreen cleanup', err);
-    } finally {
-      scope.dispose();
-    }
+    this.log.trace('Start Screen destroyed');
+    this.scope.dispose();
   }
 }
