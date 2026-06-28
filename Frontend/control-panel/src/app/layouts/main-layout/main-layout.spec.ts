@@ -7,6 +7,7 @@ import { MainLayout } from './main-layout';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { SocialsService } from '../../services/socials';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
+import { LogService } from '../../services/log';
 
 @Component({
   selector: 'app-sidebar',
@@ -38,6 +39,15 @@ describe('MainLayout', () => {
     loadInitialState: vi.fn(),
   };
 
+  const mockLogService = {
+    trace: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
+    warning: vi.fn(),
+    error: vi.fn(),
+    critical: vi.fn(),
+  };
+
   beforeEach(async () => {
     vi.clearAllMocks();
 
@@ -57,6 +67,10 @@ describe('MainLayout', () => {
         {
           provide: CommentatorBoxTimeDataService,
           useValue: mockCommentatorBoxTimeDataService,
+        },
+        {
+          provide: LogService,
+          useValue: mockLogService,
         },
       ],
     })

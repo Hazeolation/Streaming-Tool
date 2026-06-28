@@ -8,6 +8,7 @@ import { BroadcastState } from '../../models/broadcast-state';
 import { MapState } from '../../models/map-state';
 import { Map } from '../../models/map';
 import { Mode } from '../../models/mode';
+import { LogService } from '../../services/log';
 
 describe('MapCard', () => {
   let component: MapCard;
@@ -90,6 +91,15 @@ describe('MapCard', () => {
     removeMap: vi.fn(),
   };
 
+  const mockLogService = {
+    trace: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
+    warning: vi.fn(),
+    error: vi.fn(),
+    critical: vi.fn(),
+  };
+
   beforeEach(async () => {
     vi.clearAllMocks();
 
@@ -101,6 +111,10 @@ describe('MapCard', () => {
         {
           provide: BroadcastStateService,
           useValue: mockStateService,
+        },
+        {
+          provide: LogService,
+          useValue: mockLogService,
         },
       ],
     })
