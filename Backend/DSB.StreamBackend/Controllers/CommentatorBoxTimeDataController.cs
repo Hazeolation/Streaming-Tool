@@ -1,5 +1,6 @@
 using DSB.StreamBackend.Dtos;
 using DSB.StreamBackend.Hubs;
+using DSB.StreamBackend.Logging;
 using DSB.StreamBackend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -16,7 +17,7 @@ namespace DSB.StreamBackend.Controllers;
 public class CommentatorBoxTimeDataController(
     CommentatorBoxTimeDataService timeDataService,
     IHubContext<OverlayHub, IOverlayClient> hub,
-    LogService log) : ControllerBase
+    ILogService log) : ControllerBase
 {
     /// <summary>
     /// Retrieves the current commentator box time data.
