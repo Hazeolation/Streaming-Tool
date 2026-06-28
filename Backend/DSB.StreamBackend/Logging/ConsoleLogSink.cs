@@ -24,6 +24,15 @@ public class ConsoleLogSink : ILogSink
 
         Console.Write($"[{entry.Level}] ");
 
+        if (!string.IsNullOrWhiteSpace(entry.Scope))
+        {
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+
+            Console.Write($"[{entry.Scope}] ");
+
+            Console.ForegroundColor = originalColor;
+        }
+
         Console.ForegroundColor = originalColor;
 
         Console.Write(entry.Message);
