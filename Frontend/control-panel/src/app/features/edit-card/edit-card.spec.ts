@@ -3,7 +3,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { EditCard } from './edit-card';
 import { LogService } from '../../services/log';
-import { LogScope } from '../../models/log-scope';
 
 describe('EditCard', () => {
   let component: EditCard;
