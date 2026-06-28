@@ -1,5 +1,3 @@
-#pragma warning disable CS4014 // Disabled because Logging is intended to not be awaited
-
 using DSB.StreamBackend.Context;
 using DSB.StreamBackend.Dtos;
 using DSB.StreamBackend.Logging;
@@ -17,13 +15,13 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
     public async Task<BroadcastStateDto> GetStateAsync()
     {
         using IDisposable scope = log.BeginScope(nameof(GetStateAsync));
-        log.DebugAsync("Loading broadcast state");
+        await log.DebugAsync("Loading broadcast state");
 
         try
         {
             BroadcastStateEntity entity = await GetOrCreateStateAsync();
 
-            log.DebugAsync("Broadcast state loaded", new
+            await log.DebugAsync("Broadcast state loaded", new
             {
                 entity.ScoreAlpha,
                 entity.ScoreBravo,
@@ -34,7 +32,7 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
         }
         catch (Exception ex)
         {
-            log.ErrorAsync("Failed to load broadcast state", ex);
+            await log.ErrorAsync("Failed to load broadcast state", ex);
             throw;
         }
     }
@@ -48,7 +46,7 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
     {
         using IDisposable scope = log.BeginScope(nameof(UpdateStateAsync));
 
-        log.InfoAsync("Updating broadcast state", new
+        await log.InfoAsync("Updating broadcast state", new
         {
             dto.TeamAlphaName,
             dto.TeamBravoName,
@@ -87,7 +85,7 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
 
             await db.SaveChangesAsync();
 
-            log.InfoAsync("Broadcast state updated", new
+            await log.InfoAsync("Broadcast state updated", new
             {
                 entity.ScoreAlpha,
                 entity.ScoreBravo,
@@ -98,7 +96,7 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
         }
         catch (Exception ex)
         {
-            log.ErrorAsync("Failed to update broadcast state", ex, dto);
+            await log.ErrorAsync("Failed to update broadcast state", ex, dto);
             throw;
         }
     }
@@ -109,7 +107,7 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
     /// <returns>The <see cref="BroadcastStateEntity"/></returns>
     private async Task<BroadcastStateEntity> GetOrCreateStateAsync()
     {
-        log.DebugAsync("Loading broadcast state entity");
+        await log.DebugAsync("Loading broadcast state entity");
 
         var entity = await db.BroadcastStates
             .Include(x => x.Maps)
@@ -117,11 +115,11 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
 
         if (entity != null)
         {
-            log.TraceAsync("Broadcast state exists");
+            await log.TraceAsync("Broadcast state exists");
             return entity;
         }
 
-        log.WarningAsync("Broadcast state not found, creating default");
+        await log.WarningAsync("Broadcast state not found, creating default");
 
         entity = new BroadcastStateEntity
         {
@@ -132,7 +130,7 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
 
         await db.SaveChangesAsync();
 
-        log.InfoAsync("Created initial broadcast state");
+        await log.InfoAsync("Created initial broadcast state");
 
         return entity;
     }

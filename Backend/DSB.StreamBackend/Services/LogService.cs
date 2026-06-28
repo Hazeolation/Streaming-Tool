@@ -1,5 +1,4 @@
-#pragma warning disable CS4014 // Disabled as method LogAsync() forces an await
-
+using System.Linq.Expressions;
 using DSB.StreamBackend.Logging;
 
 namespace DSB.StreamBackend.Services;
@@ -22,7 +21,7 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment env) : 
     /// </remarks>
     /// <param name="message">The log message to display</param>
     /// <param name="data">The object to log</param>
-    public async Task TraceAsync(string message, object? data = null)
+    public Task TraceAsync(string message, object? data = null)
         => LogAsync(Logging.LogLevel.Trace, message, null, data);
 
     /// <summary>
@@ -33,7 +32,7 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment env) : 
     /// </remarks>
     /// <param name="message">The log message to display</param>
     /// <param name="data">The object to log</param>
-    public async Task DebugAsync(string message, object? data = null)
+    public Task DebugAsync(string message, object? data = null)
         => LogAsync(Logging.LogLevel.Debug, message, null, data);
 
     /// <summary>
@@ -41,7 +40,7 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment env) : 
     /// </summary>
     /// <param name="message">The log message to display</param>
     /// <param name="data">The object to log</param>
-    public async Task InfoAsync(string message, object? data = null)
+    public Task InfoAsync(string message, object? data = null)
         => LogAsync(Logging.LogLevel.Info, message, null, data);
 
     /// <summary>
@@ -49,7 +48,7 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment env) : 
     /// </summary>
     /// <param name="message">The log message to display</param>
     /// <param name="data">The object to log</param>
-    public async Task WarningAsync(string message, object? data = null)
+    public Task WarningAsync(string message, object? data = null)
         => LogAsync(Logging.LogLevel.Warning, message, null, data);
 
     /// <summary>
@@ -57,7 +56,7 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment env) : 
     /// </summary>
     /// <param name="message">The log message to display</param>
     /// <param name="ex">The Exception to log</param>
-    public async Task ErrorAsync(string message, Exception? ex = null, object? data = null)
+    public Task ErrorAsync(string message, Exception? ex = null, object? data = null)
         => LogAsync(Logging.LogLevel.Error, message, ex, data);
 
     /// <summary>
@@ -65,7 +64,7 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment env) : 
     /// </summary>
     /// <param name="message">The log message to display</param>
     /// <param name="ex">The Exception to log</param>
-    public async Task CriticalAsync(string message, Exception? ex = null, object? data = null)
+    public Task CriticalAsync(string message, Exception? ex = null, object? data = null)
         => LogAsync(Logging.LogLevel.Critical, message, ex, data);
 
     /// <summary>
@@ -85,7 +84,16 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment env) : 
             Scope = LoggingScope.Current
         };
 
-        await Task.WhenAll(sinks.Select(x => x.WriteAsync(entry)));
+        await Task.WhenAll(
+            sinks.Select(async x =>
+            {
+                try
+                {
+                    await x.WriteAsync(entry);
+                }
+                catch { }
+            })
+        );
     }
 
     /// <inheritdoc />

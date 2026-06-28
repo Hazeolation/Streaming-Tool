@@ -1,5 +1,3 @@
-#pragma warning disable CS4014 // Disabled because Logging is intended to not be awaited
-
 using DSB.StreamBackend.Context;
 using DSB.StreamBackend.Dtos;
 using DSB.StreamBackend.Models;
@@ -21,14 +19,13 @@ public class SocialsService(StreamToolDbContext db, LogService log)
     {
         using IDisposable scope = log.BeginScope(nameof(GetSocialsAsync));
 
-        log.DebugAsync(
-            "Loading socials");
+        await log.DebugAsync("Loading socials");
 
         try
         {
             SocialsEntity entity = await GetOrCreateSocialsAsync();
 
-            log.InfoAsync("Socials loaded", new
+            await log.InfoAsync("Socials loaded", new
             {
                 HasXHandle = !string.IsNullOrWhiteSpace(entity.XHandle),
                 HasDiscordInvite = !string.IsNullOrWhiteSpace(entity.DiscordInvite)
@@ -38,7 +35,7 @@ public class SocialsService(StreamToolDbContext db, LogService log)
         }
         catch (Exception ex)
         {
-            log.ErrorAsync("Failed to load socials", ex);
+            await log.ErrorAsync("Failed to load socials", ex);
             throw;
         }
     }
@@ -52,7 +49,7 @@ public class SocialsService(StreamToolDbContext db, LogService log)
     {
         using IDisposable scope = log.BeginScope(nameof(UpdateSocialsAsync));
 
-        log.InfoAsync("Updating socials", new
+        await log.InfoAsync("Updating socials", new
         {
             dto.XHandle,
             HasDiscordInvite = !string.IsNullOrWhiteSpace(dto.DiscordInvite)
@@ -67,7 +64,7 @@ public class SocialsService(StreamToolDbContext db, LogService log)
 
             await db.SaveChangesAsync();
 
-            log.InfoAsync("Socials updated", new
+            await log.InfoAsync("Socials updated", new
             {
                 entity.XHandle,
                 HasDiscordInvite = !string.IsNullOrWhiteSpace(entity.DiscordInvite)
@@ -77,7 +74,7 @@ public class SocialsService(StreamToolDbContext db, LogService log)
         }
         catch (Exception ex)
         {
-            log.ErrorAsync("Failed to update socials", ex, dto);
+            await log.ErrorAsync("Failed to update socials", ex, dto);
             throw;
         }
     }
@@ -88,7 +85,7 @@ public class SocialsService(StreamToolDbContext db, LogService log)
     /// <returns>The <see cref="SocialsEntity"/></returns>
     private async Task<SocialsEntity> GetOrCreateSocialsAsync()
     {
-        log.TraceAsync("Loading socials entity");
+        await log.TraceAsync("Loading socials entity");
 
         var entity = await db.Socials.FirstOrDefaultAsync(x => x.Id == 1);
 
@@ -97,7 +94,7 @@ public class SocialsService(StreamToolDbContext db, LogService log)
             return entity;
         }
 
-        log.WarningAsync("Socials not found, creating default");
+        await log.WarningAsync("Socials not found, creating default");
 
         entity = new SocialsEntity
         {
@@ -108,7 +105,7 @@ public class SocialsService(StreamToolDbContext db, LogService log)
 
         await db.SaveChangesAsync();
 
-        log.InfoAsync("Created socials");
+        await log.InfoAsync("Created socials");
 
         return entity;
     }
