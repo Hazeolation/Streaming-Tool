@@ -56,7 +56,6 @@ describe('Topbar', () => {
   };
 
   beforeEach(async () => {
-    vi.resetAllMocks();
     mockState.set(defaultState);
     mockIsConnected.set(false);
 
