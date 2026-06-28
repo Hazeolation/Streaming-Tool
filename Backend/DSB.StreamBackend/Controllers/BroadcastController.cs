@@ -15,7 +15,8 @@ namespace DSB.StreamBackend.Controllers;
 [Route("api/broadcast")]
 public class BroadcastController(
     BroadcastStateService stateService,
-    IHubContext<OverlayHub, IOverlayClient> hub) : ControllerBase
+    IHubContext<OverlayHub, IOverlayClient> hub,
+    LogService log) : ControllerBase
 {
 
     /// <summary>
@@ -25,9 +26,21 @@ public class BroadcastController(
     [HttpGet("state")]
     public async Task<ActionResult<BroadcastStateDto>> GetState()
     {
-        var state = await stateService.GetStateAsync();
+        using IDisposable scope = log.BeginScope(nameof(GetState));
 
-        return Ok(state);
+        _ = log.DebugAsync("GET /api/broadcast/state called");
+
+        try
+        {
+            BroadcastStateDto state = await stateService.GetStateAsync();
+            _ = log.InfoAsync("Broadcast state returned");
+            return Ok(state);
+        }
+        catch (Exception ex)
+        {
+            _ = log.ErrorAsync("Failed to retrieve broadcast state", ex);
+            throw;
+        }
     }
 
     /// <summary>
@@ -39,11 +52,27 @@ public class BroadcastController(
     public async Task<ActionResult<BroadcastStateDto>> UpdateState(
         BroadcastStateDto state)
     {
-        var updatedState =
-            await stateService.UpdateStateAsync(state);
+        using var scope = log.BeginScope(nameof(UpdateState));
 
-        await hub.Clients.All.BroadcastStateUpdated(updatedState);
+        _ = log.InfoAsync("POST /api/broadcast/state called", new
+        {
+            state.TeamAlphaName,
+            state.TeamBravoName,
+            state.ScoreAlpha,
+            state.ScoreBravo
+        });
 
-        return Ok(updatedState);
+        try
+        {
+            BroadcastStateDto updatedState = await stateService.UpdateStateAsync(state);
+            await hub.Clients.All.BroadcastStateUpdated(updatedState);
+            _ = log.InfoAsync("Broadcast state pushed to SignalR clients");
+            return Ok(updatedState);
+        }
+        catch (Exception ex)
+        {
+            _ = log.ErrorAsync("Failed to update broadcast state", ex, state);
+            throw;
+        }
     }
 }

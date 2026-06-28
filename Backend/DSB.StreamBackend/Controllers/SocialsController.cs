@@ -15,7 +15,8 @@ namespace DSB.StreamBackend.Controllers;
 [Route("api/socials")]
 public class SocialsController(
     SocialsService socialsService,
-    IHubContext<OverlayHub, IOverlayClient> hub) : ControllerBase
+    IHubContext<OverlayHub, IOverlayClient> hub,
+    LogService log) : ControllerBase
 {
 
     /// <summary>
@@ -25,9 +26,23 @@ public class SocialsController(
     [HttpGet("socials")]
     public async Task<ActionResult<BroadcastStateDto>> GetSocials()
     {
-        var socials = await socialsService.GetSocialsAsync();
+        using IDisposable scope = log.BeginScope(nameof(GetSocials));
 
-        return Ok(socials);
+        _ = log.DebugAsync("GET /api/socials/socials requested");
+
+        try
+        {
+            SocialsDto socials = await socialsService.GetSocialsAsync();
+
+            _ = log.InfoAsync("Socials retrieved successfully");
+
+            return Ok(socials);
+        }
+        catch (Exception ex)
+        {
+            _ = log.ErrorAsync("Failed to retrieve socials", ex);
+            throw;
+        }
     }
 
     /// <summary>
@@ -39,11 +54,30 @@ public class SocialsController(
     public async Task<ActionResult<SocialsDto>> UpdateSocials(
         SocialsDto socials)
     {
-        var updatedSocials =
-            await socialsService.UpdateSocialsAsync(socials);
+        using IDisposable scope = log.BeginScope(nameof(UpdateSocials));
 
-        await hub.Clients.All.SocialsUpdated(updatedSocials);
+        _ = log.InfoAsync("POST /api/socials/socials received", new
+        {
+            HasXHandle = !string.IsNullOrWhiteSpace(socials.XHandle),
+            HasDiscordInvite = !string.IsNullOrWhiteSpace(socials.DiscordInvite)
+        });
 
-        return Ok(updatedSocials);
+        try
+        {
+            SocialsDto updatedSocials = await socialsService.UpdateSocialsAsync(socials);
+
+            _ = log.DebugAsync("Broadcasting socials update via SignalR");
+
+            await hub.Clients.All.SocialsUpdated(updatedSocials);
+
+            _ = log.InfoAsync("Socials broadcast completed");
+
+            return Ok(updatedSocials);
+        }
+        catch (Exception ex)
+        {
+            _ = log.ErrorAsync("Failed to update socials", ex, socials);
+            throw;
+        }
     }
 }

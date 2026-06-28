@@ -15,7 +15,8 @@ namespace DSB.StreamBackend.Controllers;
 [Route("api/commentator-box-time-data")]
 public class CommentatorBoxTimeDataController(
     CommentatorBoxTimeDataService timeDataService,
-    IHubContext<OverlayHub, IOverlayClient> hub) : ControllerBase
+    IHubContext<OverlayHub, IOverlayClient> hub,
+    LogService log) : ControllerBase
 {
     /// <summary>
     /// Retrieves the current commentator box time data.
@@ -24,9 +25,23 @@ public class CommentatorBoxTimeDataController(
     [HttpGet("commentator-box-time-data")]
     public async Task<ActionResult<CommentatorBoxTimeDataDto>> GetCommentatorBoxTimeData()
     {
-        CommentatorBoxTimeDataDto timeData = await timeDataService.GetCommentatorBoxTimeDataAsync();
+        using IDisposable scope = log.BeginScope(nameof(GetCommentatorBoxTimeData));
 
-        return Ok(timeData);
+        _ = log.DebugAsync("GET commentator-box-time-data requested");
+
+        try
+        {
+            CommentatorBoxTimeDataDto timeData = await timeDataService.GetCommentatorBoxTimeDataAsync();
+
+            _ = log.InfoAsync("Commentator box time data retrieved");
+
+            return Ok(timeData);
+        }
+        catch (Exception ex)
+        {
+            _ = log.ErrorAsync("Failed to retrieve commentator box time data", ex);
+            throw;
+        }
     }
 
     /// <summary>
@@ -39,9 +54,7 @@ public class CommentatorBoxTimeDataController(
         CommentatorBoxTimeDataDto timeData)
     {
         CommentatorBoxTimeDataDto updatedTimeData = await timeDataService.UpdateCommentatorBoxTimeDataAsync(timeData);
-
         await hub.Clients.All.CommentatorBoxTimeDataUpdated(updatedTimeData);
-
         return Ok(updatedTimeData);
     }
 }
