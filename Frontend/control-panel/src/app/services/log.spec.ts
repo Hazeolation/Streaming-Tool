@@ -1,15 +1,12 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { LogService } from './log';
 import { LogLevel } from '../enums/log-level';
-import { HttpClient } from '@angular/common/http';
 
 describe('LogService', () => {
   let service: LogService;
 
-  const httpMock = {} as HttpClient;
-
   beforeEach(() => {
-    service = new LogService(httpMock);
+    service = new LogService();
 
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2025-01-01T00:00:00Z'));
