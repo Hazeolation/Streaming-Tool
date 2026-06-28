@@ -8,7 +8,6 @@ import { LogScope } from '../../models/log-scope';
 describe('EditCard', () => {
   let component: EditCard;
   let fixture: ComponentFixture<EditCard>;
-  let logScope: LogScope;
 
   const mockLogService = {
     beginScope: vi.fn().mockReturnValue({
