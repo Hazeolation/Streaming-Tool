@@ -30,6 +30,7 @@ describe('LogService', () => {
 
     expect(console.log).toHaveBeenCalledTimes(1);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [prefix, message, entry] = (console.log as any).mock.calls[0];
 
     expect(prefix).toBe('[Info]');

@@ -43,7 +43,7 @@ export class BroadcastStateService {
   }
 
   /**
-   * Available data (unchanged but useful for debugging)
+   * Available data
    */
   availableMaps: Map[] = [
     {
