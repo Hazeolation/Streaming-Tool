@@ -49,6 +49,7 @@ describe('LogService', () => {
 
     expect(console.warn).toHaveBeenCalledTimes(1);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [prefix] = (console.warn as any).mock.calls[0];
     expect(prefix).toBe('[Warning]');
   });
