@@ -18,11 +18,11 @@ builder.Services.AddDbContext<StreamToolDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddSingleton<ILogService, LogService>();
+builder.Services.AddSingleton<ILogSink, ConsoleLogSink>();
 builder.Services.AddScoped<BroadcastStateService>();
 builder.Services.AddScoped<SocialsService>();
 builder.Services.AddScoped<CommentatorBoxTimeDataService>();
-builder.Services.AddSingleton<ILogService, LogService>();
-builder.Services.AddSingleton<ILogSink, ConsoleLogSink>();
 
 builder.Services.AddCors(options =>
 {

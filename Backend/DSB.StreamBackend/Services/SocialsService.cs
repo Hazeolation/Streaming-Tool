@@ -1,5 +1,6 @@
 using DSB.StreamBackend.Context;
 using DSB.StreamBackend.Dtos;
+using DSB.StreamBackend.Logging;
 using DSB.StreamBackend.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +10,7 @@ namespace DSB.StreamBackend.Services;
 /// Contains all business logic related to socials
 /// </summary>
 /// <param name="db">The database context</param>
-public class SocialsService(StreamToolDbContext db, LogService log)
+public class SocialsService(StreamToolDbContext db, ILogService log)
 {
     /// <summary>
     /// Asynchronously gets the socials

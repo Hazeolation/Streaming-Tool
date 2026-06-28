@@ -1,11 +1,12 @@
 using DSB.StreamBackend.Context;
 using DSB.StreamBackend.Dtos;
+using DSB.StreamBackend.Logging;
 using DSB.StreamBackend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DSB.StreamBackend.Services;
 
-public class CommentatorBoxTimeDataService(StreamToolDbContext db, LogService log)
+public class CommentatorBoxTimeDataService(StreamToolDbContext db, ILogService log)
 {
     /// <summary>
     /// Asynchronously gets the commentator box time data
