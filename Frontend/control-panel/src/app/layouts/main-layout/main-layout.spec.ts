@@ -46,7 +46,7 @@ describe('MainLayout', () => {
     trace: vi.fn(),
     debug: vi.fn(),
     info: vi.fn(),
-    warning: vi.fn(),
+    warn: vi.fn(),
     error: vi.fn(),
     critical: vi.fn(),
   };
