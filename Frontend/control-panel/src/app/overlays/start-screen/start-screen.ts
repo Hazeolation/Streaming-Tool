@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
+import { LogService } from '../../services/log';
 
 @Component({
   selector: 'start-screen',
@@ -16,66 +17,120 @@ import { BroadcastStateService } from '../../services/broadcast-state';
   styleUrl: './start-screen.scss',
 })
 export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
-  /**
-   * Injects the `BroadcastStateService` to access the current broadcast state and available maps, modes, and divisions. The `state` signal is used to reactively track changes to the broadcast state, allowing the score box component to update its UI accordingly whenever the state changes. This setup enables the score box to display the current team names and scores based on the latest broadcast state received from the service.
-   */
-  stateService: BroadcastStateService = inject(BroadcastStateService);
+  /** Injected logger for lifecycle and countdown diagnostics. */
+  private readonly log = inject(LogService);
 
-  /**
-   * A writable signal that holds the current broadcast state. It is initialized by referencing the `state` signal from the `BroadcastStateService`, allowing the score box component to reactively update its UI whenever the broadcast state changes. This signal is used to display the team names and scores in the score box, ensuring that it always reflects the most current state of the broadcast as provided by the service.
-   */
+  /** Broadcast state service used to load and expose overlay state. */
+  stateService = inject(BroadcastStateService);
+
+  /** Current broadcast state signal for the start screen. */
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
-  /**
-   * Id of the interval that refreshes the countdown timer once every second and gets cleared on content init and component destroy
-   */
+  /** Active countdown timer handle, if one is currently running. */
   private countdownInterval: ReturnType<typeof setInterval> | undefined = undefined;
 
   /**
-   * Initializes the score box component by calling the `loadInitialState` method on the `BroadcastStateService`. This ensures that the component has the initial broadcast state loaded and ready to display when it is first rendered. The `ngOnInit` lifecycle hook is used to perform this initialization logic, which is a common practice in Angular components to set up necessary data or state before the component is displayed to the user.
+   * Initializes the component and requests the initial broadcast state.
+   * @returns {void}
    */
   ngOnInit(): void {
-    this.stateService.loadInitialState();
+    const scope = this.log.beginScope('StartScreen.ngOnInit');
+
+    this.log.info('StartScreen initialized');
+
+    try {
+      this.log.debug('Loading initial broadcast state');
+
+      this.stateService.loadInitialState();
+
+      this.log.info('Broadcast state load requested');
+    } catch (err) {
+      this.log.error('Failed during StartScreen init', err);
+    } finally {
+      scope.dispose();
+    }
   }
 
   /**
-   * Initializes the countdown timer that updates the html element every second, and displays a placeholder text if the time has elapsed
+   * Sets up the countdown timer after content initialization.
+   * @returns {void}
    */
   ngAfterContentInit(): void {
-    // Check for document undefined, document element isn't still properly rendered after content init
-    if (typeof document === 'undefined') return;
+    const scope = this.log.beginScope('StartScreen.ngAfterContentInit');
 
-    clearInterval(this.countdownInterval);
-
-    const setCountdownTimer = () => {
-      const timerElem = document.body.querySelector('.countdown-timer');
-      if (!timerElem) return;
-
-      const startTime = new Date(this.state().startTime);
-      const diffTime = new Date(startTime.getTime() - Date.now());
-      if (diffTime.getTime() <= 0) {
-        timerElem.textContent = 'SOON™';
+    try {
+      if (typeof document === 'undefined') {
+        this.log.warn('Document is undefined - skipping countdown setup');
         return;
       }
 
-      let hours = diffTime.getUTCHours().toString();
-      let minutes = diffTime.getUTCMinutes().toString();
-      let seconds = diffTime.getUTCSeconds().toString();
-      hours = hours.length > 1 ? hours : '0' + hours;
-      minutes = minutes.length > 1 ? minutes : '0' + minutes;
-      seconds = seconds.length > 1 ? seconds : '0' + seconds;
+      this.log.info('Initializing countdown timer');
 
-      timerElem.textContent = hours + ':' + minutes + ':' + seconds;
-    };
+      clearInterval(this.countdownInterval);
 
-    setCountdownTimer();
-    this.countdownInterval = setInterval(setCountdownTimer, 1000);
+      const setCountdownTimer = () => {
+        const timerElem = document.body.querySelector('.countdown-timer');
+
+        if (!timerElem) {
+          this.log.trace('Countdown element not found yet');
+          return;
+        }
+
+        const startTime = new Date(this.state().startTime);
+
+        const diffTime = new Date(startTime.getTime() - Date.now());
+
+        if (diffTime.getTime() <= 0) {
+          timerElem.textContent = 'SOON™';
+          return;
+        }
+
+        let hours = diffTime.getUTCHours().toString();
+        let minutes = diffTime.getUTCMinutes().toString();
+        let seconds = diffTime.getUTCSeconds().toString();
+
+        hours = hours.length > 1 ? hours : '0' + hours;
+        minutes = minutes.length > 1 ? minutes : '0' + minutes;
+        seconds = seconds.length > 1 ? seconds : '0' + seconds;
+
+        const formatted = hours + ':' + minutes + ':' + seconds;
+
+        timerElem.textContent = formatted;
+
+        this.log.trace('Countdown updated', {
+          formatted,
+        });
+      };
+
+      setCountdownTimer();
+
+      this.countdownInterval = setInterval(setCountdownTimer, 1000);
+
+      this.log.info('Countdown timer started');
+    } catch (err) {
+      this.log.error('Failed setting up countdown timer', err);
+    } finally {
+      scope.dispose();
+    }
   }
 
   /**
-   * Clears all intervals on component destroy
+   * Cleans up the countdown timer when the component is destroyed.
+   * @returns {void}
    */
   ngOnDestroy(): void {
-    clearInterval(this.countdownInterval);
+    const scope = this.log.beginScope('StartScreen.ngOnDestroy');
+
+    try {
+      this.log.info('Cleaning up countdown timer');
+
+      clearInterval(this.countdownInterval);
+
+      this.log.info('StartScreen destroyed');
+    } catch (err) {
+      this.log.error('Error during StartScreen cleanup', err);
+    } finally {
+      scope.dispose();
+    }
   }
 }

@@ -8,12 +8,10 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
-import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { SocialsService } from '../../services/socials';
-import { Socials } from '../../models/socials';
+import { LogService } from '../../services/log';
 
 @Component({
   host: {
@@ -25,124 +23,127 @@ import { Socials } from '../../models/socials';
   styleUrl: './commentator-box.scss',
 })
 export class CommentatorBox implements OnInit, OnDestroy {
-  /**
-   * Input on HTML component of `CommentatorBox` that checks if we're on the map screen currently and want periodic hiding/displaying of commentator box, or if we're on any other element where the box is always visible
-   */
+  private readonly log = inject(LogService);
+
+  /** Whether the component is displayed on the map screen. */
   @Input() onMapScreen: boolean = false;
 
-  /**
-   * Signal that sets the class `interval-hidden` on the host component element and hides our element
-   */
+  /** Signal indicating if the interval is hidden. */
   intervalHidden: WritableSignal<boolean> = signal<boolean>(false);
 
-  /**
-   * Injects the `BroadcastStateService` to access the current broadcast state and available maps, modes, and divisions. The `state` signal is used to reactively track changes to the broadcast state, allowing the commentator box component to update its UI accordingly whenever the state changes. This setup enables the commentator box to show the current commentator information based on the latest broadcast state received from the service.
-   */
-  stateService: BroadcastStateService = inject(BroadcastStateService);
+  /** Service for managing broadcast state. */
+  stateService = inject(BroadcastStateService);
+  /** Service for managing commentator box time data. */
+  commentatorBoxTimeDataService = inject(CommentatorBoxTimeDataService);
+  /** Service for managing socials data. */
+  socialsService = inject(SocialsService);
 
-  /**
-   * A writable signal that holds the current broadcast state. It is initialized by referencing the `state` signal from the `BroadcastStateService`, allowing the commentator box component to reactively update its UI whenever the broadcast state changes. This signal is used to display the current commentator information in the commentator box, ensuring that it always reflects the most current state of the broadcast as provided by the service.
-   */
-  state: WritableSignal<BroadcastState> = this.stateService.state;
+  /** Current broadcast state. */
+  state = this.stateService.state;
 
-  /**
-   * Injects the `CommentatorBoxTimeDataService` to access the display and hide times for the commentator box on the map screen overlay
-   */
-  // prettier-ignore
-  commentatorBoxTimeDataService: CommentatorBoxTimeDataService = inject(CommentatorBoxTimeDataService);
+  /** Commentator box time configuration. */
+  commentatorBoxTimeData = this.commentatorBoxTimeDataService.commentatorBoxTimeData;
 
-  /**
-   * A writable signal the holds the current commentator box time data state. It is initialized by referencing the `commentatorBoxTimeData` signal from the `CommentatorBoxTimeDataService`, allowing the display times for the commentator box to be updated reactively
-   */
-  commentatorBoxTimeData: WritableSignal<CommentatorBoxTimeData> =
-    this.commentatorBoxTimeDataService.commentatorBoxTimeData;
+  /** Socials data. */
+  socials = this.socialsService.socials;
 
-  /**
-   * Injects the `SocialsService` to access social links such as discord server invite, twitter handle, etc. The `socials` signal is used to reactively track changes to the socials state to update the overlay accordingly
-   */
-  socialsService: SocialsService = inject(SocialsService);
+  /** Timeout for hiding the display. */
+  private hideDisplayTimeout: ReturnType<typeof setTimeout> | undefined;
 
-  /**
-   * A writable signal that holds the current socials state. It is initialized by referencing the `socials` signal from the `SocialsService`, allowing the end screen display component to reactively update its UI whenever the socials state changes.
-   */
-  socials: WritableSignal<Socials> = this.socialsService.socials;
+  /** Timeout for showing the display. */
+  private showDisplayTimeout: ReturnType<typeof setTimeout> | undefined;
 
-  /**
-   * Timeouts for both timeouts that periodically hide and show our commentator box. Both intervals can be changed via the sidebar, thus needing 2 seperate timeouts
-   */
-  private hideDisplayTimeout: ReturnType<typeof setTimeout> | undefined = undefined;
-  private showDisplayTimeout: ReturnType<typeof setTimeout> | undefined = undefined;
-
-  /**
-   * Computed property that gets the name of all commentators, and turns the text into a singular if only one commentator is added in the input fields
-   */
-  get commentatorsText(): string {
-    const commentator1 = this.state().commentator1;
-    const commentator2 = this.state().commentator2;
-    if (commentator1 && !commentator2) {
-      return `Kommentator: ${commentator1}`;
-    }
-
-    if (commentator2 && !commentator1) {
-      return `Kommentator: ${commentator2}`;
-    }
-
-    return `Kommentatoren: ${commentator1 || 'Kommentator 1'}, ${commentator2 || 'Kommentator 2'}`;
-  }
-
-  /**
-   * Effect that checks for changes in the interval values for hiding and showing the display. If one of the values is 0, the display will always be visible
-   */
+  /** Reactive effect managing interval-based visibility of the commentator box. */
   private commBoxDisplayIntervalEffect = effect(() => {
+    const config = this.commentatorBoxTimeData();
+
     clearTimeout(this.hideDisplayTimeout);
     clearTimeout(this.showDisplayTimeout);
 
+    this.log.debug('CommentatorBox interval effect triggered', {
+      onMapScreen: this.onMapScreen,
+      hideInterval: config.hideDisplayIntervalInSeconds,
+      showInterval: config.showDisplayIntervalInSeconds,
+    });
+
     if (
       !this.onMapScreen ||
-      this.commentatorBoxTimeData().hideDisplayIntervalInSeconds === 0 ||
-      this.commentatorBoxTimeData().showDisplayIntervalInSeconds === 0
+      config.hideDisplayIntervalInSeconds === 0 ||
+      config.showDisplayIntervalInSeconds === 0
     ) {
       this.intervalHidden.set(false);
+
+      this.log.info('CommentatorBox forced visible (interval disabled or not map screen)');
+
       return;
     }
 
     this.intervalHidden.set(true);
+
+    this.log.info('CommentatorBox interval cycling started', {
+      hideInterval: config.hideDisplayIntervalInSeconds,
+      showInterval: config.showDisplayIntervalInSeconds,
+    });
+
     this.setHideDisplayIntervalTimeout();
   });
 
   /**
-   * Function that sets the timeout for when the display will move from it's shown state into it's hidden state by the amount of seconds the user inputs on the dashboard
+   * Get the formatted commentator text based on the current broadcast state.
+   * @returns {string} The formatted commentator text for the current broadcast state.
    */
+  get commentatorsText(): string {
+    const c1 = this.state().commentator1;
+    const c2 = this.state().commentator2;
+
+    return c1 && !c2
+      ? `Kommentator: ${c1}`
+      : c2 && !c1
+        ? `Kommentator: ${c2}`
+        : `Kommentatoren: ${c1 || 'Kommentator 1'}, ${c2 || 'Kommentator 2'}`;
+  }
+
+  /** Schedule the timeout to show the commentator box after the configured interval. */
   private setShowDisplayIntervalTimeout(): void {
-    this.hideDisplayTimeout = setTimeout(() => {
-      this.intervalHidden.set(true);
+    this.log.debug('Scheduling show interval timeout');
+
+    this.showDisplayTimeout = setTimeout(() => {
+      this.intervalHidden.set(false);
+
+      this.log.debug('CommentatorBox shown');
+
       this.setHideDisplayIntervalTimeout();
     }, this.commentatorBoxTimeData().showDisplayIntervalInSeconds * 1000);
   }
 
-  /**
-   * Function that sets the timeout for when the display will move from it's hidden state into it's shown state by the amount of seconds the user inputs on the dashboard
-   */
+  /** Schedule the timeout to hide the commentator box after the configured interval. */
   private setHideDisplayIntervalTimeout(): void {
-    this.showDisplayTimeout = setTimeout(() => {
-      this.intervalHidden.set(false);
+    this.log.debug('Scheduling hide interval timeout');
+
+    this.hideDisplayTimeout = setTimeout(() => {
+      this.intervalHidden.set(true);
+
+      this.log.debug('CommentatorBox hidden');
+
       this.setShowDisplayIntervalTimeout();
     }, this.commentatorBoxTimeData().hideDisplayIntervalInSeconds * 1000);
   }
 
-  /**
-   * Initializes the commentator box component by calling the `loadInitialState` method on the `BroadcastStateService`. This ensures that the component has the initial broadcast state loaded and ready to display when it is first rendered. The `ngOnInit` lifecycle hook is used to perform this initialization logic, which is a common practice in Angular components to set up necessary data or state before the component is displayed to the user.
-   */
+  /** Initialize services and load initial state when the component is created. */
   ngOnInit(): void {
+    this.log.info('CommentatorBox initialized', {
+      onMapScreen: this.onMapScreen,
+    });
+
     this.stateService.loadInitialState();
     this.commentatorBoxTimeDataService.loadInitialState();
     this.socialsService.loadInitialState();
   }
 
-  /**
-   * Destroys all effects and intervals needed by the `CommentatorBox` component
-   */
+  /** Cleanup timeouts and destroy the interval effect when the component is destroyed. */
   ngOnDestroy(): void {
+    this.log.info('CommentatorBox destroyed');
+
     clearTimeout(this.hideDisplayTimeout);
     clearTimeout(this.showDisplayTimeout);
 
