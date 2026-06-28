@@ -9,6 +9,7 @@ import { CommentatorBoxTimeDataService } from '../../services/commentator-box-ti
 import { SocialsService } from '../../services/socials';
 import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { Socials } from '../../models/socials';
+import { LogService } from '../../services/log';
 
 describe('InfoboxDisplay', () => {
   let component: InfoboxDisplay;
@@ -59,6 +60,16 @@ describe('InfoboxDisplay', () => {
     loadInitialState: vi.fn(),
   };
 
+  const mockLogService = {
+    beginScope: vi.fn(),
+    trace: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
+    warning: vi.fn(),
+    error: vi.fn(),
+    critical: vi.fn(),
+  };
+
   beforeEach(async () => {
     mockState.set(defaultState);
 
@@ -76,6 +87,10 @@ describe('InfoboxDisplay', () => {
         {
           provide: SocialsService,
           useValue: mockSocialsService,
+        },
+        {
+          provide: LogService,
+          useValue: mockLogService,
         },
       ],
     }).compileComponents();

@@ -5,6 +5,7 @@ import { signal } from '@angular/core';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { Socials } from '../../models/socials';
 import { SocialsService } from '../../services/socials';
+import { LogService } from '../../services/log';
 
 describe('EndScreen', () => {
   let component: EndScreen;
@@ -48,6 +49,16 @@ describe('EndScreen', () => {
     loadInitialState: vi.fn(),
   };
 
+  const mockLogService = {
+    beginScope: vi.fn(),
+    trace: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
+    warning: vi.fn(),
+    error: vi.fn(),
+    critical: vi.fn(),
+  };
+
   beforeEach(async () => {
     vi.clearAllMocks();
     mockState.set(defaultState);
@@ -63,6 +74,10 @@ describe('EndScreen', () => {
         {
           provide: SocialsService,
           useValue: mockSocialsService,
+        },
+        {
+          provide: LogService,
+          useValue: mockLogService,
         },
       ],
     }).compileComponents();

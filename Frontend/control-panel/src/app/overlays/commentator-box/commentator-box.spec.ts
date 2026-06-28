@@ -9,6 +9,7 @@ import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
 import { SocialsService } from '../../services/socials';
 import { Socials } from '../../models/socials';
+import { LogService } from '../../services/log';
 
 describe('CommentatorBox', () => {
   let component: CommentatorBox;
@@ -61,6 +62,16 @@ describe('CommentatorBox', () => {
     loadInitialState: vi.fn(),
   };
 
+  const mockLogService = {
+    beginScope: vi.fn(),
+    trace: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
+    warning: vi.fn(),
+    error: vi.fn(),
+    critical: vi.fn(),
+  };
+
   beforeEach(async () => {
     vi.clearAllMocks();
     mockState.set(defaultState);
@@ -79,6 +90,10 @@ describe('CommentatorBox', () => {
         {
           provide: SocialsService,
           useValue: mockSocialsService,
+        },
+        {
+          provide: LogService,
+          useValue: mockLogService,
         },
       ],
     }).compileComponents();

@@ -3,6 +3,7 @@ import { StartScreen } from './start-screen';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
 import { signal } from '@angular/core';
+import { LogService } from '../../services/log';
 
 describe('StartScreen', () => {
   let component: StartScreen;
@@ -35,6 +36,16 @@ describe('StartScreen', () => {
     loadInitialState: vi.fn(),
   };
 
+  const mockLogService = {
+    beginScope: vi.fn(),
+    trace: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
+    warning: vi.fn(),
+    error: vi.fn(),
+    critical: vi.fn(),
+  };
+
   beforeEach(async () => {
     vi.clearAllMocks();
     mockState.set(defaultState);
@@ -45,6 +56,10 @@ describe('StartScreen', () => {
         {
           provide: BroadcastStateService,
           useValue: mockStateService,
+        },
+        {
+          provide: LogService,
+          useValue: mockLogService,
         },
       ],
     }).compileComponents();

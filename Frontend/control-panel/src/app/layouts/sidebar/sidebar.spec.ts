@@ -57,6 +57,7 @@ describe('Sidebar', () => {
   };
 
   const mockLogService = {
+    beginScope: vi.fn(),
     trace: vi.fn(),
     debug: vi.fn(),
     info: vi.fn(),
