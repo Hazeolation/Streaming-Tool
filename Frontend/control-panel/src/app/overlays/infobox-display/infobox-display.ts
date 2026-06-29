@@ -2,10 +2,11 @@ import { Component, inject, OnInit, WritableSignal } from '@angular/core';
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { CommentatorBox } from '../commentator-box/commentator-box';
+import { ResizableText } from '../../features/resizable-text/resizable-text';
 
 @Component({
   selector: 'app-infobox-display',
-  imports: [CommentatorBox],
+  imports: [CommentatorBox, ResizableText],
   templateUrl: './infobox-display.html',
   styleUrl: './infobox-display.scss',
 })

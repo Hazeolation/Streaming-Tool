@@ -10,7 +10,7 @@
 }
 
 .infobox {
-  min-width: 57.5rem;
+  width: 57.5rem;
   padding: 1rem 0.75rem 3rem 0.75rem;
   text-align: center;
   border: 0.375rem solid black;
@@ -48,11 +48,11 @@
   justify-content: center;
 }
 
-.team-name {
+app-resizable-text {
+  --font-color: white;
+  font-weight: 800;
   flex: 1;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  height: 3.1875rem;
 }
 
 .team-bravo-name {
