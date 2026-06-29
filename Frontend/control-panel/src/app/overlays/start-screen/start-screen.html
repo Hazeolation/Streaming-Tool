@@ -11,15 +11,11 @@
       <span class="division-bg-splat"></span>
     </div>
 
-    <span class="team-name">
-      {{ state().teamAlphaName }}
-    </span>
+    <app-resizable-text [resizableTextContent]="state().teamAlphaName" />
 
     <span class="versus-text"> VS. </span>
 
-    <span class="team-name">
-      {{ state().teamBravoName }}
-    </span>
+    <app-resizable-text [resizableTextContent]="state().teamBravoName" />
 
     <span class="countdown-timer"> 00:00 </span>
   </div>

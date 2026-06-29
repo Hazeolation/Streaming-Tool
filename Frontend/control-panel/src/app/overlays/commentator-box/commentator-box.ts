@@ -172,7 +172,7 @@ export class CommentatorBox implements OnInit, OnDestroy {
    * Initialize services and load initial state when the component is created.
    */
   ngOnInit(): void {
-    this.log.info('CommentatorBox initialized', {
+    this.log.trace('CommentatorBox initialized', {
       onMapScreen: this.onMapScreen,
     });
 

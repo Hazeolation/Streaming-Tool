@@ -4,11 +4,14 @@
   >
 
   <div class="versus">
-    <span class="team-name team-alpha-name">{{ state().teamAlphaName }}</span>
+    <app-resizable-text
+      [resizableTextContent]="state().teamAlphaName"
+      [aspectRatio]="'xMaxYMid meet'"
+    />
 
     <strong>VS</strong>
 
-    <span class="team-name team-bravo-name">{{ state().teamBravoName }}</span>
+    <app-resizable-text [resizableTextContent]="state().teamBravoName" />
   </div>
 
   <span class="score">

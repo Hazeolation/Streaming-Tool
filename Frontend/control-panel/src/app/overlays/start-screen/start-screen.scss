@@ -42,18 +42,21 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  mask-image: url("/assets/misc/Division_Bg_Splat.png");
+  mask-image: url('/assets/misc/Division_Bg_Splat.png');
   mask-size: cover;
   mask-repeat: no-repeat;
   background-color: var(--current-division-color);
   z-index: -1;
 }
 
-.current-match-text, .team-name, .versus-text, .division-text, .countdown-timer {
+.current-match-text,
+app-resizable-text,
+.versus-text,
+.division-text,
+.countdown-timer {
   --text-border-color: black;
   font-size: var(--standard-font-size);
-  filter:
-    drop-shadow(0.046875em 0 0.03125em var(--text-border-color))
+  filter: drop-shadow(0.046875em 0 0.03125em var(--text-border-color))
     drop-shadow(0 0.046875em 0.03125em var(--text-border-color))
     drop-shadow(-0.046875em 0 0.03125em var(--text-border-color))
     drop-shadow(0 -0.046875em 0.03125em var(--text-border-color));
@@ -63,8 +66,15 @@
   font-size: calc(var(--standard-font-size) * 0.667);
 }
 
-.team-name, .countdown-timer {
+app-resizable-text,
+.countdown-timer {
   font-weight: bold;
+}
+
+app-resizable-text {
+  --font-color: white;
+  height: 3.6785rem;
+  padding: 0rem 2rem;
 }
 
 .countdown-timer {

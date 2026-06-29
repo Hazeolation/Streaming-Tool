@@ -2,12 +2,13 @@ import { Component, inject, OnDestroy, OnInit, WritableSignal } from '@angular/c
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { CommentatorBox } from '../commentator-box/commentator-box';
+import { ResizableText } from '../../features/resizable-text/resizable-text';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
 
 @Component({
   selector: 'app-infobox-display',
-  imports: [CommentatorBox],
+  imports: [CommentatorBox, ResizableText],
   templateUrl: './infobox-display.html',
   styleUrl: './infobox-display.scss',
 })
@@ -38,14 +39,14 @@ export class InfoboxDisplay implements OnInit, OnDestroy {
   ngOnInit(): void {
     const scope = this.log.beginScope('InfoboxDisplay.ngOnInit');
 
-    this.log.info('InfoboxDisplay initialized');
+    this.log.trace('InfoboxDisplay initialized');
 
     try {
-      this.log.debug('Loading broadcast state for infobox');
+      this.log.trace('Loading broadcast state for infobox');
 
       this.stateService.loadInitialState();
 
-      this.log.info('Broadcast state load requested');
+      this.log.debug('Broadcast state load requested');
     } catch (err) {
       this.log.error('Failed during InfoboxDisplay initialization', err);
     } finally {

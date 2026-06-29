@@ -3,12 +3,14 @@ import { CommentatorBox } from '../commentator-box/commentator-box';
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { NgClass } from '@angular/common';
+import { TeamNameSwitchingService } from '../../services/team-name-switching';
+import { ResizableText } from '../../features/resizable-text/resizable-text';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
 
 @Component({
   selector: 'app-map-screen-display',
-  imports: [CommentatorBox, NgClass],
+  imports: [CommentatorBox, NgClass, ResizableText],
   templateUrl: './map-screen-display.html',
   styleUrl: './map-screen-display.scss',
 })
@@ -39,51 +41,24 @@ export class MapScreenDisplay implements OnInit, OnDestroy {
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
   /**
-   * Gets the left team's display name.
-   * @returns {string} The display name of the left team.
+   * Service for switching the team names around if `state().alphaIsLeft` changes from `true` to `false`, or vice versa
    */
-  get leftTeamName(): string {
-    return this.state().alphaIsLeft ? this.state().teamAlphaName : this.state().teamBravoName;
-  }
+  teamNameSwitchingService: TeamNameSwitchingService = inject(TeamNameSwitchingService);
 
   /**
-   * Gets the right team's display name.
-   * @returns {string} The display name of the right team.
-   */
-  get rightTeamName(): string {
-    return this.state().alphaIsLeft ? this.state().teamBravoName : this.state().teamAlphaName;
-  }
-
-  /**
-   * Gets the left team's score.
-   * @returns {number} The score of the left team.
-   */
-  get leftScore(): number {
-    return this.state().alphaIsLeft ? this.state().scoreAlpha : this.state().scoreBravo;
-  }
-
-  /**
-   * Gets the right team's score.
-   * @returns {number} The score of the right team.
-   */
-  get rightScore(): number {
-    return this.state().alphaIsLeft ? this.state().scoreBravo : this.state().scoreAlpha;
-  }
-
-  /**
-   * Initializes the component and loads the initial broadcast state.
+   * Initializes the map screen display component by calling the `loadInitialState` method on the `BroadcastStateService`. This ensures that the component has the initial broadcast state loaded and ready to display when it is first rendered. The `ngOnInit` lifecycle hook is used to perform this initialization logic, which is a common practice in Angular components to set up necessary data or state before the component is displayed to the user.
    */
   ngOnInit(): void {
     const scope = this.log.beginScope('MapScreenDisplay.ngOnInit');
 
-    this.log.info('MapScreenDisplay initialized');
+    this.log.trace('MapScreenDisplay initialized');
 
     try {
       this.log.debug('Loading broadcast state for map screen');
 
       this.stateService.loadInitialState();
 
-      this.log.info('Broadcast state load requested');
+      this.log.debug('Broadcast state load requested');
     } catch (err) {
       this.log.error('Failed during MapScreenDisplay initialization', err);
     } finally {

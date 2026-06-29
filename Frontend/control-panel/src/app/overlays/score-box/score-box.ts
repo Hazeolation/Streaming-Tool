@@ -2,12 +2,14 @@ import { Component, inject, OnInit, WritableSignal } from '@angular/core';
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { CommentatorBox } from '../commentator-box/commentator-box';
+import { TeamNameSwitchingService } from '../../services/team-name-switching';
+import { ResizableText } from '../../features/resizable-text/resizable-text';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
 
 @Component({
   selector: 'app-score-box',
-  imports: [CommentatorBox],
+  imports: [CommentatorBox, ResizableText],
   templateUrl: './score-box.html',
   styleUrl: './score-box.scss',
 })
@@ -33,39 +35,12 @@ export class ScoreBox implements OnInit {
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
   /**
-   * Gets the team name displayed on the left side of the score box.
-   * @returns {string} The left-side team name.
+   * Service for switching the team names around if `state().alphaIsLeft` changes from `true` to `false`, or vice versa
    */
-  get leftTeamName(): string {
-    return this.state().alphaIsLeft ? this.state().teamAlphaName : this.state().teamBravoName;
-  }
+  teamNameSwitchingService: TeamNameSwitchingService = inject(TeamNameSwitchingService);
 
   /**
-   * Gets the team name displayed on the right side of the score box.
-   * @returns {string} The right-side team name.
-   */
-  get rightTeamName(): string {
-    return this.state().alphaIsLeft ? this.state().teamBravoName : this.state().teamAlphaName;
-  }
-
-  /**
-   * Gets the score for the left-side team.
-   * @returns {number} The left-side team score.
-   */
-  get leftScore(): number {
-    return this.state().alphaIsLeft ? this.state().scoreAlpha : this.state().scoreBravo;
-  }
-
-  /**
-   * Gets the score for the right-side team.
-   * @returns {number} The right-side team score.
-   */
-  get rightScore(): number {
-    return this.state().alphaIsLeft ? this.state().scoreBravo : this.state().scoreAlpha;
-  }
-
-  /**
-   * Initializes the component and requests the initial broadcast state.
+   * Initializes the score box component by calling the `loadInitialState` method on the `BroadcastStateService`. This ensures that the component has the initial broadcast state loaded and ready to display when it is first rendered. The `ngOnInit` lifecycle hook is used to perform this initialization logic, which is a common practice in Angular components to set up necessary data or state before the component is displayed to the user.
    */
   ngOnInit(): void {
     const scope = this.log.beginScope('ScoreBox.ngOnInit');
@@ -73,11 +48,11 @@ export class ScoreBox implements OnInit {
     this.log.info('ScoreBox initialized');
 
     try {
-      this.log.debug('Requesting broadcast state load');
+      this.log.trace('Requesting broadcast state load');
 
       this.stateService.loadInitialState();
 
-      this.log.info('Broadcast state load requested');
+      this.log.debug('Broadcast state load requested');
     } catch (err) {
       this.log.error('Failed during ScoreBox initialization', err);
     } finally {

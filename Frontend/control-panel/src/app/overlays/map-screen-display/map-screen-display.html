@@ -7,17 +7,21 @@
     <div class="team-name-container team-alpha-name-container">
       <span class="ink-splat-logo team-alpha-color"></span>
 
-      <span class="match team-name team-alpha-name">
-        {{ leftTeamName }}
-      </span>
+      <app-resizable-text
+        class="team-left-name"
+        [resizableTextContent]="teamNameSwitchingService.leftTeamName"
+      />
     </div>
 
-    <span class="match match-score"> {{ leftScore }} : {{ rightScore }} </span>
+    <span class="match match-score">
+      {{ teamNameSwitchingService.leftScore }} : {{ teamNameSwitchingService.rightScore }}
+    </span>
 
     <div class="team-name-container team-bravo-name-container">
-      <span class="match team-name team-bravo-name">
-        {{ rightTeamName }}
-      </span>
+      <app-resizable-text
+        class="team-right-name"
+        [resizableTextContent]="teamNameSwitchingService.rightTeamName"
+      />
 
       <span class="ink-splat-logo team-bravo-color"></span>
     </div>
