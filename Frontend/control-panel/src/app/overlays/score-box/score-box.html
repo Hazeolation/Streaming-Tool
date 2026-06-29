@@ -1,17 +1,23 @@
 <div class="score-box dsb-panel" [class.overlay-hidden]="!state().showScoreBox">
   <div class="team-left__container">
-    <span class="team team-left-name">{{ teamNameSwitchingService.leftTeamName }}</span>
+    <app-resizable-text
+      class="team-left-name"
+      [resizableTextContent]="teamNameSwitchingService.leftTeamName"
+    ></app-resizable-text>
 
-    <span class="team team-left-score">{{ teamNameSwitchingService.leftScore }}</span>
+    <span class="score team-left-score">{{ teamNameSwitchingService.leftScore }}</span>
   </div>
 
   <div class="team-right__container">
-    <span class="team team-right-name">{{ teamNameSwitchingService.rightTeamName }}</span>
+    <app-resizable-text
+      class="team-right-name"
+      [resizableTextContent]="teamNameSwitchingService.rightTeamName"
+    ></app-resizable-text>
 
-    <span class="team team-right-score">{{ teamNameSwitchingService.rightScore }}</span>
+    <span class="score team-right-score">{{ teamNameSwitchingService.rightScore }}</span>
   </div>
 
-  <span class="team tourney-info-text">
+  <span class="tourney tourney-info-text">
     Division {{ state().division }} - Woche {{ state().week }}
   </span>
 </div>

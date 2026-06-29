@@ -46,16 +46,18 @@
   background: linear-gradient(90deg, var(--team-bravo-color), black);
 }
 
-.team {
+.score,
+.tourney {
   font-size: 25px;
   font-weight: 800;
   letter-spacing: 0.04em;
 }
 
-.team-left-name,
-.team-right-name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: calc(100% - 1.5rem);
+app-resizable-text {
+  --font-color: white;
+  width: 100%;
+  padding-right: 1rem;
+  height: 2.25rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
 }

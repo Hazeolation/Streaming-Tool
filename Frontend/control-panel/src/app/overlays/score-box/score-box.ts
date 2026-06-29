@@ -3,10 +3,11 @@ import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { CommentatorBox } from '../commentator-box/commentator-box';
 import { TeamNameSwitchingService } from '../../services/team-name-switching';
+import { ResizableText } from '../../features/resizable-text/resizable-text';
 
 @Component({
   selector: 'app-score-box',
-  imports: [CommentatorBox],
+  imports: [CommentatorBox, ResizableText],
   templateUrl: './score-box.html',
   styleUrl: './score-box.scss',
 })
