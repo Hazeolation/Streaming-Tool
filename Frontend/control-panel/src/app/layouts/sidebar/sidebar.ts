@@ -1,4 +1,4 @@
-import { Component, inject, WritableSignal } from '@angular/core';
+import { Component, inject, WritableSignal, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BroadcastState } from '../../models/broadcast-state';
 import { Division } from '../../models/division';
@@ -7,6 +7,8 @@ import { Socials } from '../../models/socials';
 import { SocialsService } from '../../services/socials';
 import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
+import { LogService } from '../../services/log';
+import { LogScope } from '../../models/log-scope';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,42 +16,82 @@ import { CommentatorBoxTimeDataService } from '../../services/commentator-box-ti
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })
-export class Sidebar {
+export class Sidebar implements OnInit, OnDestroy {
   /**
-   * Injects the `BroadcastStateService` to access the current broadcast state and available divisions. The `state` signal is used to reactively track changes to the broadcast state, allowing the sidebar component to update its UI accordingly whenever the state changes. This setup enables the sidebar to show relevant information such as team names, scores, and other broadcast details based on the latest state received from the service. Additionally, the `availableDivisions` property is populated with the list of divisions from the service, allowing users to select or view division-related information in the sidebar.
+   * Logger instance for sidebar lifecycle and actions.
+   */
+  private readonly log: LogService = inject(LogService);
+
+  /**
+   * Scoped logger instance used for sidebar-specific logs.
+   */
+  private readonly scope: LogScope = this.log.beginScope('Sidebar');
+
+  /**
+   * Service that manages broadcast state and division data.
    */
   stateService: BroadcastStateService = inject(BroadcastStateService);
 
   /**
-   * A writable signal that holds the current broadcast state. It is initialized by referencing the `state` signal from the `BroadcastStateService`, allowing the sidebar component to reactively update its UI whenever the broadcast state changes. This signal is used to display the current broadcast information in the sidebar, ensuring that it always reflects the most current state of the broadcast as provided by the service.
-   */
-  state: WritableSignal<BroadcastState> = this.stateService.state;
-
-  /**
-   * Injects the `SocialsService` to access social links such as discord server invite, twitter handle, etc. The `socials` signal is used to reactively track changes to the socials state to update the overlay accordingly
+   * Service that manages social data for the sidebar.
    */
   socialsService: SocialsService = inject(SocialsService);
 
   /**
-   * A writable signal that holds the current socials state. It is initialized by referencing the `socials` signal from the `SocialsService`, allowing the end screen display component to reactively update its UI whenever the socials state changes.
-   */
-  socials: WritableSignal<Socials> = this.socialsService.socials;
-
-  /**
-   * Injects the `CommentatorBoxTimeDataService` to access the display and hide times for the commentator box on the map screen overlay
+   * Service that manages commentator box time data.
    */
   commentatorBoxTimeDataService: CommentatorBoxTimeDataService = inject(
     CommentatorBoxTimeDataService,
   );
 
   /**
-   * A writable signal the holds the current commentator box time data state. It is initialized by referencing the `commentatorBoxTimeData` signal from the `CommentatorBoxTimeDataService`, allowing the display times for the commentator box to be updated reactively
+   * Writable signal representing the current broadcast state.
+   */
+  state: WritableSignal<BroadcastState> = this.stateService.state;
+
+  /**
+   * Writable signal representing the current social data.
+   */
+  socials: WritableSignal<Socials> = this.socialsService.socials;
+
+  /**
+   * Writable signal representing the commentator box time data.
    */
   commentatorBoxTimeData: WritableSignal<CommentatorBoxTimeData> =
     this.commentatorBoxTimeDataService.commentatorBoxTimeData;
 
   /**
-   * An array of `Division` objects representing the available divisions in the broadcasting tool. This property is populated by referencing the `availableDivisions` property from the `BroadcastStateService`, allowing the sidebar component to display a list of divisions for users to select or view. The `Division` interface includes properties such as `id` and `name`, which are used to structure and display division information in the user interface.
+   * Available divisions for the broadcast state.
    */
   availableDivisions: Division[] = this.stateService.availableDivisions;
+
+  /**
+   * Initialize the sidebar and load initial service state.
+   * @returns void
+   */
+  ngOnInit(): void {
+    this.log.info('Sidebar initializing');
+
+    try {
+      this.stateService.loadInitialState();
+      this.socialsService.loadInitialState();
+      this.commentatorBoxTimeDataService.loadInitialState();
+
+      this.log.debug('Initial state load triggered', {
+        hasStateService: !!this.stateService,
+        hasSocialsService: !!this.socialsService,
+      });
+    } catch (err) {
+      this.log.error('Sidebar initialization failed', err);
+    }
+  }
+
+  /**
+   * Angular lifecycle hook called when the component is destroyed.
+   * @returns void
+   */
+  ngOnDestroy(): void {
+    this.log.trace('Sidebar destroyed');
+    this.scope.dispose();
+  }
 }

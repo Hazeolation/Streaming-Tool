@@ -1,5 +1,6 @@
 using DSB.StreamBackend.Context;
 using DSB.StreamBackend.Dtos;
+using DSB.StreamBackend.Logging;
 using DSB.StreamBackend.Models;
 using DSB.StreamBackend.Services;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,8 @@ namespace DSB.StreamBackend.Tests.Services;
 public class SocialsServiceTests
 {
     private StreamToolDbContext _db = null!;
+    private LogService _log = null!;
+    private ILogSink[] _logSinks = null!;
     private SocialsService _service = null!;
 
     [SetUp]
@@ -21,7 +24,9 @@ public class SocialsServiceTests
             .Options;
 
         _db = new StreamToolDbContext(options);
-        _service = new SocialsService(_db);
+        _logSinks = [new ConsoleLogSink()];
+        _log = new LogService(_logSinks);
+        _service = new SocialsService(_db, _log);
     }
 
     [TearDown]

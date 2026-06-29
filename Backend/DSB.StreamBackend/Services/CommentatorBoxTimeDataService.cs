@@ -1,11 +1,12 @@
 using DSB.StreamBackend.Context;
 using DSB.StreamBackend.Dtos;
+using DSB.StreamBackend.Logging;
 using DSB.StreamBackend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DSB.StreamBackend.Services;
 
-public class CommentatorBoxTimeDataService(StreamToolDbContext db)
+public class CommentatorBoxTimeDataService(StreamToolDbContext db, ILogService log)
 {
     /// <summary>
     /// Asynchronously gets the commentator box time data
@@ -13,8 +14,27 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db)
     /// <returns>A <see cref="Task"/> object returning a <see cref="CommentatorBoxTimeDataDto"/></returns>
     public async Task<CommentatorBoxTimeDataDto> GetCommentatorBoxTimeDataAsync()
     {
-        CommentatorBoxTimeDataEntity entity = await GetOrCreateCommentatorBoxTimeDataAsync();
-        return ToDto(entity);
+        using IDisposable scope = log.BeginScope(nameof(GetCommentatorBoxTimeDataAsync));
+
+        await log.DebugAsync("Loading commentator box time data");
+
+        try
+        {
+            var entity = await GetOrCreateCommentatorBoxTimeDataAsync();
+
+            await log.InfoAsync("Commentator box time data loaded", new
+            {
+                entity.ShowDisplayIntervalInSeconds,
+                entity.HideDisplayIntervalInSeconds
+            });
+
+            return ToDto(entity);
+        }
+        catch (Exception ex)
+        {
+            await log.ErrorAsync("Failed to load commentator box time data", ex);
+            throw;
+        }
     }
 
     /// <summary>
@@ -24,31 +44,63 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db)
     /// <returns>The updated <see cref="CommentatorBoxTimeDataDto"/> object</returns>
     public async Task<CommentatorBoxTimeDataDto> UpdateCommentatorBoxTimeDataAsync(CommentatorBoxTimeDataDto dto)
     {
-        CommentatorBoxTimeDataEntity entity = await GetOrCreateCommentatorBoxTimeDataAsync();
+        using IDisposable scope = log.BeginScope(nameof(UpdateCommentatorBoxTimeDataAsync));
 
-        entity.Id = dto.Id;
-        entity.HideDisplayIntervalInSeconds = dto.HideDisplayIntervalInSeconds;
-        entity.ShowDisplayIntervalInSeconds = dto.ShowDisplayIntervalInSeconds;
+        await log.InfoAsync("Updating commentator box time data", dto);
 
-        await db.SaveChangesAsync();
+        try
+        {
+            CommentatorBoxTimeDataEntity entity = await GetOrCreateCommentatorBoxTimeDataAsync();
 
-        return ToDto(entity);
+            entity.HideDisplayIntervalInSeconds = dto.HideDisplayIntervalInSeconds;
+
+            entity.ShowDisplayIntervalInSeconds = dto.ShowDisplayIntervalInSeconds;
+
+            await db.SaveChangesAsync();
+
+            await log.InfoAsync("Commentator box time data updated", new
+            {
+                entity.ShowDisplayIntervalInSeconds,
+                entity.HideDisplayIntervalInSeconds
+            });
+
+            return ToDto(entity);
+        }
+        catch (Exception ex)
+        {
+            await log.ErrorAsync("Failed to update commentator box time data", ex, dto);
+            throw;
+        }
     }
 
     /// <summary>
     /// Asynchronously gets or creates the CommentatorBoxTimeData
     /// </summary>
     /// <returns><see cref="CommentatorBoxTimeDataEntity"/></returns>
-    private async Task <CommentatorBoxTimeDataEntity> GetOrCreateCommentatorBoxTimeDataAsync()
+    private async Task<CommentatorBoxTimeDataEntity> GetOrCreateCommentatorBoxTimeDataAsync()
     {
-        CommentatorBoxTimeDataEntity? entity = await db.CommentatorBoxTimeData
-            .FirstOrDefaultAsync(x => x.Id == 1);
+        await log.TraceAsync("Loading commentator box time entity");
 
-        if(entity != null) return entity;
+        CommentatorBoxTimeDataEntity? entity = await db.CommentatorBoxTimeData.FirstOrDefaultAsync(x => x.Id == 1);
 
-        entity = new CommentatorBoxTimeDataEntity { Id = 1};
+        if (entity is not null)
+        {
+            return entity;
+        }
+
+        await log.WarningAsync("Commentator box time data not found, creating default");
+
+        entity = new CommentatorBoxTimeDataEntity
+        {
+            Id = 1
+        };
+
         db.CommentatorBoxTimeData.Add(entity);
+
         await db.SaveChangesAsync();
+
+        await log.InfoAsync("Created commentator box time data");
+
         return entity;
     }
 
@@ -62,7 +114,7 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db)
         return new CommentatorBoxTimeDataDto
         {
             HideDisplayIntervalInSeconds = entity.HideDisplayIntervalInSeconds,
-            ShowDisplayIntervalInSeconds = entity.ShowDisplayIntervalInSeconds,
+            ShowDisplayIntervalInSeconds = entity.ShowDisplayIntervalInSeconds
         };
     }
 }

@@ -8,6 +8,7 @@ import { BroadcastState } from '../../models/broadcast-state';
 import { Division } from '../../models/division';
 import { Socials } from '../../models/socials';
 import { SocialsService } from '../../services/socials';
+import { LogService } from '../../services/log';
 
 describe('Sidebar', () => {
   let component: Sidebar;
@@ -55,6 +56,18 @@ describe('Sidebar', () => {
     socials: mockSocials,
   };
 
+  const mockLogService = {
+    beginScope: vi.fn().mockReturnValue({
+      dispose: vi.fn(),
+    }),
+    trace: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+    critical: vi.fn(),
+  };
+
   beforeEach(async () => {
     mockState.set(defaultState);
 
@@ -68,6 +81,10 @@ describe('Sidebar', () => {
         {
           provide: SocialsService,
           useValue: mockSocialsService,
+        },
+        {
+          provide: LogService,
+          useValue: mockLogService,
         },
       ],
     }).compileComponents();

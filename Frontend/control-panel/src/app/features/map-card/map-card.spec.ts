@@ -8,6 +8,7 @@ import { BroadcastState } from '../../models/broadcast-state';
 import { MapState } from '../../models/map-state';
 import { Map } from '../../models/map';
 import { Mode } from '../../models/mode';
+import { LogService } from '../../services/log';
 
 describe('MapCard', () => {
   let component: MapCard;
@@ -90,6 +91,18 @@ describe('MapCard', () => {
     removeMap: vi.fn(),
   };
 
+  const mockLogService = {
+    beginScope: vi.fn().mockReturnValue({
+      dispose: vi.fn(),
+    }),
+    trace: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+    critical: vi.fn(),
+  };
+
   beforeEach(async () => {
     vi.clearAllMocks();
 
@@ -101,6 +114,10 @@ describe('MapCard', () => {
         {
           provide: BroadcastStateService,
           useValue: mockStateService,
+        },
+        {
+          provide: LogService,
+          useValue: mockLogService,
         },
       ],
     })
@@ -270,7 +287,9 @@ describe('MapCard', () => {
     component.updateMap('unknown-map');
 
     expect(mockStateService.update).not.toHaveBeenCalled();
-    expect(consoleErrorSpy).toHaveBeenCalledWith('Selected map not found:', 'unknown-map');
+    expect(mockLogService.error).toHaveBeenCalledWith('Selected map not found', {
+      mapId: 'unknown-map',
+    });
 
     consoleErrorSpy.mockRestore();
   });
@@ -296,7 +315,9 @@ describe('MapCard', () => {
     component.updateMode('unknown-mode');
 
     expect(mockStateService.update).not.toHaveBeenCalled();
-    expect(consoleErrorSpy).toHaveBeenCalledWith('Selected mode not found:', 'unknown-mode');
+    expect(mockLogService.error).toHaveBeenCalledWith('Selected mode not found', {
+      modeId: 'unknown-mode',
+    });
 
     consoleErrorSpy.mockRestore();
   });

@@ -6,6 +6,7 @@ import { Topbar } from './topbar';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { Signalr } from '../../services/signalr';
 import { BroadcastState } from '../../models/broadcast-state';
+import { LogService } from '../../services/log';
 
 describe('Topbar', () => {
   let component: Topbar;
@@ -42,8 +43,19 @@ describe('Topbar', () => {
     isConnected: mockIsConnected,
   };
 
+  const mockLogService = {
+    beginScope: vi.fn().mockReturnValue({
+      dispose: vi.fn(),
+    }),
+    trace: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+    critical: vi.fn(),
+  };
+
   beforeEach(async () => {
-    vi.resetAllMocks();
     mockState.set(defaultState);
     mockIsConnected.set(false);
 
@@ -58,6 +70,10 @@ describe('Topbar', () => {
         {
           provide: Signalr,
           useValue: mockSignalr,
+        },
+        {
+          provide: LogService,
+          useValue: mockLogService,
         },
       ],
     }).compileComponents();

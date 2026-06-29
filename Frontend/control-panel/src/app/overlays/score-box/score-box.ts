@@ -4,6 +4,8 @@ import { BroadcastStateService } from '../../services/broadcast-state';
 import { CommentatorBox } from '../commentator-box/commentator-box';
 import { TeamNameSwitchingService } from '../../services/team-name-switching';
 import { ResizableText } from '../../features/resizable-text/resizable-text';
+import { LogService } from '../../services/log';
+import { LogScope } from '../../models/log-scope';
 
 @Component({
   selector: 'app-score-box',
@@ -13,12 +15,22 @@ import { ResizableText } from '../../features/resizable-text/resizable-text';
 })
 export class ScoreBox implements OnInit {
   /**
-   * Injects the `BroadcastStateService` to access the current broadcast state and available maps, modes, and divisions. The `state` signal is used to reactively track changes to the broadcast state, allowing the score box component to update its UI accordingly whenever the state changes. This setup enables the score box to display the current team names and scores based on the latest broadcast state received from the service.
+   * Logger used to trace score box lifecycle events.
+   */
+  private readonly log: LogService = inject(LogService);
+
+  /**
+   * Scope for the ScopeBox overlay.
+   */
+  private readonly scope: LogScope = this.log.beginScope('ScoreBox');
+
+  /**
+   * Service that exposes the current broadcast state.
    */
   stateService: BroadcastStateService = inject(BroadcastStateService);
 
   /**
-   * A writable signal that holds the current broadcast state. It is initialized by referencing the `state` signal from the `BroadcastStateService`, allowing the score box component to reactively update its UI whenever the broadcast state changes. This signal is used to display the team names and scores in the score box, ensuring that it always reflects the most current state of the broadcast as provided by the service.
+   * Writable signal containing the current broadcast state.
    */
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
@@ -32,5 +44,29 @@ export class ScoreBox implements OnInit {
    */
   ngOnInit(): void {
     this.stateService.loadInitialState();
+
+    const scope = this.log.beginScope('ScoreBox.ngOnInit');
+
+    this.log.info('ScoreBox initialized');
+
+    try {
+      this.log.debug('Requesting broadcast state load');
+
+      this.stateService.loadInitialState();
+
+      this.log.info('Broadcast state load requested');
+    } catch (err) {
+      this.log.error('Failed during ScoreBox initialization', err);
+    } finally {
+      scope.dispose();
+    }
+  }
+
+  /**
+   * Angular lifecycle hook called when the component is destroyed.
+   */
+  ngOnDestroy(): void {
+    this.log.trace('Score Box destroyed');
+    this.scope.dispose();
   }
 }

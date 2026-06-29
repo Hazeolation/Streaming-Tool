@@ -19,7 +19,9 @@
 Frontend/control-panel/
 ├── src/
 │   ├── app/
+│   │   ├── features/               # feature components
 │   │   ├── layouts/                # layout components
+│   │   ├── logging/                # logging components
 │   │   ├── overlays/               # overlay preview components
 │   │   ├── pages/                  # app pages
 │   │   ├── services/               # frontend state, API, and SignalR services
@@ -82,15 +84,62 @@ Key properties:
 - `maps` (`MapState[]`)
 - `season`, `division`, `week`
 
-### `Socials`
-
-- `xHandle`
-- `discordInvite`
-
 ### `CommentatorBoxTimeData`
 
 - `hideDisplayIntervalInSeconds`
 - `showDisplayIntervalInSeconds`
+
+### `Division`
+
+- `id`
+- `name`
+
+### LogEntry
+
+- `timestamp`
+- `level`
+- `message`
+- `data`
+- `error`
+- `scope`
+
+### LogScope (interface)
+
+- `dispose()`
+
+### MapPoolEntry
+
+- `id`
+- `mapName`
+- `imageUrl`
+
+### MapState
+
+- `id`
+- `order`
+- `mapId`
+- `mapName`
+- `modeId`
+- `modeName`
+- `imageUrl`
+- `winner`
+- `isVisible`
+
+### Map
+
+- `id`
+- `mapName`
+- `imageUrl`
+
+### Mode
+
+- `id`
+- `name`
+
+### `Socials`
+
+- `xHandle`
+- `discordInvite`
 
 ---
 
@@ -103,13 +152,13 @@ The app uses three primary frontend services.
 - Connects to `http://localhost:7000/overlayHub`.
 - Uses `HubConnectionBuilder` with automatic reconnect.
 - Exposes reactive signals:
-  - `liveState` for broadcast state updates.
-  - `liveSocials` for socials updates.
-  - `isConnected` for connection status.
+    - `liveState` for broadcast state updates.
+    - `liveSocials` for socials updates.
+    - `isConnected` for connection status.
 - Listens for incoming events:
-  - `broadcastStateUpdated`
-  - `socialsUpdated`
-  - `commentatorBoxTimeDataUpdated`
+    - `broadcastStateUpdated`
+    - `socialsUpdated`
+    - `commentatorBoxTimeDataUpdated`
 
 ### `BroadcastStateService`
 
@@ -117,13 +166,13 @@ The app uses three primary frontend services.
 - Starts SignalR and reacts to live state updates.
 - Holds the current `state` signal with default fallback values.
 - Provides frontend-specific data sets:
-  - `availableMaps`
-  - `availableModes`
-  - `availableDivisions`
+    - `availableMaps`
+    - `availableModes`
+    - `availableDivisions`
 - Methods:
-  - `loadInitialState()` fetches the state from the backend.
-  - `update(partial)` merges changes and posts updates.
-  - `addMap()` adds a new map entry to the state.
+    - `loadInitialState()` fetches the state from the backend.
+    - `update(partial)` merges changes and posts updates.
+    - `addMap()` adds a new map entry to the state.
 
 ### `SocialsService`
 
@@ -131,8 +180,8 @@ The app uses three primary frontend services.
 - Starts SignalR and reacts to live socials updates.
 - Holds the current `socials` signal.
 - Methods:
-  - `loadInitialState()` fetches socials from the backend.
-  - `update(partial)` merges changes and posts updates.
+    - `loadInitialState()` fetches socials from the backend.
+    - `update(partial)` merges changes and posts updates.
 
 ### `CommentatorBoxTimeDataService`
 
@@ -140,8 +189,12 @@ The app uses three primary frontend services.
 - Starts SignalR and reacts to live time data updates.
 - Holds the current `commentatorBoxTimeData` signal.
 - Methods:
-  - `loadInitialState()` fetches time data from the backend.
-  - `update(partial)` merges changes and posts updates.
+    - `loadInitialState()` fetches time data from the backend.
+    - `update(partial)` merges changes and posts updates.
+
+### `LogService`
+
+- Adds logging capabilities with various levels.
 
 ---
 
