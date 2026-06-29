@@ -55,9 +55,13 @@
 
 app-resizable-text {
   --font-color: white;
+  --text-border-color: black;
   width: 100%;
   padding-right: 1rem;
   height: 2.25rem;
   font-weight: 800;
   letter-spacing: 0.04em;
+  filter: drop-shadow(1px 0 1px var(--text-border-color))
+    drop-shadow(0 1px 1px var(--text-border-color)) drop-shadow(-1px 0 1px var(--text-border-color))
+    drop-shadow(0 -1px 1px var(--text-border-color));
 }
