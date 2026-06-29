@@ -49,17 +49,16 @@ export class MapScreenDisplay implements OnInit, OnDestroy {
    * Initializes the map screen display component by calling the `loadInitialState` method on the `BroadcastStateService`. This ensures that the component has the initial broadcast state loaded and ready to display when it is first rendered. The `ngOnInit` lifecycle hook is used to perform this initialization logic, which is a common practice in Angular components to set up necessary data or state before the component is displayed to the user.
    */
   ngOnInit(): void {
-    this.stateService.loadInitialState();
     const scope = this.log.beginScope('MapScreenDisplay.ngOnInit');
 
-    this.log.info('MapScreenDisplay initialized');
+    this.log.trace('MapScreenDisplay initialized');
 
     try {
       this.log.debug('Loading broadcast state for map screen');
 
       this.stateService.loadInitialState();
 
-      this.log.info('Broadcast state load requested');
+      this.log.debug('Broadcast state load requested');
     } catch (err) {
       this.log.error('Failed during MapScreenDisplay initialization', err);
     } finally {

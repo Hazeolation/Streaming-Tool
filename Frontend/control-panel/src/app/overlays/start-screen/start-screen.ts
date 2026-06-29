@@ -50,14 +50,14 @@ export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
   ngOnInit(): void {
     const scope = this.log.beginScope('StartScreen.ngOnInit');
 
-    this.log.info('StartScreen initialized');
+    this.log.trace('StartScreen initialized');
 
     try {
-      this.log.debug('Loading initial broadcast state');
+      this.log.trace('Loading initial broadcast state');
 
       this.stateService.loadInitialState();
 
-      this.log.info('Broadcast state load requested');
+      this.log.debug('Broadcast state load requested');
     } catch (err) {
       this.log.error('Failed during StartScreen init', err);
     } finally {

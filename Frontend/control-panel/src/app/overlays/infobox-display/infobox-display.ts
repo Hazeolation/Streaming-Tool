@@ -39,14 +39,14 @@ export class InfoboxDisplay implements OnInit, OnDestroy {
   ngOnInit(): void {
     const scope = this.log.beginScope('InfoboxDisplay.ngOnInit');
 
-    this.log.info('InfoboxDisplay initialized');
+    this.log.trace('InfoboxDisplay initialized');
 
     try {
-      this.log.debug('Loading broadcast state for infobox');
+      this.log.trace('Loading broadcast state for infobox');
 
       this.stateService.loadInitialState();
 
-      this.log.info('Broadcast state load requested');
+      this.log.debug('Broadcast state load requested');
     } catch (err) {
       this.log.error('Failed during InfoboxDisplay initialization', err);
     } finally {

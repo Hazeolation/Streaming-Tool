@@ -47,15 +47,15 @@ export class EndScreen implements OnInit, OnDestroy {
   ngOnInit(): void {
     const scope = this.log.beginScope('EndScreen.ngOnInit');
 
-    this.log.info('EndScreen initialized');
+    this.log.trace('EndScreen initialized');
 
     try {
-      this.log.debug('Loading initial overlay state');
+      this.log.trace('Loading initial overlay state');
 
       this.stateService.loadInitialState();
       this.socialsService.loadInitialState();
 
-      this.log.info('Initial overlay state requested');
+      this.log.debug('Initial overlay state requested');
     } catch (err) {
       this.log.error('Failed during EndScreen initialization', err);
     } finally {
