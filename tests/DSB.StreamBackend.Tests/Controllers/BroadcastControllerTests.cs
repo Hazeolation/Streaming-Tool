@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
+using DSB.StreamBackend.Logging;
 
 namespace DSB.StreamBackend.Tests.Controllers;
 
@@ -15,6 +16,8 @@ namespace DSB.StreamBackend.Tests.Controllers;
 public class BroadcastControllerTests
 {
     private StreamToolDbContext _db = null!;
+    private LogService _log = null!;
+    private ILogSink[] _logSinks = null!;
     private BroadcastStateService _service = null!;
     private Mock<IHubContext<OverlayHub, IOverlayClient>> _hubContextMock = null!;
     private Mock<IHubClients<IOverlayClient>> _hubClientsMock = null!;
@@ -29,7 +32,9 @@ public class BroadcastControllerTests
             .Options;
 
         _db = new StreamToolDbContext(options);
-        _service = new BroadcastStateService(_db);
+        _logSinks = [new ConsoleLogSink()];
+        _log = new LogService(_logSinks);
+        _service = new BroadcastStateService(_db, _log);
 
         _overlayClientMock = new Mock<IOverlayClient>();
         _hubClientsMock = new Mock<IHubClients<IOverlayClient>>();
@@ -38,7 +43,7 @@ public class BroadcastControllerTests
         _hubContextMock = new Mock<IHubContext<OverlayHub, IOverlayClient>>();
         _hubContextMock.Setup(x => x.Clients).Returns(_hubClientsMock.Object);
 
-        _controller = new BroadcastController(_service, _hubContextMock.Object);
+        _controller = new BroadcastController(_service, _hubContextMock.Object, _log);
     }
 
     [TearDown]

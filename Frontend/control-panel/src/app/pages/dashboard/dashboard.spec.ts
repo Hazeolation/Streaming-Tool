@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Dashboard } from './dashboard';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
+import { LogService } from '../../services/log';
 
 @Component({
   selector: 'app-map-card',
@@ -43,6 +44,18 @@ describe('Dashboard', () => {
     addMap: vi.fn(),
   };
 
+  const mockLogService = {
+    beginScope: vi.fn().mockReturnValue({
+      dispose: vi.fn(),
+    }),
+    trace: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+    critical: vi.fn(),
+  };
+
   beforeEach(async () => {
     vi.clearAllMocks();
     mockState.set(defaultState);
@@ -53,6 +66,10 @@ describe('Dashboard', () => {
         {
           provide: BroadcastStateService,
           useValue: mockStateService,
+        },
+        {
+          provide: LogService,
+          useValue: mockLogService,
         },
       ],
     })

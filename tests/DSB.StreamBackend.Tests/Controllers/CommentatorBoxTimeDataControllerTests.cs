@@ -2,6 +2,7 @@ using DSB.StreamBackend.Context;
 using DSB.StreamBackend.Controllers;
 using DSB.StreamBackend.Dtos;
 using DSB.StreamBackend.Hubs;
+using DSB.StreamBackend.Logging;
 using DSB.StreamBackend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -15,6 +16,8 @@ namespace DSB.StreamBackend.Tests.Controllers;
 public class CommentatorBoxTimeDataControllerTests
 {
     private StreamToolDbContext _db = null!;
+    private LogService _log = null!;
+    private ILogSink[] _logSinks = null!;
     private CommentatorBoxTimeDataService _service = null!;
     private Mock<IHubContext<OverlayHub, IOverlayClient>> _hubContextMock = null!;
     private Mock<IHubClients<IOverlayClient>> _hubClientsMock = null!;
@@ -29,7 +32,9 @@ public class CommentatorBoxTimeDataControllerTests
             .Options;
 
         _db = new StreamToolDbContext(options);
-        _service = new CommentatorBoxTimeDataService(_db);
+        _logSinks = [new ConsoleLogSink()];
+        _log = new LogService(_logSinks);
+        _service = new CommentatorBoxTimeDataService(_db, _log);
 
         _overlayClientMock = new Mock<IOverlayClient>();
         _hubClientsMock = new Mock<IHubClients<IOverlayClient>>();
@@ -38,7 +43,7 @@ public class CommentatorBoxTimeDataControllerTests
         _hubContextMock = new Mock<IHubContext<OverlayHub, IOverlayClient>>();
         _hubContextMock.Setup(x => x.Clients).Returns(_hubClientsMock.Object);
 
-        _controller = new CommentatorBoxTimeDataController(_service, _hubContextMock.Object);
+        _controller = new CommentatorBoxTimeDataController(_service, _hubContextMock.Object, _log);
     }
 
     [TearDown]

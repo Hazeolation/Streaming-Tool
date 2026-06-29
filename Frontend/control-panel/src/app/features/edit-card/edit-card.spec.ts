@@ -2,15 +2,34 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { EditCard } from './edit-card';
+import { LogService } from '../../services/log';
 
 describe('EditCard', () => {
   let component: EditCard;
   let fixture: ComponentFixture<EditCard>;
 
+  const mockLogService = {
+    beginScope: vi.fn().mockReturnValue({
+      dispose: vi.fn(),
+    }),
+    trace: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+    critical: vi.fn(),
+  };
+
   beforeEach(async () => {
     TestBed.resetTestingModule();
     await TestBed.configureTestingModule({
       imports: [EditCard],
+      providers: [
+        {
+          provide: LogService,
+          useValue: mockLogService,
+        },
+      ],
     })
       .overrideComponent(EditCard, {
         set: {

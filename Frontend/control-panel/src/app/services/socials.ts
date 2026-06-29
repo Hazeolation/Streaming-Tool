@@ -3,6 +3,7 @@ import { SocialsApi } from './socials-api';
 import { Signalr } from './signalr';
 import { Socials } from '../models/socials';
 import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
+import { LogService } from './log';
 
 @Injectable({
   providedIn: 'root',
@@ -10,22 +11,7 @@ import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
 export class SocialsService {
   private readonly api: SocialsApi = inject(SocialsApi);
   private readonly signalr: Signalr = inject(Signalr);
-
-  /**
-   * Initializes the SocialsService by setting up an effect that listens for incoming socials updates from the SignalR service.
-   */
-  constructor() {
-    effect(() => {
-      const incoming = this.signalr.liveSocials();
-
-      if (!incoming) return;
-
-      this.socials.set(incoming);
-    });
-
-    this.signalr.connectionType = SignalrServiceConnection.Socials;
-    this.signalr.start();
-  }
+  private readonly log = inject(LogService);
 
   /**
    * The main socials signal that holds the current socials.
@@ -36,25 +22,88 @@ export class SocialsService {
   });
 
   /**
-   * Updates the socials by merging the existing socials with the provided partial socials, then sends the updated socials to the backend API.
-   * @param {Partial<Socials>} partial The partial socials containing the properties to be updated in the current socials.
+   * Initializes the SocialsService and connects SignalR updates.
    */
-  update(partial: Partial<Socials>): void {
-    const newSocials = {
-      ...this.socials(),
-      ...partial,
-    };
+  constructor() {
+    const scope = this.log.beginScope('SocialsService');
 
-    this.socials.set(newSocials);
-    this.api.updateSocials(newSocials).subscribe();
+    this.log.info('Initializing SocialsService');
+
+    effect(() => {
+      const incoming = this.signalr.liveSocials();
+
+      if (!incoming) return;
+
+      this.log.debug('Received SignalR socials update', incoming);
+
+      this.socials.set(incoming);
+
+      this.log.info('Socials updated from SignalR');
+    });
+
+    this.signalr.connectionType = SignalrServiceConnection.Socials;
+
+    this.signalr.start();
+
+    this.log.info('SignalR connection started');
+
+    scope.dispose();
   }
 
   /**
-   * Loads the initial broadcast state from the backend API and sets it to the state signal. This method is typically called during the initialization of components that depend on the broadcast state to ensure they have the most up-to-date information when they start.
+   * Updates socials and sends them to the backend.
+   */
+  update(partial: Partial<Socials>): void {
+    const scope = this.log.beginScope('SocialsService.update');
+
+    try {
+      const newSocials = {
+        ...this.socials(),
+        ...partial,
+      };
+
+      this.log.debug('Updating socials', {
+        before: this.socials(),
+        patch: partial,
+        after: newSocials,
+      });
+
+      this.socials.set(newSocials);
+
+      this.api.updateSocials(newSocials).subscribe({
+        next: () => {
+          this.log.info('Socials successfully updated via API');
+        },
+        error: (err) => {
+          this.log.error('Failed to update socials', err, newSocials);
+        },
+      });
+    } finally {
+      scope.dispose();
+    }
+  }
+
+  /**
+   * Loads initial socials state from backend.
    */
   loadInitialState(): void {
-    this.api.getSocials().subscribe((socials) => {
-      this.socials.set(socials);
+    const scope = this.log.beginScope('SocialsService.loadInitialState');
+
+    this.log.info('Loading initial socials state');
+
+    this.api.getSocials().subscribe({
+      next: (socials) => {
+        this.log.debug('Initial socials received', socials);
+
+        this.socials.set(socials);
+
+        this.log.info('Initial socials state applied');
+      },
+      error: (err) => {
+        this.log.error('Failed to load initial socials state', err);
+      },
     });
+
+    scope.dispose();
   }
 }

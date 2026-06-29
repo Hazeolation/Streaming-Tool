@@ -1,34 +1,64 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap, catchError, throwError } from 'rxjs';
 import { CommentatorBoxTimeData } from '../models/commentator-box-time-data';
+import { LogService } from './log';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CommentatorBoxTimeDataApi {
   private readonly http: HttpClient = inject(HttpClient);
+  private readonly log: LogService = inject(LogService);
+
   private readonly baseUrl: string = 'http://localhost:7000/api/commentator-box-time-data';
 
   /**
-   * Gets the current commentator box time data from the backend API.
-   * @returns {Observable<CommentatorBoxTimeData>} An `Observable` that emits the `CommentatorBoxTimeData` object.
+   * GET commentator box time data
    */
   getCommentatorBoxTimeData(): Observable<CommentatorBoxTimeData> {
-    return this.http.get<CommentatorBoxTimeData>(`${this.baseUrl}/commentator-box-time-data`);
+    this.log.debug('GET commentator box time data request started');
+
+    return this.http.get<CommentatorBoxTimeData>(`${this.baseUrl}/commentator-box-time-data`).pipe(
+      tap((result) => {
+        this.log.info('GET commentator box time data successful', {
+          hideDisplayIntervalInSeconds: result.hideDisplayIntervalInSeconds,
+          showDisplayIntervalInSeconds: result.showDisplayIntervalInSeconds,
+        });
+      }),
+      catchError((err) => {
+        this.log.error('GET commentator box time data failed', err);
+
+        return throwError(() => err);
+      }),
+    );
   }
 
   /**
-   * Updates the commentator box time data by sending an HTTP POST request to the specified endpoint (`/commentator-box-time-data`) of the commentator box time data API with the updated `CommentatorBoxTimeData` object as the request body.
-   * @param {CommentatorBoxTimeData} socials The updated commentator box time data to be sent to the backend.
-   * @returns {Observable<CommentatorBoxTimeData>} An `Observable` that emits the updated `CommentatorBoxTimeData` object.
+   * POST commentator box time data
    */
   updateCommentatorBoxTimeData(
     timeData: CommentatorBoxTimeData,
   ): Observable<CommentatorBoxTimeData> {
-    return this.http.post<CommentatorBoxTimeData>(
-      `${this.baseUrl}/commentator-box-time-data`,
-      timeData,
-    );
+    this.log.debug('POST commentator box time data request started', {
+      hideDisplayIntervalInSeconds: timeData.hideDisplayIntervalInSeconds,
+      showDisplayIntervalInSeconds: timeData.showDisplayIntervalInSeconds,
+    });
+
+    return this.http
+      .post<CommentatorBoxTimeData>(`${this.baseUrl}/commentator-box-time-data`, timeData)
+      .pipe(
+        tap((result) => {
+          this.log.info('POST commentator box time data successful', {
+            hideDisplayIntervalInSeconds: result.hideDisplayIntervalInSeconds,
+            showDisplayIntervalInSeconds: result.showDisplayIntervalInSeconds,
+          });
+        }),
+        catchError((err) => {
+          this.log.error('POST commentator box time data failed', err, timeData);
+
+          return throwError(() => err);
+        }),
+      );
   }
 }

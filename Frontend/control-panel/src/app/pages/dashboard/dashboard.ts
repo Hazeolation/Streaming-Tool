@@ -2,6 +2,8 @@ import { Component, inject, WritableSignal } from '@angular/core';
 import { MapCard } from '../../features/map-card/map-card';
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
+import { LogService } from '../../services/log';
+import { LogScope } from '../../models/log-scope';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,19 +13,53 @@ import { BroadcastStateService } from '../../services/broadcast-state';
 })
 export class Dashboard {
   /**
-   * Injects the `BroadcastStateService` to access the current broadcast state and available maps, modes, and divisions. The `state` signal is used to reactively track changes to the broadcast state, allowing the dashboard component to update its UI accordingly whenever the state changes. This setup enables the dashboard to display the current configuration of the broadcast and provide controls for modifying it through the service's methods.
+   * The log service
+   */
+  private readonly log: LogService = inject(LogService);
+
+  /**
+   * The scope for the Dashboard page
+   */
+  private readonly scope: LogScope = this.log.beginScope('Dashboard');
+
+  /**
+   * The BroadcastStateService
    */
   stateService: BroadcastStateService = inject(BroadcastStateService);
 
   /**
-   * A writable signal that holds the current broadcast state. It is initialized by referencing the `state` signal from the `BroadcastStateService`, allowing the dashboard component to reactively update its UI whenever the broadcast state changes. This signal is used throughout the dashboard to display current settings and configurations, such as selected maps, modes, and divisions, and to provide interactive controls for modifying the state.
+   * Reactive broadcast state
    */
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
+  constructor() {
+    this.log.info('Dashboard component initialized', {
+      initialMapCount: this.state().maps?.length ?? 0,
+    });
+  }
+
   /**
-   * Adds a new map to the current broadcast state by calling the `addMap` method on the `BroadcastStateService`. This method is typically triggered by a user action, such as clicking an "Add Map" button in the UI. When invoked, it updates the broadcast state to include a new map slot, allowing the user to select a map for that slot from the available maps defined in the service.
+   * Adds a new map to the broadcast state
    */
   addMap(): void {
-    this.stateService.addMap();
+    this.log.debug('Dashboard: addMap triggered', {
+      currentMapCount: this.state().maps?.length ?? 0,
+    });
+
+    try {
+      this.stateService.addMap();
+
+      this.log.info('Map added successfully via Dashboard');
+    } catch (err) {
+      this.log.error('Failed to add map from Dashboard', err);
+    }
+  }
+
+  /**
+   * Angular lifecycle hook called when the component is destroyed.
+   */
+  ngOnDestroy(): void {
+    this.log.trace('Dashboard destroyed');
+    this.scope.dispose();
   }
 }

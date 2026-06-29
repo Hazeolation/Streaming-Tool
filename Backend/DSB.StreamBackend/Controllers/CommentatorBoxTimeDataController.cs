@@ -1,5 +1,6 @@
 using DSB.StreamBackend.Dtos;
 using DSB.StreamBackend.Hubs;
+using DSB.StreamBackend.Logging;
 using DSB.StreamBackend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -15,7 +16,8 @@ namespace DSB.StreamBackend.Controllers;
 [Route("api/commentator-box-time-data")]
 public class CommentatorBoxTimeDataController(
     CommentatorBoxTimeDataService timeDataService,
-    IHubContext<OverlayHub, IOverlayClient> hub) : ControllerBase
+    IHubContext<OverlayHub, IOverlayClient> hub,
+    ILogService log) : ControllerBase
 {
     /// <summary>
     /// Retrieves the current commentator box time data.
@@ -24,9 +26,23 @@ public class CommentatorBoxTimeDataController(
     [HttpGet("commentator-box-time-data")]
     public async Task<ActionResult<CommentatorBoxTimeDataDto>> GetCommentatorBoxTimeData()
     {
-        CommentatorBoxTimeDataDto timeData = await timeDataService.GetCommentatorBoxTimeDataAsync();
+        using IDisposable scope = log.BeginScope(nameof(GetCommentatorBoxTimeData));
 
-        return Ok(timeData);
+        _ = log.DebugAsync("GET commentator-box-time-data requested");
+
+        try
+        {
+            CommentatorBoxTimeDataDto timeData = await timeDataService.GetCommentatorBoxTimeDataAsync();
+
+            _ = log.InfoAsync("Commentator box time data retrieved");
+
+            return Ok(timeData);
+        }
+        catch (Exception ex)
+        {
+            _ = log.ErrorAsync("Failed to retrieve commentator box time data", ex);
+            throw;
+        }
     }
 
     /// <summary>
@@ -38,9 +54,15 @@ public class CommentatorBoxTimeDataController(
     public async Task<ActionResult<CommentatorBoxTimeDataDto>> UpdateCommentatorBoxTimeData(
         CommentatorBoxTimeDataDto timeData)
     {
+        _ = log.InfoAsync("Updating CommentatorBoxTimeData: {@TimeData}", timeData);
+
         CommentatorBoxTimeDataDto updatedTimeData = await timeDataService.UpdateCommentatorBoxTimeDataAsync(timeData);
 
+        _ = log.InfoAsync("CommentatorBoxTimeData updated successfully: {@UpdatedTimeData}", updatedTimeData);
+
         await hub.Clients.All.CommentatorBoxTimeDataUpdated(updatedTimeData);
+
+        _ = log.InfoAsync("Broadcasted CommentatorBoxTimeData update to all clients.");
 
         return Ok(updatedTimeData);
     }
