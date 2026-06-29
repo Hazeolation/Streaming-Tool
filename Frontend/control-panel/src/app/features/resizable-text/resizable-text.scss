@@ -1,0 +1,14 @@
+:host {
+  --font-color: black;
+  overflow: hidden;
+  font-size: 1em;
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  text {
+    fill: var(--font-color);
+  }
+}
