@@ -20,8 +20,8 @@
   border: 0.25rem solid black;
   background: linear-gradient(0deg, var(--current-division-color) 0%, rgba(25, 12, 38, 1) 31%);
   transition:
-    opacity 180ms ease,
-    transform 180ms ease;
+    opacity 420ms ease,
+    transform 420ms ease;
 }
 
 :host(.interval-hidden) .commentator-box {
