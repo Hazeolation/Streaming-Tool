@@ -3,9 +3,11 @@ import {
   Component,
   ElementRef,
   input,
+  InputSignal,
   OnDestroy,
   signal,
   ViewChild,
+  WritableSignal,
 } from '@angular/core';
 
 @Component({
@@ -23,12 +25,12 @@ export class ResizableText implements OnDestroy {
   /**
    * Input signal for text to display
    */
-  resizableTextContent = input<string>('');
+  resizableTextContent: InputSignal<string> = input<string>('');
 
   /**
    * Signal for viewbox size to adjust it dynamically
    */
-  viewBoxSize = signal<number[]>([0, 0, 0, 0]);
+  viewBoxSize: WritableSignal<number[]> = signal<number[]>([0, 0, 0, 0]);
 
   /**
    * Effect that calculates the bounding box of our text element and sets it on the svg container
