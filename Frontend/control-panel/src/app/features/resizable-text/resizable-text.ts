@@ -28,6 +28,11 @@ export class ResizableText implements OnDestroy {
   resizableTextContent: InputSignal<string> = input<string>('');
 
   /**
+   * Input signal for aspect ratio that handles text alignment
+   */
+  aspectRatio: InputSignal<string> = input<string>('xMinYMid meet');
+
+  /**
    * Signal for viewbox size to adjust it dynamically
    */
   viewBoxSize: WritableSignal<number[]> = signal<number[]>([0, 0, 0, 0]);
@@ -59,5 +64,11 @@ export class ResizableText implements OnDestroy {
     if (typeof this.resizableTextContent !== 'function') return '';
 
     return this.resizableTextContent();
+  }
+
+  get aspectRatioContent(): string {
+    if (typeof this.aspectRatio !== 'function') return '';
+
+    return this.aspectRatio();
   }
 }
