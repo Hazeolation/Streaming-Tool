@@ -128,8 +128,8 @@ public partial class OverlayTests : PageTest
     public async Task MapScreen_Header_ShowsTeamNames()
     {
         await Page.GotoAsync($"{BaseUrl}/overlay/map-screen");
-        await Expect(Page.Locator(".map-screen .team-alpha-name")).ToBeAttachedAsync();
-        await Expect(Page.Locator(".map-screen .team-bravo-name")).ToBeAttachedAsync();
+        await Expect(Page.Locator(".map-screen .team-left-name")).ToBeAttachedAsync();
+        await Expect(Page.Locator(".map-screen .team-right-name")).ToBeAttachedAsync();
     }
 
     [Test]
