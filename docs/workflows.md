@@ -4,15 +4,16 @@
 
 The workflows defined in `.github/workflows/` automate build, test, quality checks, and release note generation for the Streaming Tool repository.
 
-| Workflow                   | File                                       | Description                                                                                                             |
-| -------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| Build .NET CI              | `.github/workflows/build-dotnet.yml`       | Checks whether the Backend .NET code can be built using `dotnet build`. Also checks the .NET code quality during build. |
-| Run .NET Tests CI          | `.github/workflows/test-dotnet.yml`        | Runs the Backend unit tests after a successful Build .NET CI run.                                                       |
-| Build Node.js CI           | `.github/workflows/build-nodejs.yml`       | Checks whether the Frontend code can be built using `ng s`.                                                             |
-| TypeScript Code Quality CI | `.github/workflows/typescript-quality.yml` | Checks the code quality of the Frontend TypeScript code using ESLint.                                                   |
-| E2E Tests                  | `.github/workflows/e2e.yml`                | Builds and runs all End-to-End Tests.                                                                                   |
-| Run Node.js Tests CI       | `.github/workflows/test-nodejs.yml`        | Builds and runs all Frontend unit tests.                                                                                |
-| Generate Release Notes     | `.github/workflows/release-notes.yml`      | Generates release notes when a new release with a milestone is created.                                                 |
+| Workflow                                  | File                                       | Description                                                                                                             |
+| ----------------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| Build .NET CI                             | `.github/workflows/build-dotnet.yml`       | Checks whether the Backend .NET code can be built using `dotnet build`. Also checks the .NET code quality during build. |
+| Run .NET Tests CI                         | `.github/workflows/test-dotnet.yml`        | Runs the Backend unit tests after a successful Build .NET CI run.                                                       |
+| Build Node.js CI                          | `.github/workflows/build-nodejs.yml`       | Checks whether the Frontend code can be built using `ng s`.                                                             |
+| TypeScript Code Quality CI                | `.github/workflows/typescript-quality.yml` | Checks the code quality of the Frontend TypeScript code using ESLint.                                                   |
+| E2E Tests                                 | `.github/workflows/e2e.yml`                | Builds and runs all End-to-End Tests.                                                                                   |
+| Run Node.js Tests CI                      | `.github/workflows/test-nodejs.yml`        | Builds and runs all Frontend unit tests.                                                                                |
+| Generate Release Notes                    | `.github/workflows/release-notes.yml`      | Generates release notes when a new release with a milestone is created.                                                 |
+| Check Pull Request labels for merge block | `.github/workflos/fail-by-label.yml`       | Let workflows fail whenever a pull request has the label `NoMerge`                                                      |
 
 ## Workflow details
 
@@ -50,3 +51,8 @@ Description: Runs the Frontend unit tests and reports results in CI.
 
 File: `.github/workflows/release-notes.yml`
 Description: Generates release notes automatically for tagged release events with milestone information.
+
+### Check Pull Request labels for merge block
+
+File: `.github/workflows/fail-by-label.yml`
+Description: Let workflows fail whenever a pull request has the label
