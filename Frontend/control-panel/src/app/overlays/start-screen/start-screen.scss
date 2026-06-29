@@ -50,7 +50,7 @@
 }
 
 .current-match-text,
-.team-name,
+app-resizable-text,
 .versus-text,
 .division-text,
 .countdown-timer {
@@ -66,16 +66,15 @@
   font-size: calc(var(--standard-font-size) * 0.667);
 }
 
-.team-name,
+app-resizable-text,
 .countdown-timer {
   font-weight: bold;
 }
 
-.team-name {
-  max-width: 53.125rem;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+app-resizable-text {
+  --font-color: white;
+  height: 3.6785rem;
+  padding: 0rem 2rem;
 }
 
 .countdown-timer {

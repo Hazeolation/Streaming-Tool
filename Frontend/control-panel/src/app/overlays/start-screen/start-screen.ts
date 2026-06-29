@@ -8,10 +8,11 @@ import {
 } from '@angular/core';
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
+import { ResizableText } from '../../features/resizable-text/resizable-text';
 
 @Component({
   selector: 'start-screen',
-  imports: [],
+  imports: [ResizableText],
   templateUrl: './start-screen.html',
   styleUrl: './start-screen.scss',
 })
