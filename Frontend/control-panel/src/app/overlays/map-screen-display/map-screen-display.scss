@@ -79,11 +79,11 @@
   transform: scaleX(-1);
 }
 
-.team-name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+app-resizable-text {
+  --font-color: white;
+  height: 3.1785rem;
   max-width: 27.25rem;
+  font-weight: 800;
 }
 
 .team-name-container {

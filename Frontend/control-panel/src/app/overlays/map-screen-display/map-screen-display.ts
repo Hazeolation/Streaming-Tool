@@ -4,10 +4,11 @@ import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { NgClass } from '@angular/common';
 import { TeamNameSwitchingService } from '../../services/team-name-switching';
+import { ResizableText } from '../../features/resizable-text/resizable-text';
 
 @Component({
   selector: 'app-map-screen-display',
-  imports: [CommentatorBox, NgClass],
+  imports: [CommentatorBox, NgClass, ResizableText],
   templateUrl: './map-screen-display.html',
   styleUrl: './map-screen-display.scss',
 })

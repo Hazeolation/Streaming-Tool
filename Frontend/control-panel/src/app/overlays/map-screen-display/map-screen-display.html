@@ -7,9 +7,9 @@
     <div class="team-name-container team-alpha-name-container">
       <span class="ink-splat-logo team-alpha-color"></span>
 
-      <span class="match team-name team-alpha-name">
-        {{ teamNameSwitchingService.leftTeamName }}
-      </span>
+      <app-resizable-text
+        [resizableTextContent]="teamNameSwitchingService.leftTeamName"
+      ></app-resizable-text>
     </div>
 
     <span class="match match-score">
@@ -17,9 +17,9 @@
     </span>
 
     <div class="team-name-container team-bravo-name-container">
-      <span class="match team-name team-bravo-name">
-        {{ teamNameSwitchingService.rightTeamName }}
-      </span>
+      <app-resizable-text
+        [resizableTextContent]="teamNameSwitchingService.rightTeamName"
+      ></app-resizable-text>
 
       <span class="ink-splat-logo team-bravo-color"></span>
     </div>
