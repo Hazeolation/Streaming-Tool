@@ -66,6 +66,9 @@ export class ResizableText implements OnDestroy {
     return this.resizableTextContent();
   }
 
+  /**
+   * Get the the aspect ratio attribute value to set for the svg container from input effect
+   */
   get aspectRatioContent(): string {
     if (typeof this.aspectRatio !== 'function') return '';
 
