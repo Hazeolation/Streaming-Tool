@@ -321,4 +321,28 @@ describe('MapCard', () => {
 
     consoleErrorSpy.mockRestore();
   });
+
+  it('should set isVisible property and update it', () => {
+    mockState.set({
+      ...defaultState,
+      maps: [
+        map,
+        {
+          ...secondMap,
+          isVisible: false,
+        },
+      ],
+    });
+
+    expect(component.state()).toEqual({
+      ...defaultState,
+      maps: [
+        map,
+        {
+          ...secondMap,
+          isVisible: false,
+        },
+      ],
+    });
+  });
 });

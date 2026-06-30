@@ -100,6 +100,7 @@ ng test path-to-test/[name].spec.ts
 | `should not update map when selected map does not exist`   | Checks whether the component prevents updates and logs an error when an unknown map is selected.                               |
 | `should update mode information`                           | Checks whether updating a mode ID correctly updates the mode metadata in the state.                                            |
 | `should not update mode when selected mode does not exist` | Checks whether the component prevents updates and logs an error when an unknown mode is selected.                              |
+| `should set isVisible property and update it`              | Checks whether the `isVisible` property of a map gets updated correctly                                                        |
 
 ---
 
