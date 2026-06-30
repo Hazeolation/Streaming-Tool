@@ -1,25 +1,30 @@
-<div class="map-card" [class.hidden]="!map.isVisible" [class.map-won]="map.winner !== null">
+<div class="map-card" [class.counterpick]="!map.isVisible" [class.map-won]="map.winner !== null">
   <img class="map-image" [src]="map.imageUrl" alt="{{ map.mapName }}" />
   <div class="overlay">
     <div class="controls" [class.alpha-is-left]="state().alphaIsLeft">
       <button
         class="team-button"
-        [class.map-won]="state().maps.find((m) => m.id === map.id)?.winner === 'alpha'"
+        [class.map-won]="map.winner === 'alpha'"
         [ngClass]="state().alphaIsLeft ? 'button-alpha-color' : 'button-bravo-color'"
+        [disabled]="!map.isVisible"
         (click)="handleWinnerSelection('alpha')"
       >
         {{ state().teamAlphaName }}
       </button>
       <button
         class="team-button"
-        [class.map-won]="state().maps.find((m) => m.id === map.id)?.winner === 'bravo'"
+        [class.map-won]="map.winner === 'bravo'"
         [ngClass]="state().alphaIsLeft ? 'button-bravo-color' : 'button-alpha-color'"
+        [disabled]="!map.isVisible"
         (click)="handleWinnerSelection('bravo')"
       >
         {{ state().teamBravoName }}
       </button>
     </div>
-    <img class="mode-image" [src]="'assets/modes/' + map.modeId + '.png'" alt="Mode Icon" />
+    <div class="settings__container">
+      <button class="counterpick-button" (click)="handleCounterPickClick()">Counterpick</button>
+      <img class="mode-image" [src]="'assets/modes/' + map.modeId + '.png'" alt="Mode Icon" />
+    </div>
     <div class="settings__container">
       <select [ngModel]="map.mapId" (ngModelChange)="updateMap($event)">
         @for (entry of availableMaps; track entry) {
@@ -28,7 +33,7 @@
           </option>
         }
       </select>
-      <button class="edit" (click)="openEditMenu()">Bearbeiten</button>
+      <button class="edit-button" (click)="openEditMenu()">Bearbeiten</button>
     </div>
     @if (showEditMenu) {
       <app-edit-card
