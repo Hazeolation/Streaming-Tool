@@ -122,7 +122,7 @@ export class CommentatorBox implements OnInit, OnDestroy {
       showInterval: config.showDisplayIntervalInSeconds,
     });
 
-    this.setHideDisplayIntervalTimeout();
+    this.setShowDisplayIntervalTimeout();
   });
 
   /**
