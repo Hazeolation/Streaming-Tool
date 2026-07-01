@@ -17,8 +17,8 @@ export class CommentatorBoxTimeDataService {
    * Main state signal
    */
   commentatorBoxTimeData: WritableSignal<CommentatorBoxTimeData> = signal<CommentatorBoxTimeData>({
-    hideDisplayIntervalInSeconds: 0,
-    showDisplayIntervalInSeconds: 0,
+    hideDisplayIntervalInSeconds: 50,
+    showDisplayIntervalInSeconds: 5,
   });
 
   /**
