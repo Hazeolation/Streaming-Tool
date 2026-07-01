@@ -76,7 +76,7 @@ For in-depth technical documentation, see the [`docs/`](docs/) folder.
 
 | Route                      | Description                                      |
 | -------------------------- | ------------------------------------------------ |
-| `/overlay/score-box`       | Score display for both teams                     |
+| `/overlay/score-box`       | Score display for both teams during matches      |
 | `/overlay/map-screen`      | Map overview                                     |
 | `/overlay/commentator-box` | Commentator names                                |
 | `/overlay/info-box`        | General info box                                 |
@@ -128,8 +128,12 @@ http://localhost:4200/
 **Map Overview Overlay**  
 ![Map Overview](docs/screenshots/map-screen.png)
 
+**Map Overview Overlay (With Counterpicks)**
+![Map Overview Counterpicks](docs/screenshots/map-screen-counterpicks.png)
+
 **Start Screen**
 ![Start Screen](docs/screenshots/start-screen.png)
+
 **End Screen**
 ![End Screen](docs/screenshots/end-screen.png)
 
