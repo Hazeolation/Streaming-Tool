@@ -21,4 +21,8 @@
     Division {{ state().division }} - Woche {{ state().week }}
   </span>
 </div>
-<app-commentator-box class="make-responsive" [onMapScreen]="true" />
+<app-commentator-box
+  class="make-responsive"
+  [onMapScreen]="true"
+  [class.hide-comm-box]="!state().showScoreBox"
+/>
