@@ -31,8 +31,13 @@
 
   <div class="map-grid">
     @for (map of state().maps; track map.id) {
-      <div class="map-card dsb-panel" [class.map-won]="map.winner !== null">
+      <div
+        class="map-card dsb-panel"
+        [class.map-won]="map.winner !== null"
+        [class.is-visible]="map.isVisible"
+      >
         <img class="map-image" [src]="map.imageUrl" />
+
         <img
           class="mode-image"
           [src]="'assets/modes/' + map.modeId + '-Large.png'"
@@ -44,6 +49,8 @@
             <span class="winner-logo" [ngClass]="setWinnerLogoColor(map.winner)"></span>
           </div>
         }
+
+        <img class="counterpick-image" src="assets/maps/Shifty-Station.png" />
       </div>
     }
   </div>

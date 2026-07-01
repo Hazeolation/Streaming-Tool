@@ -66,6 +66,22 @@ public class DashboardTests : PageTest
     }
 
     [Test]
+    public async Task Dashboard_MapCard_ShowsCounterpickButton()
+    {
+        await Page.GotoAsync(BaseUrl);
+        await Expect(Page.Locator(".sidebar")).ToBeVisibleAsync();
+
+        var count = await Page.Locator(".map-card").CountAsync();
+        if (count == 0)
+        {
+            await Page.Locator(".add-map-card").ClickAsync();
+            await Expect(Page.Locator(".map-card").First).ToBeVisibleAsync();
+        }
+
+        await Expect(Page.Locator(".map-card .settings__container button.counterpick-button").First).ToBeVisibleAsync();
+    }
+
+    [Test]
     public async Task Dashboard_MapCard_ShowsEditButton()
     {
         await Page.GotoAsync(BaseUrl);
@@ -74,7 +90,7 @@ public class DashboardTests : PageTest
         if (count == 0)
             await Page.Locator(".add-map-card").ClickAsync();
 
-        await Expect(Page.Locator(".map-card button.edit").First).ToBeVisibleAsync();
+        await Expect(Page.Locator(".map-card button.edit-button").First).ToBeVisibleAsync();
     }
 
     [Test]
@@ -86,7 +102,7 @@ public class DashboardTests : PageTest
         if (count == 0)
             await Page.Locator(".add-map-card").ClickAsync();
 
-        await Page.Locator(".map-card button.edit").First.ClickAsync();
+        await Page.Locator(".map-card button.edit-button").First.ClickAsync();
         // The app-edit-card host has no CSS dimensions; check the inner div which has position:absolute + explicit size
         await Expect(Page.Locator("app-edit-card .edit-menu")).ToBeVisibleAsync();
     }
@@ -104,7 +120,7 @@ public class DashboardTests : PageTest
             await Expect(Page.Locator(".map-card").First).ToBeVisibleAsync();
         }
 
-        await Page.Locator(".map-card button.edit").First.ClickAsync();
+        await Page.Locator(".map-card button.edit-button").First.ClickAsync();
         await Expect(Page.Locator("app-edit-card .edit-menu")).ToBeVisibleAsync();
 
         // Force the click because WebKit may report the div as unstable during Angular re-renders

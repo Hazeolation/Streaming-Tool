@@ -3,8 +3,8 @@
   border-radius: 25px;
   overflow: hidden;
   background: #252730;
-  width: 390px;
-  height: 220px;
+  width: 24.375rem;
+  height: 13.75rem;
   transition:
     transform 150ms,
     border 150ms;
@@ -16,13 +16,13 @@
   object-fit: cover;
 }
 
+.counterpick .map-image {
+  filter: brightness(75%);
+}
+
 .mode-image {
-  width: 70px;
-  position: absolute;
-  right: 16px;
-  top: 0;
-  bottom: 0;
-  margin: auto 16px auto 0;
+  width: 4.375rem;
+  height: auto;
 }
 
 .map-won .map-image,
@@ -36,17 +36,17 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 16px;
+  padding: 1rem;
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
 }
 
 .title {
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
 .mode {
-  font-size: 18px;
+  font-size: 1.125rem;
   opacity: 0.8;
 }
 
@@ -55,26 +55,22 @@
   flex-direction: row-reverse;
   flex-wrap: nowrap;
   justify-content: space-between;
-  gap: 12px;
-  padding: 10px 16px;
+  gap: 0.75rem;
+  padding: 0.625rem 1rem 0rem 1rem;
 }
 
 .controls.alpha-is-left {
   flex-direction: row;
 }
 
-.map-card.hidden {
-  opacity: 0.55;
-}
-
 select {
-  padding: 10px;
+  padding: 0.625rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   background: #343744;
   color: white;
-  height: 37px;
-  width: 165px;
+  height: 2.25rem;
+  width: 10.25rem;
   font-weight: bolder;
   cursor: pointer;
 }
@@ -83,7 +79,7 @@ select {
   background: #3d3d3d;
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   height: 3rem;
   width: 8.75rem;
   font-weight: 900;
@@ -91,12 +87,17 @@ select {
   cursor: pointer;
 }
 
+.team-button[disabled] {
+  filter: brightness(50%);
+  cursor: default;
+}
+
 .team-button.button-alpha-color {
-  border: 2px solid var(--team-alpha-color);
+  border: 0.125rem solid var(--team-alpha-color);
 }
 
 .team-button.button-bravo-color {
-  border: 2px solid var(--team-bravo-color);
+  border: 0.125rem solid var(--team-bravo-color);
 }
 
 .map-won.button-alpha-color {
@@ -109,21 +110,36 @@ select {
   color: white;
 }
 
-.edit {
+.edit-button {
   background: #d9d9d9;
   border: none;
-  border-radius: 10px;
-  height: 37px;
-  width: 90px;
-  justify-self: end;
-  margin-right: 16px;
+  border-radius: 0.625rem;
+  height: 2.25rem;
+  width: 5.625rem;
   font-weight: bolder;
   cursor: pointer;
+}
+
+.counterpick-button {
+  background-color: #343744;
+  border: 0.125rem solid #d9d9d9;
+  border-radius: 0.625rem;
+  height: 2.25rem;
+  color: white;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.counterpick .counterpick-button {
+  background-color: #d9d9d9;
+  color: black;
 }
 
 .settings__container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding: 0rem 1rem;
 }
 
 .edit-menu {

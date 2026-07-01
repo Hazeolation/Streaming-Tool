@@ -111,6 +111,32 @@ export class MapCard implements OnInit, OnDestroy {
   }
 
   /**
+   * Handle click event on counterpick button that marks a map as a counterpick by setting the `isVisible` boolean
+   */
+  handleCounterPickClick(): void {
+    const newVisibleState = !this.map.isVisible;
+
+    this.log.info('Updating isVisible', {
+      mapId: this.map.id,
+      previous: this.map.isVisible,
+      new: newVisibleState,
+    });
+
+    const state = this.stateService.state();
+    const updatedMaps = state.maps.map((m) => {
+      if (m.id !== this.map.id) {
+        return m;
+      }
+
+      return { ...m, isVisible: newVisibleState };
+    });
+
+    this.stateService.update({
+      maps: updatedMaps,
+    });
+  }
+
+  /**
    * Update the winner for the current map and refresh score totals.
    * @param winner {'alpha' | 'bravo' | null} Winner identifier or null to clear the selection
    */
@@ -123,10 +149,10 @@ export class MapCard implements OnInit, OnDestroy {
     const state = this.stateService.state();
 
     const updatedMaps = state.maps.map((m) => {
-      if (m.id === this.map.id) {
-        return { ...m, winner };
+      if (m.id !== this.map.id) {
+        return m;
       }
-      return m;
+      return { ...m, winner };
     });
 
     const scoreAlpha = updatedMaps.filter((x) => x.winner === 'alpha').length;
