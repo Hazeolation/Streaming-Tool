@@ -87,7 +87,6 @@ Key properties:
 ### `CommentatorBoxTimeData`
 
 - `hideDisplayIntervalInSeconds`
-- `showDisplayIntervalInSeconds`
 
 ### `Division`
 
