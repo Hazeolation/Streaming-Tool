@@ -24,7 +24,7 @@
     transform 420ms ease;
 }
 
-:host(.interval-hidden) .commentator-box,
+:host(.scorebox-hidden) .commentator-box,
 :host(.hide-comm-box) .commentator-box {
   opacity: 0;
   pointer-events: none;
