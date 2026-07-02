@@ -114,7 +114,8 @@
   <section>
     <h2>Sichtbarkeit des Overlays</h2>
     <button
-      [class.active]="state().showMapScreen"
+      class="toggle-button"
+      [class.toggled]="state().showMapScreen"
       (click)="
         stateService.update({
           showMapScreen: !state().showMapScreen,
@@ -124,7 +125,8 @@
       Kartenanzeige
     </button>
     <button
-      [class.active]="state().showScoreBox"
+      class="toggle-button"
+      [class.toggled]="state().showScoreBox"
       (click)="
         stateService.update({
           showScoreBox: !state().showScoreBox,
@@ -134,7 +136,8 @@
       Spielstand
     </button>
     <button
-      [class.active]="state().showCommentatorBox"
+      class="toggle-button"
+      [class.toggled]="state().showCommentatorBox"
       (click)="
         stateService.update({
           showCommentatorBox: !state().showCommentatorBox,
@@ -145,28 +148,23 @@
     </button>
   </section>
   <section>
-    <h2>Ein/Ausblende-Zeiten Kommentatoren Box</h2>
+    <h2>Ein/Ausblenden Kommentatoren Box</h2>
     <details class="comm-box-time-data__details-container">
       <summary>Zeiten</summary>
       <div class="commentator-box-display-inputs__container">
-        <h3>Unsichtbar für... (In Sekunden)</h3>
-        <input
-          class="show-comm-box-interval-input"
-          type="number"
-          min="0"
-          [ngModel]="commentatorBoxTimeData().showDisplayIntervalInSeconds"
-          (ngModelChange)="
-            commentatorBoxTimeDataService.update({
-              showDisplayIntervalInSeconds: $event,
-            })
-          "
-        />
+        <button class="click-button" (click)="handleHideButtonClick()">Ausblenden</button>
 
-        <h3>Sichtbar für... (In Sekunden)</h3>
+        <button class="click-button" (click)="handleShowButtonClick()">Einblenden</button>
+
+        <button class="click-button" (click)="handleShowTempButtonClick()">
+          Temporär Einblenden
+        </button>
+
+        <h3>Zeit Temporär Einblenden<br />(In Sekunden)</h3>
         <input
           class="hide-comm-box-interval-input"
           type="number"
-          min="0"
+          min="5"
           [ngModel]="commentatorBoxTimeData().hideDisplayIntervalInSeconds"
           (ngModelChange)="
             commentatorBoxTimeDataService.update({

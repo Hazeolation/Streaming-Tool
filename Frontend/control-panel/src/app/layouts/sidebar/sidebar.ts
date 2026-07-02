@@ -9,6 +9,8 @@ import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
+import { BroadcastChannelTypes } from '../../enums/broadcast-channel-types';
+import { CommBoxDisplayEvents } from '../../enums/comm-box-display-events';
 
 @Component({
   selector: 'app-sidebar',
@@ -17,6 +19,13 @@ import { LogScope } from '../../models/log-scope';
   styleUrl: './sidebar.scss',
 })
 export class Sidebar implements OnInit, OnDestroy {
+  /**
+   * Broadcast channel for commentator box display events
+   */
+  private readonly broadcastChannel: BroadcastChannel = new BroadcastChannel(
+    BroadcastChannelTypes.CommBoxDisplayEvents,
+  );
+
   /**
    * Logger instance for sidebar lifecycle and actions.
    */
@@ -66,6 +75,39 @@ export class Sidebar implements OnInit, OnDestroy {
   availableDivisions: Division[] = this.stateService.availableDivisions;
 
   /**
+   * Click event handling for the hide commentator box button
+   */
+  handleHideButtonClick(): void {
+    this.log.trace('Firing click event for commentator box display button to broadcast channel', {
+      type: CommBoxDisplayEvents.CommBoxHideButtonClicked,
+      broadcastChannel: this.broadcastChannel.name,
+    });
+    this.broadcastChannel.postMessage(CommBoxDisplayEvents.CommBoxHideButtonClicked);
+  }
+
+  /**
+   * Click event handling for the show commentator box button
+   */
+  handleShowButtonClick(): void {
+    this.log.trace('Firing click event for commentator box display button to broadcast channel', {
+      type: CommBoxDisplayEvents.CommBoxHideButtonClicked,
+      broadcastChannel: this.broadcastChannel.name,
+    });
+    this.broadcastChannel.postMessage(CommBoxDisplayEvents.CommBoxShowButtonClicked);
+  }
+
+  /**
+   * Click event handling for the show commentator box temporarily button
+   */
+  handleShowTempButtonClick(): void {
+    this.log.trace('Firing click event for commentator box display button to broadcast channel', {
+      type: CommBoxDisplayEvents.CommBoxHideButtonClicked,
+      broadcastChannel: this.broadcastChannel.name,
+    });
+    this.broadcastChannel.postMessage(CommBoxDisplayEvents.CommBoxShowTempButtonClicked);
+  }
+
+  /**
    * Initialize the sidebar and load initial service state.
    * @returns void
    */
@@ -93,5 +135,6 @@ export class Sidebar implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.log.trace('Sidebar destroyed');
     this.scope.dispose();
+    this.broadcastChannel.close();
   }
 }
