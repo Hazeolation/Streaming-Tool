@@ -139,11 +139,13 @@ export class CommentatorBox implements OnInit, OnDestroy {
         }
         break;
 
-      default: {
-        this.log.warn('Invalid commbox display button click event received!', {
-          eventName: message.data,
-        });
-      }
+      default:
+        {
+          this.log.warn('Invalid commbox display button click event received!', {
+            eventName: message.data,
+          });
+        }
+        break;
     }
   };
 
