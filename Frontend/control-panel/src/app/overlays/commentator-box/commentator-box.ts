@@ -21,9 +21,9 @@ import { CommBoxDisplayEvents } from '../../enums/comm-box-display-events';
 })
 export class CommentatorBox implements OnInit, OnDestroy {
   /**
-   * Whether the component is displayed on the map screen.
+   * Whether the component is displayed on the score box
    */
-  @Input() onMapScreen: boolean = false;
+  @Input() onScoreBox: boolean = false;
 
   /**
    * Signal indicating if the interval is hidden.
@@ -152,14 +152,20 @@ export class CommentatorBox implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     this.log.trace('CommentatorBox initialized', {
-      onMapScreen: this.onMapScreen,
+      onScoreBox: this.onScoreBox,
     });
 
-    if (this.onMapScreen) {
+    if (this.onScoreBox) {
+      this.log.trace(
+        'CommentatorBox is on score box page, add BroadcastChannel listener for button click events',
+        {
+          broadcastChannel: this.broadcastChannel.name,
+        },
+      );
       this.broadcastChannel.onmessage = this.commboxButtonEventListener;
     }
 
-    this.commboxHidden.set(this.onMapScreen);
+    this.commboxHidden.set(this.onScoreBox);
 
     this.stateService.loadInitialState();
     this.commentatorBoxTimeDataService.loadInitialState();
