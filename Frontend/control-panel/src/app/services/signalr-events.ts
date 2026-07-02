@@ -1,0 +1,75 @@
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import * as signalR from '@microsoft/signalr';
+import { LogService } from './log';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class SignalrEvents {
+  private readonly log = inject(LogService);
+
+  connection?: signalR.HubConnection;
+
+  isConnected: WritableSignal<boolean> = signal<boolean>(false);
+
+  /**
+   * Calls start function so the service can be used globally
+   */
+  constructor() {
+    this.start();
+  }
+
+  /**
+   * Starts SignalR connection
+   */
+  private async start() {
+    const scope = this.log.beginScope('SignalrEvents.start');
+
+    this.log.info('Initializing SignalR eventHub connection');
+
+    this.connection = new signalR.HubConnectionBuilder()
+      .withUrl('http://localhost:7000/eventHub')
+      .withAutomaticReconnect()
+      .build();
+
+    this.connection.onreconnecting(() => {
+      this.isConnected.set(false);
+      this.log.warn('SignalR Events reconnecting...');
+    });
+
+    this.connection.onreconnected(() => {
+      this.isConnected.set(true);
+      this.log.info('SignalR Events reconnected');
+    });
+
+    this.connection.onclose(() => {
+      this.isConnected.set(false);
+      this.log.error('SignalR Events connection closed');
+    });
+
+    await this.tryConnect();
+
+    scope.dispose();
+  }
+
+  /**
+   * Connection retry logic
+   */
+  private async tryConnect(): Promise<void> {
+    try {
+      this.log.info('Starting SignalR Events connection attempt');
+
+      await this.connection?.start();
+
+      this.isConnected.set(true);
+
+      this.log.info('SignalR Events connected successfully');
+    } catch (err) {
+      this.isConnected.set(false);
+
+      this.log.error('SignalR Events connection failed, retrying...', err);
+
+      setTimeout(() => this.tryConnect(), 5000);
+    }
+  }
+}
