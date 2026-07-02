@@ -11,12 +11,7 @@ public class CommentatorBoxTimeDataEntity
     public int Id { get; set; }
 
     /// <summary>
-    /// Gets or sets the time in seconds that the display should be visible
+    /// Gets or sets the time in seconds when the display should be hidden
     /// </summary>
-    public int ShowDisplayIntervalInSeconds { get; set; } = 5;
-
-    /// <summary>
-    /// Gets or sets the time in seconds that the display should be hidden
-    /// </summary>
-    public int HideDisplayIntervalInSeconds { get; set; } = 50;
+    public int HideDisplayIntervalInSeconds { get; set; } = 5;
 }
