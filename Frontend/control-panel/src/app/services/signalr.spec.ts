@@ -55,6 +55,16 @@ describe('Signalr', () => {
     expect(service.liveState()).toBeNull();
   });
 
+  it('should have live socials signal initialized to null', () => {
+    expect(service.liveSocials).toBeDefined();
+    expect(service.liveState()).toBeNull();
+  });
+
+  it('should have live time data signal initialized to null', () => {
+    expect(service.liveCommentatorBoxTimeData).toBeDefined();
+    expect(service.liveState()).toBeNull();
+  });
+
   it('should have isConnected signal initialized to false', () => {
     expect(service.isConnected).toBeDefined();
     expect(service.isConnected()).toBe(false);
