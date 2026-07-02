@@ -23,7 +23,6 @@ export class CommentatorBoxTimeDataApi {
       tap((result) => {
         this.log.info('GET commentator box time data successful', {
           hideDisplayIntervalInSeconds: result.hideDisplayIntervalInSeconds,
-          showDisplayIntervalInSeconds: result.showDisplayIntervalInSeconds,
         });
       }),
       catchError((err) => {
@@ -42,7 +41,6 @@ export class CommentatorBoxTimeDataApi {
   ): Observable<CommentatorBoxTimeData> {
     this.log.debug('POST commentator box time data request started', {
       hideDisplayIntervalInSeconds: timeData.hideDisplayIntervalInSeconds,
-      showDisplayIntervalInSeconds: timeData.showDisplayIntervalInSeconds,
     });
 
     return this.http
@@ -51,7 +49,6 @@ export class CommentatorBoxTimeDataApi {
         tap((result) => {
           this.log.info('POST commentator box time data successful', {
             hideDisplayIntervalInSeconds: result.hideDisplayIntervalInSeconds,
-            showDisplayIntervalInSeconds: result.showDisplayIntervalInSeconds,
           });
         }),
         catchError((err) => {

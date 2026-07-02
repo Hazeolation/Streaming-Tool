@@ -11,7 +11,6 @@ describe('CommentatorBoxTimeData', () => {
 
   const defaultTimeData = {
     hideDisplayIntervalInSeconds: 0,
-    showDisplayIntervalInSeconds: 0,
   };
 
   const mockApi = {
@@ -64,7 +63,6 @@ describe('CommentatorBoxTimeData', () => {
   it('should load initial time data from api', () => {
     const apiTimeData: CommentatorBoxTimeData = {
       ...defaultTimeData,
-      showDisplayIntervalInSeconds: 50,
     };
 
     mockApi.getCommentatorBoxTimeData.mockReturnValue(of(apiTimeData));
@@ -78,13 +76,11 @@ describe('CommentatorBoxTimeData', () => {
   it('should update time data and persist it through api', () => {
     timeData.update({
       ...defaultTimeData,
-      showDisplayIntervalInSeconds: 35,
       hideDisplayIntervalInSeconds: 23,
     });
 
     const expectedTimeData: CommentatorBoxTimeData = {
       ...defaultTimeData,
-      showDisplayIntervalInSeconds: 35,
       hideDisplayIntervalInSeconds: 23,
     };
 

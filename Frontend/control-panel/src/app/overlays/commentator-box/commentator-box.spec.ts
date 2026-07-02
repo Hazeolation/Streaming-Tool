@@ -36,7 +36,6 @@ describe('CommentatorBox', () => {
   };
 
   const defaultTimeData: CommentatorBoxTimeData = {
-    showDisplayIntervalInSeconds: 1,
     hideDisplayIntervalInSeconds: 2,
   };
 
@@ -149,7 +148,6 @@ describe('CommentatorBox', () => {
   it('should reflect commentator box time data changes from CommentatorBoxTimeDataService', () => {
     const updatedTimeData: CommentatorBoxTimeData = {
       ...defaultState,
-      showDisplayIntervalInSeconds: 6,
       hideDisplayIntervalInSeconds: 12,
     };
 
@@ -157,6 +155,5 @@ describe('CommentatorBox', () => {
 
     expect(component.commentatorBoxTimeData()).toEqual(updatedTimeData);
     expect(component.commentatorBoxTimeData().hideDisplayIntervalInSeconds).toBe(12);
-    expect(component.commentatorBoxTimeData().showDisplayIntervalInSeconds).toBe(6);
   });
 });

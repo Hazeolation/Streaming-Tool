@@ -3,5 +3,4 @@
  */
 export interface CommentatorBoxTimeData {
   hideDisplayIntervalInSeconds: number;
-  showDisplayIntervalInSeconds: number;
 }

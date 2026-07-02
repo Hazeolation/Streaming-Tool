@@ -37,7 +37,6 @@ describe('InfoboxDisplay', () => {
 
   const mockState = signal<BroadcastState>(defaultState);
   const mockTimeData = signal<CommentatorBoxTimeData>({
-    showDisplayIntervalInSeconds: 1,
     hideDisplayIntervalInSeconds: 2,
   });
   const mockSocials = signal<Socials>({

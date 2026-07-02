@@ -94,57 +94,6 @@ export class CommentatorBox implements OnInit, OnDestroy {
   }
 
   /**
-   * Event listener for `CommBoxDisplayEvents` broadcast channel
-   * @param message {MessageEvent} - MessageEvent fired by `BroadcastChannel`
-   */
-  commboxButtonEventListener = (message: MessageEvent) => {
-    this.log.trace('Click event from CommBoxDisplayEvents received, clearing timeout', {
-      timeoutId: this.hideDisplayTimeout,
-    });
-    clearTimeout(this.hideDisplayTimeout);
-
-    switch (message.data) {
-      case CommBoxDisplayEvents.CommBoxHideButtonClicked:
-        {
-          this.log.trace('Commentator box hide click event received, hiding comm box');
-          this.commboxHidden.set(true);
-        }
-        break;
-
-      case CommBoxDisplayEvents.CommBoxShowButtonClicked:
-        {
-          this.log.trace('Commentator box show click event received, show comm box');
-          this.commboxHidden.set(false);
-        }
-        break;
-
-      case CommBoxDisplayEvents.CommBoxShowTempButtonClicked:
-        {
-          const hideIntervalInSeconds =
-            this.commentatorBoxTimeData().hideDisplayIntervalInSeconds * 1000;
-          this.log.trace('Commentator box show temporarily click event received, show comm box', {
-            hideIntervalInSeconds: hideIntervalInSeconds,
-          });
-
-          this.commboxHidden.set(false);
-          this.hideDisplayTimeout = setTimeout(() => {
-            this.log.trace('Interval finished, hiding comm box');
-            this.commboxHidden.set(true);
-          }, hideIntervalInSeconds);
-        }
-        break;
-
-      default:
-        {
-          this.log.warn('Invalid commbox display button click event received!', {
-            eventName: message.data,
-          });
-        }
-        break;
-    }
-  };
-
-  /**
    * Handles the hide commentator box event that gets received from signalr event hub
    */
   handleHideEvent = () => {
