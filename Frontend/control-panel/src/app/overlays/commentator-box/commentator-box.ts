@@ -1,13 +1,4 @@
-import {
-  Component,
-  effect,
-  inject,
-  Input,
-  OnDestroy,
-  OnInit,
-  signal,
-  WritableSignal,
-} from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
 import { SocialsService } from '../../services/socials';
@@ -16,10 +7,12 @@ import { Socials } from '../../models/socials';
 import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { BroadcastState } from '../../models/broadcast-state';
 import { LogScope } from '../../models/log-scope';
+import { BroadcastChannelTypes } from '../../enums/broadcast-channel-types';
+import { CommBoxDisplayEvents } from '../../enums/comm-box-display-events';
 
 @Component({
   host: {
-    '[class.interval-hidden]': 'intervalHidden()',
+    '[class.hide-comm-box]': 'commboxHidden()',
   },
   selector: 'app-commentator-box',
   imports: [],
@@ -35,7 +28,7 @@ export class CommentatorBox implements OnInit, OnDestroy {
   /**
    * Signal indicating if the interval is hidden.
    */
-  intervalHidden: WritableSignal<boolean> = signal<boolean>(false);
+  commboxHidden: WritableSignal<boolean> = signal<boolean>(false);
 
   /**
    * Service for managing broadcast state.
@@ -84,46 +77,11 @@ export class CommentatorBox implements OnInit, OnDestroy {
   private hideDisplayTimeout: ReturnType<typeof setTimeout> | undefined;
 
   /**
-   * Timeout for showing the display.
+   * Broadcast channel for commentator box display events
    */
-  private showDisplayTimeout: ReturnType<typeof setTimeout> | undefined;
-
-  /**
-   * Reactive effect managing interval-based visibility of the commentator box.
-   */
-  private commBoxDisplayIntervalEffect = effect(() => {
-    const config = this.commentatorBoxTimeData();
-
-    clearTimeout(this.hideDisplayTimeout);
-    clearTimeout(this.showDisplayTimeout);
-
-    this.log.debug('CommentatorBox interval effect triggered', {
-      onMapScreen: this.onMapScreen,
-      hideInterval: config.hideDisplayIntervalInSeconds,
-      showInterval: config.showDisplayIntervalInSeconds,
-    });
-
-    if (
-      !this.onMapScreen ||
-      config.hideDisplayIntervalInSeconds === 0 ||
-      config.showDisplayIntervalInSeconds === 0
-    ) {
-      this.intervalHidden.set(false);
-
-      this.log.info('CommentatorBox forced visible (interval disabled or not map screen)');
-
-      return;
-    }
-
-    this.intervalHidden.set(true);
-
-    this.log.info('CommentatorBox interval cycling started', {
-      hideInterval: config.hideDisplayIntervalInSeconds,
-      showInterval: config.showDisplayIntervalInSeconds,
-    });
-
-    this.setShowDisplayIntervalTimeout();
-  });
+  private readonly broadcastChannel: BroadcastChannel = new BroadcastChannel(
+    BroadcastChannelTypes.CommBoxDisplayEvents,
+  );
 
   /**
    * Get the formatted commentator text based on the current broadcast state.
@@ -140,33 +98,54 @@ export class CommentatorBox implements OnInit, OnDestroy {
         : `Kommentatoren: ${c1 || 'Kommentator 1'}, ${c2 || 'Kommentator 2'}`;
   }
 
-  /** Schedule the timeout to show the commentator box after the configured interval. */
-  private setShowDisplayIntervalTimeout(): void {
-    this.log.debug('Scheduling show interval timeout');
-
-    this.showDisplayTimeout = setTimeout(() => {
-      this.intervalHidden.set(false);
-
-      this.log.debug('CommentatorBox shown');
-
-      this.setHideDisplayIntervalTimeout();
-    }, this.commentatorBoxTimeData().showDisplayIntervalInSeconds * 1000);
-  }
-
   /**
-   * Schedule the timeout to hide the commentator box after the configured interval.
+   * Event listener for `CommBoxDisplayEvents` broadcast channel
+   * @param message {MessageEvent} - MessageEvent fired by `BroadcastChannel`
    */
-  private setHideDisplayIntervalTimeout(): void {
-    this.log.debug('Scheduling hide interval timeout');
+  commboxButtonEventListener = (message: MessageEvent) => {
+    this.log.trace('Click event from CommBoxDisplayEvents received, clearing timeout', {
+      timeoutId: this.hideDisplayTimeout,
+    });
+    clearTimeout(this.hideDisplayTimeout);
 
-    this.hideDisplayTimeout = setTimeout(() => {
-      this.intervalHidden.set(true);
+    switch (message.data) {
+      case CommBoxDisplayEvents.CommBoxHideButtonClicked:
+        {
+          this.log.trace('Commentator box hide click event received, hiding comm box');
+          this.commboxHidden.set(true);
+        }
+        break;
 
-      this.log.debug('CommentatorBox hidden');
+      case CommBoxDisplayEvents.CommBoxShowButtonClicked:
+        {
+          this.log.trace('Commentator box show click event received, show comm box');
+          this.commboxHidden.set(false);
+        }
+        break;
 
-      this.setShowDisplayIntervalTimeout();
-    }, this.commentatorBoxTimeData().hideDisplayIntervalInSeconds * 1000);
-  }
+      case CommBoxDisplayEvents.CommBoxShowTempButtonClicked:
+        {
+          const hideIntervalInSeconds =
+            this.commentatorBoxTimeData().hideDisplayIntervalInSeconds * 1000;
+          this.log.trace('Commentator box show temporarily click event received, show comm box', {
+            hideIntervalInSeconds: hideIntervalInSeconds,
+          });
+
+          this.commboxHidden.set(false);
+          this.hideDisplayTimeout = setTimeout(() => {
+            this.log.trace('Interval finished, hiding comm box');
+            this.commboxHidden.set(true);
+          }, hideIntervalInSeconds);
+        }
+        break;
+
+      default: {
+        this.log.warn('Invalid commbox display button click event received!', {
+          eventName: message.data,
+        });
+      }
+    }
+  };
 
   /**
    * Initialize services and load initial state when the component is created.
@@ -175,6 +154,12 @@ export class CommentatorBox implements OnInit, OnDestroy {
     this.log.trace('CommentatorBox initialized', {
       onMapScreen: this.onMapScreen,
     });
+
+    if (this.onMapScreen) {
+      this.broadcastChannel.onmessage = this.commboxButtonEventListener;
+    }
+
+    this.commboxHidden.set(this.onMapScreen);
 
     this.stateService.loadInitialState();
     this.commentatorBoxTimeDataService.loadInitialState();
@@ -185,12 +170,10 @@ export class CommentatorBox implements OnInit, OnDestroy {
    * Angular lifecycle hook called when the component is destroyed.
    */
   ngOnDestroy(): void {
-    this.log.trace('CommentatorBox destroyed');
-
     clearTimeout(this.hideDisplayTimeout);
-    clearTimeout(this.showDisplayTimeout);
 
-    this.commBoxDisplayIntervalEffect.destroy();
+    this.log.trace('CommentatorBox destroyed');
     this.scope.dispose();
+    this.broadcastChannel.close();
   }
 }
