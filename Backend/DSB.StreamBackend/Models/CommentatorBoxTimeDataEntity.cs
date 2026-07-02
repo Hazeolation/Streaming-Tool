@@ -8,15 +8,15 @@ public class CommentatorBoxTimeDataEntity
     /// <summary>
     /// Gets or sets the single identifier for the commentator box time data
     /// </summary>
-    public int Id { get; set; } = 1;
+    public int Id { get; set; }
 
     /// <summary>
     /// Gets or sets the time in seconds that the display should be visible
     /// </summary>
-    public int ShowDisplayIntervalInSeconds { get; set; } = 0;
+    public int ShowDisplayIntervalInSeconds { get; set; } = 5;
 
     /// <summary>
     /// Gets or sets the time in seconds that the display should be hidden
     /// </summary>
-    public int HideDisplayIntervalInSeconds { get; set; } = 0;
+    public int HideDisplayIntervalInSeconds { get; set; } = 50;
 }
