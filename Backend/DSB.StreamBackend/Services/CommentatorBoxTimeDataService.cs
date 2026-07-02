@@ -81,7 +81,7 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db, ILogService l
     {
         await log.TraceAsync("Loading commentator box time entity");
 
-        CommentatorBoxTimeDataEntity? entity = await db.CommentatorBoxTimeData.FirstOrDefaultAsync(x => x.Id == 1);
+        CommentatorBoxTimeDataEntity? entity = await db.CommentatorBoxTimeData.FirstOrDefaultAsync();
 
         if (entity is not null)
         {
@@ -90,10 +90,7 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db, ILogService l
 
         await log.WarningAsync("Commentator box time data not found, creating default");
 
-        entity = new CommentatorBoxTimeDataEntity
-        {
-            Id = 1
-        };
+        entity = new CommentatorBoxTimeDataEntity();
 
         db.CommentatorBoxTimeData.Add(entity);
 
