@@ -120,41 +120,56 @@ public class SidebarTests : PageTest
     public async Task Sidebar_Visibility_MapScreenButton_TogglesActiveClass()
     {
         var btn = Page.Locator("button:text('Kartenanzeige')");
-        var wasActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('active')");
+        var wasActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('toggled')");
 
         await btn.ClickAsync();
 
         if (wasActive)
-            await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\bactive\b"));
+            await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\btoggled\b"));
         else
-            await Expect(btn).ToHaveClassAsync(new Regex(@"\bactive\b"));
+            await Expect(btn).ToHaveClassAsync(new Regex(@"\btoggled\b"));
     }
 
     [Test]
     public async Task Sidebar_Visibility_ScoreBoxButton_TogglesActiveClass()
     {
         var btn = Page.Locator("button:text('Spielstand')");
-        var wasActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('active')");
+        var wasActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('toggled')");
 
         await btn.ClickAsync();
 
         if (wasActive)
-            await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\bactive\b"));
+            await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\btoggled\b"));
         else
-            await Expect(btn).ToHaveClassAsync(new Regex(@"\bactive\b"));
+            await Expect(btn).ToHaveClassAsync(new Regex(@"\btoggled\b"));
     }
 
     [Test]
     public async Task Sidebar_Visibility_CommentatorButton_TogglesActiveClass()
     {
         var btn = Page.Locator("button:text('Kommentatoren')");
-        var wasActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('active')");
+        var wasActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('toggled')");
 
         await btn.ClickAsync();
 
         if (wasActive)
-            await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\bactive\b"));
+            await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\btoggled\b"));
         else
-            await Expect(btn).ToHaveClassAsync(new Regex(@"\bactive\b"));
+            await Expect(btn).ToHaveClassAsync(new Regex(@"\btoggled\b"));
+    }
+
+    [Test]
+    public async Task Sidebar_CommBoxSettings_ElementsPresebt()
+    {
+        await Page.GotoAsync(BaseUrl);
+
+        var timeDataDetails = Page.Locator(".comm-box-time-data__details-container");
+        await timeDataDetails.ClickAsync();
+
+        await Expect(Page.Locator(".click-button.hide-comm-box-button")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".click-button.show-comm-box-button")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".click-button.show-comm-box-temp-button")).ToBeVisibleAsync();
+
+        await Expect(Page.Locator(".hide-comm-box-interval-input")).ToBeVisibleAsync();
     }
 }

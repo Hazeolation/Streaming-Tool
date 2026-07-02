@@ -152,11 +152,18 @@
     <details class="comm-box-time-data__details-container">
       <summary>Zeiten</summary>
       <div class="commentator-box-display-inputs__container">
-        <button class="click-button" (click)="handleHideButtonClick()">Ausblenden</button>
+        <button class="click-button hide-comm-box-button" (click)="handleHideButtonClick()">
+          Ausblenden
+        </button>
 
-        <button class="click-button" (click)="handleShowButtonClick()">Einblenden</button>
+        <button class="click-button show-comm-box-button" (click)="handleShowButtonClick()">
+          Einblenden
+        </button>
 
-        <button class="click-button" (click)="handleShowTempButtonClick()">
+        <button
+          class="click-button show-comm-box-temp-button"
+          (click)="handleShowTempButtonClick()"
+        >
           Temporär Einblenden
         </button>
 
