@@ -122,6 +122,7 @@ export class Sidebar implements OnInit, OnDestroy {
       this.log.debug('Initial state load triggered', {
         hasStateService: !!this.stateService,
         hasSocialsService: !!this.socialsService,
+        hasTimeDataService: !!this.commentatorBoxTimeDataService,
       });
     } catch (err) {
       this.log.error('Sidebar initialization failed', err);
