@@ -9,8 +9,8 @@ import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
-import { BroadcastChannelTypes } from '../../enums/broadcast-channel-types';
 import { CommBoxDisplayEvents } from '../../enums/comm-box-display-events';
+import { SignalrEvents } from '../../services/signalr-events';
 
 @Component({
   selector: 'app-sidebar',
@@ -19,12 +19,7 @@ import { CommBoxDisplayEvents } from '../../enums/comm-box-display-events';
   styleUrl: './sidebar.scss',
 })
 export class Sidebar implements OnInit, OnDestroy {
-  /**
-   * Broadcast channel for commentator box display events
-   */
-  private readonly broadcastChannel: BroadcastChannel = new BroadcastChannel(
-    BroadcastChannelTypes.CommBoxDisplayEvents,
-  );
+  private signalrEvents: SignalrEvents = inject(SignalrEvents);
 
   /**
    * Logger instance for sidebar lifecycle and actions.
@@ -78,33 +73,30 @@ export class Sidebar implements OnInit, OnDestroy {
    * Click event handling for the hide commentator box button
    */
   handleHideButtonClick(): void {
-    this.log.trace('Firing click event for commentator box display button to broadcast channel', {
+    this.log.trace('Firing click event for commentator box display button to Signalr EventHub', {
       type: CommBoxDisplayEvents.CommBoxHideButtonClicked,
-      broadcastChannel: this.broadcastChannel.name,
     });
-    this.broadcastChannel.postMessage(CommBoxDisplayEvents.CommBoxHideButtonClicked);
+    this.signalrEvents.connection?.invoke(CommBoxDisplayEvents.CommBoxHideButtonClicked);
   }
 
   /**
    * Click event handling for the show commentator box button
    */
   handleShowButtonClick(): void {
-    this.log.trace('Firing click event for commentator box display button to broadcast channel', {
+    this.log.trace('Firing click event for commentator box display button to Signalr EventHub', {
       type: CommBoxDisplayEvents.CommBoxHideButtonClicked,
-      broadcastChannel: this.broadcastChannel.name,
     });
-    this.broadcastChannel.postMessage(CommBoxDisplayEvents.CommBoxShowButtonClicked);
+    this.signalrEvents.connection?.invoke(CommBoxDisplayEvents.CommBoxShowButtonClicked);
   }
 
   /**
    * Click event handling for the show commentator box temporarily button
    */
   handleShowTempButtonClick(): void {
-    this.log.trace('Firing click event for commentator box display button to broadcast channel', {
+    this.log.trace('Firing click event for commentator box display button to Signalr EventHub', {
       type: CommBoxDisplayEvents.CommBoxHideButtonClicked,
-      broadcastChannel: this.broadcastChannel.name,
     });
-    this.broadcastChannel.postMessage(CommBoxDisplayEvents.CommBoxShowTempButtonClicked);
+    this.signalrEvents.connection?.invoke(CommBoxDisplayEvents.CommBoxShowTempButtonClicked);
   }
 
   /**
@@ -136,6 +128,5 @@ export class Sidebar implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.log.trace('Sidebar destroyed');
     this.scope.dispose();
-    this.broadcastChannel.close();
   }
 }

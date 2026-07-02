@@ -7,8 +7,8 @@ import { Socials } from '../../models/socials';
 import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { BroadcastState } from '../../models/broadcast-state';
 import { LogScope } from '../../models/log-scope';
-import { BroadcastChannelTypes } from '../../enums/broadcast-channel-types';
 import { CommBoxDisplayEvents } from '../../enums/comm-box-display-events';
+import { SignalrEvents } from '../../services/signalr-events';
 
 @Component({
   host: {
@@ -76,12 +76,7 @@ export class CommentatorBox implements OnInit, OnDestroy {
    */
   private hideDisplayTimeout: ReturnType<typeof setTimeout> | undefined;
 
-  /**
-   * Broadcast channel for commentator box display events
-   */
-  private readonly broadcastChannel: BroadcastChannel = new BroadcastChannel(
-    BroadcastChannelTypes.CommBoxDisplayEvents,
-  );
+  private signalrEvents: SignalrEvents = inject(SignalrEvents);
 
   /**
    * Get the formatted commentator text based on the current broadcast state.
@@ -150,6 +145,71 @@ export class CommentatorBox implements OnInit, OnDestroy {
   };
 
   /**
+   * Handles the hide commentator box event that gets received from signalr event hub
+   */
+  handleHideEvent = () => {
+    clearTimeout(this.hideDisplayTimeout);
+
+    this.log.trace('Commentator box hide click event received, hiding comm box');
+    this.commboxHidden.set(true);
+  };
+
+  /**
+   * Handles the show commentator box event that gets received from signalr event hub
+   */
+  handleShowEvent = () => {
+    clearTimeout(this.hideDisplayTimeout);
+
+    this.log.trace('Commentator box hide click event received, hiding comm box');
+    this.commboxHidden.set(false);
+  };
+
+  /**
+   * Handles the show commentator box temporarily event that gets received from signalr event hub
+   */
+  handleShowTempEvent = () => {
+    clearTimeout(this.hideDisplayTimeout);
+
+    const hideIntervalInSeconds = this.commentatorBoxTimeData().hideDisplayIntervalInSeconds * 1000;
+    this.log.trace('Commentator box show temporarily click event received, show comm box', {
+      hideIntervalInSeconds: hideIntervalInSeconds,
+    });
+
+    this.commboxHidden.set(false);
+    this.hideDisplayTimeout = setTimeout(() => {
+      this.log.trace('Interval finished, hiding comm box');
+      this.commboxHidden.set(true);
+    }, hideIntervalInSeconds);
+  };
+
+  /**
+   * Connect all signalr event listeners on component init
+   */
+  connectEventListeners(): void {
+    this.signalrEvents.connection?.on(
+      CommBoxDisplayEvents.CommBoxHideButtonClicked,
+      this.handleHideEvent,
+    );
+    this.signalrEvents.connection?.on(
+      CommBoxDisplayEvents.CommBoxShowButtonClicked,
+      this.handleShowEvent,
+    );
+    this.signalrEvents.connection?.on(
+      CommBoxDisplayEvents.CommBoxShowTempButtonClicked,
+      this.handleShowTempEvent,
+    );
+  }
+
+  /**
+   * Disconnect all signalr event listeners on component destroy
+   */
+  disconnectEventListeners(): void {
+    this.signalrEvents.connection?.off(CommBoxDisplayEvents.CommBoxHideButtonClicked);
+    this.signalrEvents.connection?.off(CommBoxDisplayEvents.CommBoxShowButtonClicked);
+    this.signalrEvents.connection?.off(CommBoxDisplayEvents.CommBoxShowTempButtonClicked);
+  }
+
+  /**
    * Initialize services and load initial state when the component is created.
    */
   ngOnInit(): void {
@@ -159,12 +219,9 @@ export class CommentatorBox implements OnInit, OnDestroy {
 
     if (this.onScoreBox) {
       this.log.trace(
-        'CommentatorBox is on score box page, add BroadcastChannel listener for button click events',
-        {
-          broadcastChannel: this.broadcastChannel.name,
-        },
+        'CommentatorBox is on score box page, add Signalr EventHub listener for button click events',
       );
-      this.broadcastChannel.onmessage = this.commboxButtonEventListener;
+      this.connectEventListeners();
     }
 
     this.commboxHidden.set(this.onScoreBox);
@@ -182,6 +239,6 @@ export class CommentatorBox implements OnInit, OnDestroy {
 
     this.log.trace('CommentatorBox destroyed');
     this.scope.dispose();
-    this.broadcastChannel.close();
+    this.disconnectEventListeners();
   }
 }
