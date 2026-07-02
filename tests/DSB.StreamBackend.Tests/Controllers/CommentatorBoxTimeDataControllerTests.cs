@@ -67,8 +67,7 @@ public class CommentatorBoxTimeDataControllerTests
         var ok = (OkObjectResult)result.Result!;
         var dto = (CommentatorBoxTimeDataDto)ok.Value!;
 
-        Assert.That(dto.ShowDisplayIntervalInSeconds, Is.EqualTo(5));
-        Assert.That(dto.HideDisplayIntervalInSeconds, Is.EqualTo(50));
+        Assert.That(dto.HideDisplayIntervalInSeconds, Is.EqualTo(5));
     }
 
     [Test]
@@ -76,7 +75,7 @@ public class CommentatorBoxTimeDataControllerTests
     {
         var dto = new CommentatorBoxTimeDataDto
         {
-            ShowDisplayIntervalInSeconds = 200
+            HideDisplayIntervalInSeconds = 35
         };
 
         var result = await _controller.UpdateCommentatorBoxTimeData(dto);
@@ -85,8 +84,7 @@ public class CommentatorBoxTimeDataControllerTests
         var ok = (OkObjectResult)result.Result!;
         var updated = (CommentatorBoxTimeDataDto)ok.Value!;
 
-        Assert.That(updated.ShowDisplayIntervalInSeconds, Is.EqualTo(200));
-        Assert.That(updated.HideDisplayIntervalInSeconds, Is.EqualTo(0));
+        Assert.That(updated.HideDisplayIntervalInSeconds, Is.EqualTo(35));
     }
 
     [Test]
@@ -112,14 +110,12 @@ public class CommentatorBoxTimeDataControllerTests
 
         var dto = new CommentatorBoxTimeDataDto
         {
-            ShowDisplayIntervalInSeconds = 20,
             HideDisplayIntervalInSeconds = 40
         };
 
         await _controller.UpdateCommentatorBoxTimeData(dto);
 
         Assert.That(capturedTimeData, Is.Not.Null);
-        Assert.That(capturedTimeData!.ShowDisplayIntervalInSeconds, Is.EqualTo(20));
         Assert.That(capturedTimeData!.HideDisplayIntervalInSeconds, Is.EqualTo(40));
     }
 }
