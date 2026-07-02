@@ -38,8 +38,8 @@ public class CommentatorBoxTimeDataServiceTests
         var result = await _service.GetCommentatorBoxTimeDataAsync();
 
         Assert.That(result, Is.Not.Null);
-        Assert.That(result.ShowDisplayIntervalInSeconds, Is.EqualTo(0));
-        Assert.That(result.HideDisplayIntervalInSeconds, Is.EqualTo(0));
+        Assert.That(result.ShowDisplayIntervalInSeconds, Is.EqualTo(5));
+        Assert.That(result.HideDisplayIntervalInSeconds, Is.EqualTo(50));
     }
 
     [Test]

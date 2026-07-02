@@ -67,8 +67,8 @@ public class CommentatorBoxTimeDataControllerTests
         var ok = (OkObjectResult)result.Result!;
         var dto = (CommentatorBoxTimeDataDto)ok.Value!;
 
-        Assert.That(dto.ShowDisplayIntervalInSeconds, Is.EqualTo(0));
-        Assert.That(dto.HideDisplayIntervalInSeconds, Is.EqualTo(0));
+        Assert.That(dto.ShowDisplayIntervalInSeconds, Is.EqualTo(5));
+        Assert.That(dto.HideDisplayIntervalInSeconds, Is.EqualTo(50));
     }
 
     [Test]
