@@ -4,6 +4,7 @@ import { Signalr } from './signalr';
 import { CommentatorBoxTimeData } from '../models/commentator-box-time-data';
 import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
 import { LogService } from './log';
+import { CommBoxDisplayMode } from '../enums/comm-box-display-modes';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,7 @@ export class CommentatorBoxTimeDataService {
   commentatorBoxTimeData: WritableSignal<CommentatorBoxTimeData> = signal<CommentatorBoxTimeData>({
     hideDisplayIntervalInSeconds: 50,
     showDisplayIntervalInSeconds: 5,
+    displayMode: CommBoxDisplayMode.Manual,
   });
 
   /**
