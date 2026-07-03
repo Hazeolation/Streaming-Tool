@@ -27,5 +27,5 @@ public class CommentatorBoxTimeDataEntity
     /// 0 - Manual, the streamer has to click a button when the comm box should appear and disappear
     /// 1 - Automatic, the streamer can set two input time values and the comm box handles the blending automatically
     /// </summary>
-    public int DisplayMode { get; set; } = Convert.ToInt32(CommBoxDisplayMode.Manual);
+    public int DisplayMode { get; set; } = (int)CommBoxDisplayMode.Manual;
 }
