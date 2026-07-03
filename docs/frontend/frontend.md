@@ -88,6 +88,7 @@ Key properties:
 
 - `hideDisplayIntervalInSeconds`
 - `showDisplayIntervalInSeconds`
+- `displayMode`
 
 ### `Division`
 
@@ -145,7 +146,7 @@ Key properties:
 
 ## Services
 
-The app uses three primary frontend services.
+The app uses six primary frontend services.
 
 ### `Signalr`
 
@@ -159,6 +160,12 @@ The app uses three primary frontend services.
   - `broadcastStateUpdated`
   - `socialsUpdated`
   - `commentatorBoxTimeDataUpdated`
+
+### `SignalrEvents`
+
+- Connects to `http://localhost:7000/eventHub`.
+- Uses `HubConnectionBuilder` with automatic reconnect.
+- Dashboard can invoke and listen to certain events that need to be transmitted across all clients and overlays
 
 ### `BroadcastStateService`
 
