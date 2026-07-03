@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using DSB.StreamBackend.Models;
+using DSB.StreamBackend.Enums;
 
 namespace DSB.StreamBackend.Context;
 
@@ -42,11 +43,34 @@ public class StreamToolDbContext(
         modelBuilder.Entity<MapStateEntity>()
             .HasKey(x => x.Id);
 
+        modelBuilder.Entity<SocialsEntity>()
+            .HasKey(x => x.Id);
+
+        modelBuilder.Entity<CommentatorBoxTimeDataEntity>()
+            .HasKey(x => x.Id);
+
         modelBuilder.Entity<BroadcastStateEntity>()
             .HasMany(x => x.Maps)
             .WithOne(x => x.BroadcastState)
             .HasForeignKey(x => x.BroadcastStateEntityId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<SocialsEntity>()
+            .HasData(new SocialsEntity
+            {
+                Id = 1,
+                XHandle = string.Empty,
+                DiscordInvite = string.Empty
+            });
+
+        modelBuilder.Entity<CommentatorBoxTimeDataEntity>()
+            .HasData(new CommentatorBoxTimeDataEntity
+            {
+                Id = 1,
+                ShowDisplayIntervalInSeconds = 50,
+                HideDisplayIntervalInSeconds = 5,
+                DisplayMode = Convert.ToInt32(CommBoxDisplayMode.Manual)
+            });
 
         modelBuilder.Entity<BroadcastStateEntity>()
             .HasData(new BroadcastStateEntity

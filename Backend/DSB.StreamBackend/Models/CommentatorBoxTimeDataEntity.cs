@@ -13,14 +13,14 @@ public class CommentatorBoxTimeDataEntity
     public int Id { get; set; } = 1;
 
     /// <summary>
-    /// Gets or sets the time in seconds that the display should be visible
+    /// Gets or sets the time in seconds that sets when the display should be visible again
     /// </summary>
-    public int ShowDisplayIntervalInSeconds { get; set; } = 5;
+    public int ShowDisplayIntervalInSeconds { get; set; } = 50;
 
     /// <summary>
-    /// Gets or sets the time in seconds that the display should be hidden
+    /// Gets or sets the time in seconds that sets when the display should be hidden again
     /// </summary>
-    public int HideDisplayIntervalInSeconds { get; set; } = 50;
+    public int HideDisplayIntervalInSeconds { get; set; } = 5;
 
     /// <summary>
     /// Gets or sets the display mode in which the blending in and out happens

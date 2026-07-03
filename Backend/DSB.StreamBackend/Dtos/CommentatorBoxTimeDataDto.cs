@@ -13,12 +13,12 @@ public class CommentatorBoxTimeDataDto
     public int Id { get; set; } = 1;
 
     /// <summary>
-    /// Gets or sets the time in seconds that the display should be visible
+    /// Gets or sets the time in seconds that sets when the display should be visible again
     /// </summary>
     public int ShowDisplayIntervalInSeconds { get; set; } = 0;
 
     /// <summary>
-    /// Gets or sets the time in seconds that the display should be hidden
+    /// Gets or sets the time in seconds that sets when the display should be hidden again
     /// </summary>
     public int HideDisplayIntervalInSeconds { get; set; } = 0;
 
