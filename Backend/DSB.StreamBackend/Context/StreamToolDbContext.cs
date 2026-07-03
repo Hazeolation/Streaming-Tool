@@ -69,7 +69,7 @@ public class StreamToolDbContext(
                 Id = 1,
                 ShowDisplayIntervalInSeconds = 50,
                 HideDisplayIntervalInSeconds = 5,
-                DisplayMode = Convert.ToInt32(CommBoxDisplayMode.Manual)
+                DisplayMode = (int)CommBoxDisplayMode.Manual
             });
 
         modelBuilder.Entity<BroadcastStateEntity>()
