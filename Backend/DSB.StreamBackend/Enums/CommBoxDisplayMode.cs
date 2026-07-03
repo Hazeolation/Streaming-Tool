@@ -1,6 +1,6 @@
 namespace DSB.StreamBackend.Enums;
 
-public enum CommBoxBlendingMode
+public enum CommBoxDisplayMode
 {
     Manual,
     Automatic

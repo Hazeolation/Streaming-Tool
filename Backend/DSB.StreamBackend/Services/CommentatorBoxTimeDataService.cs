@@ -94,7 +94,10 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db, ILogService l
 
         await log.WarningAsync("Commentator box time data not found, creating default");
 
-        entity = new CommentatorBoxTimeDataEntity();
+        entity = new CommentatorBoxTimeDataEntity
+        {
+            Id = 1
+        };
 
         db.CommentatorBoxTimeData.Add(entity);
 
