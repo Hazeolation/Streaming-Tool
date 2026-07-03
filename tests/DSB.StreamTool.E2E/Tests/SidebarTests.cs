@@ -159,17 +159,35 @@ public class SidebarTests : PageTest
     }
 
     [Test]
-    public async Task Sidebar_CommBoxSettings_ElementsPresebt()
+    public async Task Sidebar_CommBoxSettings_ManualMode_ElementsPresent()
     {
         await Page.GotoAsync(BaseUrl);
 
         var timeDataDetails = Page.Locator(".comm-box-time-data__details-container");
         await timeDataDetails.ClickAsync();
 
+        var manualModeButton = Page.Locator(".manual-display-mode-button");
+        await manualModeButton.ClickAsync();
+
         await Expect(Page.Locator(".click-button.hide-comm-box-button")).ToBeVisibleAsync();
         await Expect(Page.Locator(".click-button.show-comm-box-button")).ToBeVisibleAsync();
         await Expect(Page.Locator(".click-button.show-comm-box-temp-button")).ToBeVisibleAsync();
 
+        await Expect(Page.Locator(".show-temp-comm-box-interval-input")).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task Sidebar_CommBoxSettings_AutoMode_ElementsPresent()
+    {
+        await Page.GotoAsync(BaseUrl);
+
+        var timeDataDetails = Page.Locator(".comm-box-time-data__details-container");
+        await timeDataDetails.ClickAsync();
+
+        var autoModeButton = Page.Locator(".auto-display-mode-button");
+        await autoModeButton.ClickAsync();
+
         await Expect(Page.Locator(".hide-comm-box-interval-input")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".show-comm-box-interval-input")).ToBeVisibleAsync();
     }
 }

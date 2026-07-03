@@ -155,7 +155,7 @@
         <h3>Ein/Ausblende-Modus</h3>
         <div class="comm-box-display-state-buttons__container">
           <button
-            class="toggle-button display-mode-button"
+            class="toggle-button display-mode-button manual-display-mode-button"
             [class.toggled]="commentatorBoxTimeData().displayMode === commBoxDisplayMode.Manual"
             (click)="
               commentatorBoxTimeDataService.update({
@@ -166,7 +166,7 @@
             Manuell
           </button>
           <button
-            class="toggle-button display-mode-button"
+            class="toggle-button display-mode-button auto-display-mode-button"
             [class.toggled]="commentatorBoxTimeData().displayMode === commBoxDisplayMode.Auto"
             (click)="
               commentatorBoxTimeDataService.update({
