@@ -20,3 +20,12 @@ jobs:
         run: |
           echo "Pull Request labeled as NoMerge!"
           exit 1
+
+  pass-without-label:
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'NoMerge') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pass in case Pull Request is not labeled with "NoMerge"
+        run: |
+          echo "Merge permitted!"
+          exit 0
