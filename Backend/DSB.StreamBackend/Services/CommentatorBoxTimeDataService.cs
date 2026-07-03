@@ -77,7 +77,7 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db, ILogService l
     {
         await log.TraceAsync("Loading commentator box time entity");
 
-        CommentatorBoxTimeDataEntity? entity = await db.CommentatorBoxTimeData.FirstOrDefaultAsync();
+        CommentatorBoxTimeDataEntity? entity = await db.CommentatorBoxTimeData.FirstOrDefaultAsync(x => x.Id == 1);
 
         if (entity is not null)
         {
