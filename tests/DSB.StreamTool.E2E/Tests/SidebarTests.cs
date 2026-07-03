@@ -81,7 +81,7 @@ public class SidebarTests : PageTest
     [Test]
     public async Task Sidebar_Streamer_InputAcceptsText()
     {
-        var streamerInput = Page.Locator("input[placeholder='@streamer']");
+        var streamerInput = Page.Locator("input[placeholder='Streamer']");
         await streamerInput.ClearAsync();
         await streamerInput.FillAsync("TestStreamer");
 
@@ -91,7 +91,7 @@ public class SidebarTests : PageTest
     [Test]
     public async Task Sidebar_Commentator1_InputAcceptsText()
     {
-        var caster1 = Page.Locator("input[placeholder='@caster1']");
+        var caster1 = Page.Locator("input[placeholder='Caster1']");
         await caster1.ClearAsync();
         await caster1.FillAsync("CasterOne");
 
@@ -101,7 +101,7 @@ public class SidebarTests : PageTest
     [Test]
     public async Task Sidebar_Commentator2_InputAcceptsText()
     {
-        var caster2 = Page.Locator("input[placeholder='@caster2']");
+        var caster2 = Page.Locator("input[placeholder='Caster2']");
         await caster2.ClearAsync();
         await caster2.FillAsync("CasterTwo");
 
