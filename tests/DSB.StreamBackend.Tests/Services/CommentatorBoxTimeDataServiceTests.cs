@@ -38,7 +38,8 @@ public class CommentatorBoxTimeDataServiceTests
         var result = await _service.GetCommentatorBoxTimeDataAsync();
 
         Assert.That(result, Is.Not.Null);
-        Assert.That(result.HideDisplayIntervalInSeconds, Is.EqualTo(5));
+        Assert.That(result.ShowDisplayIntervalInSeconds, Is.EqualTo(5));
+        Assert.That(result.HideDisplayIntervalInSeconds, Is.EqualTo(50));
     }
 
     [Test]
@@ -47,12 +48,14 @@ public class CommentatorBoxTimeDataServiceTests
         _db.CommentatorBoxTimeData.Add(new CommentatorBoxTimeDataEntity
         {
             Id = 1,
+            ShowDisplayIntervalInSeconds = 40,
             HideDisplayIntervalInSeconds = 60
         });
         await _db.SaveChangesAsync();
 
         var result = await _service.GetCommentatorBoxTimeDataAsync();
 
+        Assert.That(result.ShowDisplayIntervalInSeconds, Is.EqualTo(40));
         Assert.That(result.HideDisplayIntervalInSeconds, Is.EqualTo(60));
     }
 
@@ -61,11 +64,13 @@ public class CommentatorBoxTimeDataServiceTests
     {
         var dto = new CommentatorBoxTimeDataDto
         {
+            ShowDisplayIntervalInSeconds = 76,
             HideDisplayIntervalInSeconds = 67
         };
 
         var result = await _service.UpdateCommentatorBoxTimeDataAsync(dto);
 
+        Assert.That(result.ShowDisplayIntervalInSeconds, Is.EqualTo(76));
         Assert.That(result.HideDisplayIntervalInSeconds, Is.EqualTo(67));
     }
 
@@ -74,6 +79,7 @@ public class CommentatorBoxTimeDataServiceTests
     {
         var dto = new CommentatorBoxTimeDataDto
         {
+            ShowDisplayIntervalInSeconds = 50,
             HideDisplayIntervalInSeconds = 25
         };
 
