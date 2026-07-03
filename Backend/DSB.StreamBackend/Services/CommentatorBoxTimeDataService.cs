@@ -24,6 +24,7 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db, ILogService l
 
             await log.InfoAsync("Commentator box time data loaded", new
             {
+                entity.ShowDisplayIntervalInSeconds,
                 entity.HideDisplayIntervalInSeconds
             });
 
@@ -53,10 +54,13 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db, ILogService l
 
             entity.HideDisplayIntervalInSeconds = dto.HideDisplayIntervalInSeconds;
 
+            entity.ShowDisplayIntervalInSeconds = dto.ShowDisplayIntervalInSeconds;
+
             await db.SaveChangesAsync();
 
             await log.InfoAsync("Commentator box time data updated", new
             {
+                entity.ShowDisplayIntervalInSeconds,
                 entity.HideDisplayIntervalInSeconds
             });
 
@@ -106,7 +110,8 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db, ILogService l
     {
         return new CommentatorBoxTimeDataDto
         {
-            HideDisplayIntervalInSeconds = entity.HideDisplayIntervalInSeconds
+            HideDisplayIntervalInSeconds = entity.HideDisplayIntervalInSeconds,
+            ShowDisplayIntervalInSeconds = entity.ShowDisplayIntervalInSeconds
         };
     }
 }

@@ -112,6 +112,9 @@ namespace DSB.StreamBackend.Migrations
                     b.Property<int>("HideDisplayIntervalInSeconds")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ShowDisplayIntervalInSeconds")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.ToTable("CommentatorBoxTimeData");
