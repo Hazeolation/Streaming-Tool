@@ -1,4 +1,14 @@
-import { Component, inject, Input, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  effect,
+  EffectRef,
+  inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
 import { SocialsService } from '../../services/socials';
@@ -9,6 +19,7 @@ import { BroadcastState } from '../../models/broadcast-state';
 import { LogScope } from '../../models/log-scope';
 import { CommBoxDisplayEvents } from '../../enums/comm-box-display-events';
 import { SignalrEvents } from '../../services/signalr-events';
+import { CommBoxDisplayMode } from '../../enums/comm-box-display-modes';
 
 @Component({
   host: {
@@ -72,11 +83,103 @@ export class CommentatorBox implements OnInit, OnDestroy {
   private readonly scope: LogScope = this.log.beginScope('CommentatorBox');
 
   /**
-   * Timeout for hiding the display.
+   * Timeout for hiding the display in manual mode.
    */
-  private hideDisplayTimeout: ReturnType<typeof setTimeout> | undefined;
+  private manualHideDisplayTimeout: ReturnType<typeof setTimeout> | undefined;
 
+  /**
+   * Timeouts for hiding the display in auto mode.
+   */
+  private autoHideDisplayTimeout: ReturnType<typeof setTimeout> | undefined;
+  private autoShowDisplayTimeout: ReturnType<typeof setTimeout> | undefined;
+
+  /**
+   * Instance for transmitting SignalrEvents
+   */
   private signalrEvents: SignalrEvents = inject(SignalrEvents);
+
+  /**
+   * Event for handling event listeners and clearing timeouts when the display mode switches
+   */
+  private displayModeEffect: EffectRef = effect(() => {
+    if (!this.onScoreBox) {
+      this.displayModeEffect.destroy();
+      return;
+    }
+
+    this.commboxHidden.set(true);
+    switch (this.commentatorBoxTimeData().displayMode) {
+      case CommBoxDisplayMode.Manual:
+        {
+          clearTimeout(this.autoHideDisplayTimeout);
+          clearTimeout(this.autoShowDisplayTimeout);
+
+          this.log.trace('Switched to comm box manual display mode, connecting event listeners');
+          this.connectEventListeners();
+        }
+        break;
+
+      case CommBoxDisplayMode.Auto:
+        {
+          clearTimeout(this.manualHideDisplayTimeout);
+
+          this.log.trace('Switched to comm box auto display mode, disconnecting event listeners');
+          this.disconnectEventListeners();
+        }
+        break;
+
+      default:
+        {
+          this.log.warn('Invalid comm box display mode set!');
+        }
+        break;
+    }
+  });
+
+  /**
+   * Updates and resets the commentator box effects
+   */
+  private updateDisplayTimeouts: EffectRef = effect(() => {
+    clearTimeout(this.autoHideDisplayTimeout);
+    clearTimeout(this.autoShowDisplayTimeout);
+
+    if (!this.onScoreBox) {
+      this.updateDisplayTimeouts.destroy();
+      return;
+    }
+
+    if (this.commentatorBoxTimeData().displayMode !== CommBoxDisplayMode.Auto) return;
+
+    if (
+      this.commentatorBoxTimeData().hideDisplayIntervalInSeconds === 0 ||
+      this.commentatorBoxTimeData().showDisplayIntervalInSeconds === 0
+    ) {
+      this.commboxHidden.set(false);
+      return;
+    }
+
+    this.handleAutoShowInterval();
+  });
+
+  /**
+   * Handles the interval when the display is currently shown and triggers timeout when it will get hidden again
+   */
+  private handleAutoHideInterval(): void {
+    this.commboxHidden.set(false);
+    this.autoHideDisplayTimeout = setTimeout(() => {
+      this.handleAutoShowInterval();
+    }, this.commentatorBoxTimeData().hideDisplayIntervalInSeconds * 1000);
+  }
+
+  /**
+   * Handles the interval when the display is currently hidden and triggers timeout when it will get shown again
+   */
+  private handleAutoShowInterval(): void {
+    this.commboxHidden.set(true);
+    this.autoShowDisplayTimeout = setTimeout(() => {
+      this.handleAutoHideInterval();
+    }, this.commentatorBoxTimeData().showDisplayIntervalInSeconds * 1000);
+  }
 
   /**
    * Get the formatted commentator text based on the current broadcast state.
@@ -94,61 +197,10 @@ export class CommentatorBox implements OnInit, OnDestroy {
   }
 
   /**
-   * Event listener for `CommBoxDisplayEvents` broadcast channel
-   * @param message {MessageEvent} - MessageEvent fired by `BroadcastChannel`
-   */
-  commboxButtonEventListener = (message: MessageEvent) => {
-    this.log.trace('Click event from CommBoxDisplayEvents received, clearing timeout', {
-      timeoutId: this.hideDisplayTimeout,
-    });
-    clearTimeout(this.hideDisplayTimeout);
-
-    switch (message.data) {
-      case CommBoxDisplayEvents.CommBoxHideButtonClicked:
-        {
-          this.log.trace('Commentator box hide click event received, hiding comm box');
-          this.commboxHidden.set(true);
-        }
-        break;
-
-      case CommBoxDisplayEvents.CommBoxShowButtonClicked:
-        {
-          this.log.trace('Commentator box show click event received, show comm box');
-          this.commboxHidden.set(false);
-        }
-        break;
-
-      case CommBoxDisplayEvents.CommBoxShowTempButtonClicked:
-        {
-          const hideIntervalInSeconds =
-            this.commentatorBoxTimeData().hideDisplayIntervalInSeconds * 1000;
-          this.log.trace('Commentator box show temporarily click event received, show comm box', {
-            hideIntervalInSeconds: hideIntervalInSeconds,
-          });
-
-          this.commboxHidden.set(false);
-          this.hideDisplayTimeout = setTimeout(() => {
-            this.log.trace('Interval finished, hiding comm box');
-            this.commboxHidden.set(true);
-          }, hideIntervalInSeconds);
-        }
-        break;
-
-      default:
-        {
-          this.log.warn('Invalid commbox display button click event received!', {
-            eventName: message.data,
-          });
-        }
-        break;
-    }
-  };
-
-  /**
    * Handles the hide commentator box event that gets received from signalr event hub
    */
   handleHideEvent = () => {
-    clearTimeout(this.hideDisplayTimeout);
+    clearTimeout(this.manualHideDisplayTimeout);
 
     this.log.trace('Commentator box hide click event received, hiding comm box');
     this.commboxHidden.set(true);
@@ -158,7 +210,7 @@ export class CommentatorBox implements OnInit, OnDestroy {
    * Handles the show commentator box event that gets received from signalr event hub
    */
   handleShowEvent = () => {
-    clearTimeout(this.hideDisplayTimeout);
+    clearTimeout(this.manualHideDisplayTimeout);
 
     this.log.trace('Commentator box hide click event received, hiding comm box');
     this.commboxHidden.set(false);
@@ -168,7 +220,7 @@ export class CommentatorBox implements OnInit, OnDestroy {
    * Handles the show commentator box temporarily event that gets received from signalr event hub
    */
   handleShowTempEvent = () => {
-    clearTimeout(this.hideDisplayTimeout);
+    clearTimeout(this.manualHideDisplayTimeout);
 
     const hideIntervalInSeconds = this.commentatorBoxTimeData().hideDisplayIntervalInSeconds * 1000;
     this.log.trace('Commentator box show temporarily click event received, show comm box', {
@@ -176,7 +228,7 @@ export class CommentatorBox implements OnInit, OnDestroy {
     });
 
     this.commboxHidden.set(false);
-    this.hideDisplayTimeout = setTimeout(() => {
+    this.manualHideDisplayTimeout = setTimeout(() => {
       this.log.trace('Interval finished, hiding comm box');
       this.commboxHidden.set(true);
     }, hideIntervalInSeconds);
@@ -235,10 +287,14 @@ export class CommentatorBox implements OnInit, OnDestroy {
    * Angular lifecycle hook called when the component is destroyed.
    */
   ngOnDestroy(): void {
-    clearTimeout(this.hideDisplayTimeout);
+    clearTimeout(this.manualHideDisplayTimeout);
+    clearTimeout(this.autoHideDisplayTimeout);
+    clearTimeout(this.autoShowDisplayTimeout);
 
     this.log.trace('CommentatorBox destroyed');
     this.scope.dispose();
     this.disconnectEventListeners();
+
+    this.displayModeEffect.destroy();
   }
 }
