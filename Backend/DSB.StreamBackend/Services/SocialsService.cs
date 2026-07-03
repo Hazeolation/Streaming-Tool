@@ -92,6 +92,7 @@ public class SocialsService(StreamToolDbContext db, ILogService log)
 
         if (entity != null)
         {
+            await log.TraceAsync("Socials entity exists");
             return entity;
         }
 
