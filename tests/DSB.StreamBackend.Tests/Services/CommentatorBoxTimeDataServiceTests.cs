@@ -1,5 +1,6 @@
 using DSB.StreamBackend.Context;
 using DSB.StreamBackend.Dtos;
+using DSB.StreamBackend.Enums;
 using DSB.StreamBackend.Logging;
 using DSB.StreamBackend.Models;
 using DSB.StreamBackend.Services;
@@ -38,8 +39,9 @@ public class CommentatorBoxTimeDataServiceTests
         var result = await _service.GetCommentatorBoxTimeDataAsync();
 
         Assert.That(result, Is.Not.Null);
-        Assert.That(result.ShowDisplayIntervalInSeconds, Is.EqualTo(5));
-        Assert.That(result.HideDisplayIntervalInSeconds, Is.EqualTo(50));
+        Assert.That(result.ShowDisplayIntervalInSeconds, Is.EqualTo(50));
+        Assert.That(result.HideDisplayIntervalInSeconds, Is.EqualTo(5));
+        Assert.That(result.DisplayMode, Is.EqualTo((int)CommBoxDisplayMode.Manual));
     }
 
     [Test]
@@ -49,7 +51,8 @@ public class CommentatorBoxTimeDataServiceTests
         {
             Id = 1,
             ShowDisplayIntervalInSeconds = 40,
-            HideDisplayIntervalInSeconds = 60
+            HideDisplayIntervalInSeconds = 60,
+            DisplayMode = (int)CommBoxDisplayMode.Manual
         });
         await _db.SaveChangesAsync();
 
@@ -57,6 +60,7 @@ public class CommentatorBoxTimeDataServiceTests
 
         Assert.That(result.ShowDisplayIntervalInSeconds, Is.EqualTo(40));
         Assert.That(result.HideDisplayIntervalInSeconds, Is.EqualTo(60));
+        Assert.That(result.DisplayMode, Is.EqualTo((int)CommBoxDisplayMode.Manual));
     }
 
     [Test]
@@ -65,13 +69,15 @@ public class CommentatorBoxTimeDataServiceTests
         var dto = new CommentatorBoxTimeDataDto
         {
             ShowDisplayIntervalInSeconds = 76,
-            HideDisplayIntervalInSeconds = 67
+            HideDisplayIntervalInSeconds = 67,
+            DisplayMode = (int)CommBoxDisplayMode.Automatic
         };
 
         var result = await _service.UpdateCommentatorBoxTimeDataAsync(dto);
 
         Assert.That(result.ShowDisplayIntervalInSeconds, Is.EqualTo(76));
         Assert.That(result.HideDisplayIntervalInSeconds, Is.EqualTo(67));
+        Assert.That(result.DisplayMode, Is.EqualTo((int)CommBoxDisplayMode.Automatic));
     }
 
     [Test]
@@ -80,12 +86,15 @@ public class CommentatorBoxTimeDataServiceTests
         var dto = new CommentatorBoxTimeDataDto
         {
             ShowDisplayIntervalInSeconds = 50,
-            HideDisplayIntervalInSeconds = 25
+            HideDisplayIntervalInSeconds = 25,
+            DisplayMode = (int)CommBoxDisplayMode.Automatic
         };
 
         await _service.UpdateCommentatorBoxTimeDataAsync(dto);
 
         var entity = await _db.CommentatorBoxTimeData.FirstAsync(x => x.Id == 1);
         Assert.That(entity.HideDisplayIntervalInSeconds, Is.EqualTo(25));
+        Assert.That(entity.ShowDisplayIntervalInSeconds, Is.EqualTo(50));
+        Assert.That(entity.DisplayMode, Is.EqualTo((int)CommBoxDisplayMode.Automatic));
     }
 }
