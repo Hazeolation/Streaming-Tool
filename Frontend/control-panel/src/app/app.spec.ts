@@ -37,6 +37,7 @@ describe('App', () => {
 
   const mockTimeData = signal<CommentatorBoxTimeData>({
     hideDisplayIntervalInSeconds: 6,
+    showDisplayIntervalInSeconds: 4,
   });
 
   beforeEach(async () => {

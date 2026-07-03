@@ -12,6 +12,7 @@ describe('CommentatorBoxTimeDataApi', () => {
   const baseUrl = 'http://localhost:7000/api/commentator-box-time-data';
 
   const mockTimeData: CommentatorBoxTimeData = {
+    showDisplayIntervalInSeconds: 100,
     hideDisplayIntervalInSeconds: 50,
   };
 
