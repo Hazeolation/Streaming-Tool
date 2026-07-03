@@ -98,10 +98,11 @@ Foreign Key `BroadcastStateEntityId → BroadcastStates.Id` with `ON DELETE CASC
 
 ### `CommentatorBoxTimeData` (1 Column)
 
-| Column                         | Type  | Description                                                                              |
-| ------------------------------ | ----- | ---------------------------------------------------------------------------------------- |
-| `Id`                           | `int` | Always `1` (Singleton)                                                                   |
-| `HideDisplayIntervalInSeconds` | `int` | How long it takes until the commentator box gets hidden on scorebox overlay (In seconds) |
+| Column                         | Type  | Description                                                                  |
+| ------------------------------ | ----- | ---------------------------------------------------------------------------- |
+| `Id`                           | `int` | Always `1` (Singleton)                                                       |
+| `ShowDisplayIntervalInSeconds` | `int` | How long the commentator box gets displayed on scorebox overlay (In seconds) |
+| `HideDisplayIntervalInSeconds` | `int` | How long the commentator box is hidden on scorebox overlay (In seconds)      |
 
 ---
 
