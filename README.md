@@ -7,7 +7,12 @@ Overlays run as Browser Sources in OBS and are controlled through a dedicated Co
 ![Angular](https://img.shields.io/badge/Angular-DD0031?style=flat&logo=angular&logoColor=white)
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core_9-512BD4?style=flat&logo=dotnet&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat&logo=sqlite&logoColor=white)
-![SignalR](https://img.shields.io/badge/SignalR-grey?style=flat&logo=dotnet)
+![SignalR](https://img.shields.io/badge/SignalR-grey?style=flat&logo=dotnet)  
+[![Build .NET CI](https://github.com/Hazeolation/Streaming-Tool/actions/workflows/build-dotnet.yml/badge.svg?branch=master)](https://github.com/Hazeolation/Streaming-Tool/actions/workflows/build-dotnet.yml)
+[![Build Node.js CI](https://github.com/Hazeolation/Streaming-Tool/actions/workflows/build-nodejs.yml/badge.svg)](https://github.com/Hazeolation/Streaming-Tool/actions/workflows/build-nodejs.yml)  
+[![Run .NET Tests CI](https://github.com/Hazeolation/Streaming-Tool/actions/workflows/test-dotnet.yml/badge.svg)](https://github.com/Hazeolation/Streaming-Tool/actions/workflows/test-dotnet.yml)
+[![Run Node.js Tests CI](https://github.com/Hazeolation/Streaming-Tool/actions/workflows/test-nodejs.yml/badge.svg)](https://github.com/Hazeolation/Streaming-Tool/actions/workflows/test-nodejs.yml)
+[![E2E Tests](https://github.com/Hazeolation/Streaming-Tool/actions/workflows/e2e.yml/badge.svg)](https://github.com/Hazeolation/Streaming-Tool/actions/workflows/e2e.yml)
 
 ---
 
