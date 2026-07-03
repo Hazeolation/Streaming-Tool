@@ -81,6 +81,17 @@ button {
   border-color: #6d28d9;
 }
 
+.comm-box-display-state-buttons__container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  column-gap: 1rem;
+}
+
+.display-mode-button {
+  flex: 1;
+}
+
 label {
   display: flex;
   align-items: center;

@@ -150,35 +150,90 @@
   <section>
     <h2>Ein/Ausblenden Kommentatoren Box</h2>
     <details class="comm-box-time-data__details-container">
-      <summary>Zeiten</summary>
+      <summary>Settings</summary>
       <div class="commentator-box-display-inputs__container">
-        <button class="click-button hide-comm-box-button" (click)="handleHideButtonClick()">
-          Ausblenden
-        </button>
+        <h3>Ein/Ausblende-Modus</h3>
+        <div class="comm-box-display-state-buttons__container">
+          <button
+            class="toggle-button display-mode-button"
+            [class.toggled]="commentatorBoxTimeData().displayMode === commBoxDisplayMode.Manual"
+            (click)="
+              commentatorBoxTimeDataService.update({
+                displayMode: commBoxDisplayMode.Manual,
+              })
+            "
+          >
+            Manuell
+          </button>
+          <button
+            class="toggle-button display-mode-button"
+            [class.toggled]="commentatorBoxTimeData().displayMode === commBoxDisplayMode.Auto"
+            (click)="
+              commentatorBoxTimeDataService.update({
+                displayMode: commBoxDisplayMode.Auto,
+              })
+            "
+          >
+            Auto
+          </button>
+        </div>
 
-        <button class="click-button show-comm-box-button" (click)="handleShowButtonClick()">
-          Einblenden
-        </button>
+        @if (commentatorBoxTimeData().displayMode === commBoxDisplayMode.Manual) {
+          <h3>Einstellungen</h3>
+          <button class="click-button hide-comm-box-button" (click)="handleHideButtonClick()">
+            Ausblenden
+          </button>
 
-        <button
-          class="click-button show-comm-box-temp-button"
-          (click)="handleShowTempButtonClick()"
-        >
-          Temporär Einblenden
-        </button>
+          <button class="click-button show-comm-box-button" (click)="handleShowButtonClick()">
+            Einblenden
+          </button>
 
-        <h3>Zeit Temporär Einblenden<br />(In Sekunden)</h3>
-        <input
-          class="hide-comm-box-interval-input"
-          type="number"
-          min="5"
-          [ngModel]="commentatorBoxTimeData().hideDisplayIntervalInSeconds"
-          (ngModelChange)="
-            commentatorBoxTimeDataService.update({
-              hideDisplayIntervalInSeconds: $event,
-            })
-          "
-        />
+          <button
+            class="click-button show-comm-box-temp-button"
+            (click)="handleShowTempButtonClick()"
+          >
+            Temporär Einblenden
+          </button>
+
+          <h3>Zeit sichtbar (In Sekunden)</h3>
+          <input
+            class="show-temp-comm-box-interval-input"
+            type="number"
+            min="5"
+            [ngModel]="commentatorBoxTimeData().hideDisplayIntervalInSeconds"
+            (ngModelChange)="
+              commentatorBoxTimeDataService.update({
+                hideDisplayIntervalInSeconds: $event,
+              })
+            "
+          />
+        } @else if (commentatorBoxTimeData().displayMode === commBoxDisplayMode.Auto) {
+          <h3>Zeit sichtbar (In Sekunden)</h3>
+          <input
+            class="show-comm-box-interval-input"
+            type="number"
+            min="5"
+            [ngModel]="commentatorBoxTimeData().hideDisplayIntervalInSeconds"
+            (ngModelChange)="
+              commentatorBoxTimeDataService.update({
+                hideDisplayIntervalInSeconds: $event,
+              })
+            "
+          />
+
+          <h3>Zeit unsichtbar (In Sekunden)</h3>
+          <input
+            class="hide-comm-box-interval-input"
+            type="number"
+            min="5"
+            [ngModel]="commentatorBoxTimeData().showDisplayIntervalInSeconds"
+            (ngModelChange)="
+              commentatorBoxTimeDataService.update({
+                showDisplayIntervalInSeconds: $event,
+              })
+            "
+          />
+        }
       </div>
     </details>
   </section>

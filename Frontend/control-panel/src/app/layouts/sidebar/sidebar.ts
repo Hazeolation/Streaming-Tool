@@ -11,6 +11,7 @@ import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
 import { CommBoxDisplayEvents } from '../../enums/comm-box-display-events';
 import { SignalrEvents } from '../../services/signalr-events';
+import { CommBoxDisplayMode } from '../../enums/comm-box-display-modes';
 
 @Component({
   selector: 'app-sidebar',
@@ -19,6 +20,9 @@ import { SignalrEvents } from '../../services/signalr-events';
   styleUrl: './sidebar.scss',
 })
 export class Sidebar implements OnInit, OnDestroy {
+  /**
+   * Instance for transmitting SignalrEvents
+   */
   private signalrEvents: SignalrEvents = inject(SignalrEvents);
 
   /**
@@ -128,5 +132,12 @@ export class Sidebar implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.log.trace('Sidebar destroyed');
     this.scope.dispose();
+  }
+
+  /**
+   * Getter that returns property of `CommBoxDisplayMode` type to access enum on HTML
+   */
+  get commBoxDisplayMode(): typeof CommBoxDisplayMode {
+    return CommBoxDisplayMode;
   }
 }
