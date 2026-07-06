@@ -106,7 +106,7 @@ Covers all sidebar controls. Each test navigates to the dashboard in `[SetUp]`.
 | `Sidebar_TeamAlphaName_UpdatesTopbar`                     | Filling the alpha input reflects in the topbar score display |
 | `Sidebar_TeamBravoName_UpdatesTopbar`                     | Filling the bravo input reflects in the topbar score display |
 | `Sidebar_TeamAlphaName_RespectsMaxLength`                 | Team name is capped at 13 characters (HTML `maxlength`)      |
-| `Sidebar_AlphaIsLeft_CheckboxIsVisible`                   | "Alpha links" checkbox is rendered                           |
+| `Sidebar_AlphaIsLeft_ToggleSliderIsVisible`               | "Alpha links" toggle slider is rendered                      |
 | `Sidebar_Streamer_InputAcceptsText`                       | Streamer input accepts and retains text                      |
 | `Sidebar_Commentator1_InputAcceptsText`                   | First commentator input accepts and retains text             |
 | `Sidebar_Commentator2_InputAcceptsText`                   | Second commentator input accepts and retains text            |

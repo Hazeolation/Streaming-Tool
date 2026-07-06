@@ -72,10 +72,10 @@ public class SidebarTests : PageTest
     }
 
     [Test]
-    public async Task Sidebar_AlphaIsLeft_CheckboxIsVisible()
+    public async Task Sidebar_AlphaIsLeft_ToggleSliderIsVisible()
     {
-        var checkbox = Page.Locator(".sidebar .swap-sides input[type='checkbox']");
-        await Expect(checkbox).ToBeVisibleAsync();
+        var toggleSlider = Page.Locator(".sidebar .swap-sides app-toggle-slider.toggle-slider-alpha-left");
+        await Expect(toggleSlider).ToBeVisibleAsync();
     }
 
     [Test]
