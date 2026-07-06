@@ -64,13 +64,23 @@
   <section>
     <div class="swap-sides">
       <h2>Seiten wechseln</h2>
-      <label>
-        <input
+      <label (click)="alphaLeftToggleSlider.handleToggleSliderClick($event)">
+        <!-- <input
           type="checkbox"
           [ngModel]="state().alphaIsLeft"
           (ngModelChange)="
             stateService.update({
               alphaIsLeft: $event,
+            })
+          "
+        /> -->
+        <app-toggle-slider
+          #alphaLeftToggleSlider
+          class="toggle-slider-alpha-left"
+          [class.toggled]="state().alphaIsLeft"
+          (onToggleSliderClick)="
+            stateService.update({
+              alphaIsLeft: !state().alphaIsLeft,
             })
           "
         />
