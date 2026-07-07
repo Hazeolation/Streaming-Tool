@@ -160,8 +160,8 @@ public partial class OverlayTests : PageTest
     {
         // Navigate to dashboard and read current visibility state
         await Page.GotoAsync(BaseUrl);
-        var btn = Page.Locator("button:text('Spielstand')");
-        var isCurrentlyActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('active')");
+        var btn = Page.Locator("app-toggle-slider.toggle-slider-show-score-box");
+        var isCurrentlyActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('toggled')");
 
         // Open the overlay in a second tab
         var overlayPage = await Page.Context.NewPageAsync();
@@ -170,16 +170,16 @@ public partial class OverlayTests : PageTest
         // Toggle visibility and wait for Angular to update the DOM
         await btn.ClickAsync();
         if (isCurrentlyActive)
-            await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\bactive\b"));
+            await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\btoggled\b"));
         else
-            await Expect(btn).ToHaveClassAsync(new Regex(@"\bactive\b"));
+            await Expect(btn).ToHaveClassAsync(new Regex(@"\btoggled\b"));
 
         // Restore original state
         await btn.ClickAsync();
         if (isCurrentlyActive)
-            await Expect(btn).ToHaveClassAsync(new Regex(@"\bactive\b"));
+            await Expect(btn).ToHaveClassAsync(new Regex(@"\btoggled\b"));
         else
-            await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\bactive\b"));
+            await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\btoggled\b"));
 
         await overlayPage.CloseAsync();
     }

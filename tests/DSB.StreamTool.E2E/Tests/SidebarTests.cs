@@ -111,50 +111,50 @@ public class SidebarTests : PageTest
     [Test]
     public async Task Sidebar_Visibility_AllThreeButtonsPresent()
     {
-        await Expect(Page.Locator("button:text('Kartenanzeige')")).ToBeVisibleAsync();
-        await Expect(Page.Locator("button:text('Spielstand')")).ToBeVisibleAsync();
-        await Expect(Page.Locator("button:text('Kommentatoren')")).ToBeVisibleAsync();
+        await Expect(Page.Locator("app-toggle-slider.toggle-slider-show-map-screen")).ToBeVisibleAsync();
+        await Expect(Page.Locator("app-toggle-slider.toggle-slider-show-score-box")).ToBeVisibleAsync();
+        await Expect(Page.Locator("app-toggle-slider.toggle-slider-show-commentator-box")).ToBeVisibleAsync();
     }
 
     [Test]
     public async Task Sidebar_Visibility_MapScreenButton_TogglesActiveClass()
     {
-        var btn = Page.Locator("button:text('Kartenanzeige')");
-        var wasActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('active')");
+        var btn = Page.Locator("app-toggle-slider.toggle-slider-show-map-screen");
+        var wasActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('toggled')");
 
         await btn.ClickAsync();
 
         if (wasActive)
-            await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\bactive\b"));
+            await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\btoggled\b"));
         else
-            await Expect(btn).ToHaveClassAsync(new Regex(@"\bactive\b"));
+            await Expect(btn).ToHaveClassAsync(new Regex(@"\btoggled\b"));
     }
 
     [Test]
     public async Task Sidebar_Visibility_ScoreBoxButton_TogglesActiveClass()
     {
-        var btn = Page.Locator("button:text('Spielstand')");
-        var wasActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('active')");
+        var btn = Page.Locator("app-toggle-slider.toggle-slider-show-score-box");
+        var wasActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('toggled')");
 
         await btn.ClickAsync();
 
         if (wasActive)
-            await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\bactive\b"));
+            await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\btoggled\b"));
         else
-            await Expect(btn).ToHaveClassAsync(new Regex(@"\bactive\b"));
+            await Expect(btn).ToHaveClassAsync(new Regex(@"\btoggled\b"));
     }
 
     [Test]
     public async Task Sidebar_Visibility_CommentatorButton_TogglesActiveClass()
     {
-        var btn = Page.Locator("button:text('Kommentatoren')");
-        var wasActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('active')");
+        var btn = Page.Locator("app-toggle-slider.toggle-slider-show-commentator-box");
+        var wasActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('toggled')");
 
         await btn.ClickAsync();
 
         if (wasActive)
-            await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\bactive\b"));
+            await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\btoggled\b"));
         else
-            await Expect(btn).ToHaveClassAsync(new Regex(@"\bactive\b"));
+            await Expect(btn).ToHaveClassAsync(new Regex(@"\btoggled\b"));
     }
 }
