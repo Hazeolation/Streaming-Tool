@@ -87,7 +87,7 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db, ILogService l
 
         CommentatorBoxTimeDataEntity? entity = await db.CommentatorBoxTimeData.FirstOrDefaultAsync(x => x.Id == 1);
 
-        if (entity != null)
+        if (entity is not null)
         {
             await log.TraceAsync("Time data entity exists");
             return entity;
