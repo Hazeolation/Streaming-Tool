@@ -23,7 +23,7 @@ import { CommBoxDisplayMode } from '../../enums/comm-box-display-modes';
 
 @Component({
   host: {
-    '[class.hide-comm-box]': 'commboxHidden()',
+    '[class.hide-comm-box]': 'commBoxHidden()',
   },
   selector: 'app-commentator-box',
   imports: [],
@@ -39,7 +39,7 @@ export class CommentatorBox implements OnInit, OnDestroy {
   /**
    * Signal indicating if the interval is hidden.
    */
-  commboxHidden: WritableSignal<boolean> = signal<boolean>(false);
+  commBoxHidden: WritableSignal<boolean> = signal<boolean>(false);
 
   /**
    * Service for managing broadcast state.
@@ -107,31 +107,25 @@ export class CommentatorBox implements OnInit, OnDestroy {
       return;
     }
 
-    this.commboxHidden.set(true);
+    this.commBoxHidden.set(true);
     switch (this.commentatorBoxTimeData().displayMode) {
       case CommBoxDisplayMode.Manual:
-        {
-          clearTimeout(this.autoHideDisplayTimeout);
-          clearTimeout(this.autoShowDisplayTimeout);
+        clearTimeout(this.autoHideDisplayTimeout);
+        clearTimeout(this.autoShowDisplayTimeout);
 
-          this.log.trace('Switched to comm box manual display mode, connecting event listeners');
-          this.connectEventListeners();
-        }
+        this.log.trace('Switched to comm box manual display mode, connecting event listeners');
+        this.connectEventListeners();
         break;
 
       case CommBoxDisplayMode.Auto:
-        {
-          clearTimeout(this.manualHideDisplayTimeout);
+        clearTimeout(this.manualHideDisplayTimeout);
 
-          this.log.trace('Switched to comm box auto display mode, disconnecting event listeners');
-          this.disconnectEventListeners();
-        }
+        this.log.trace('Switched to comm box auto display mode, disconnecting event listeners');
+        this.disconnectEventListeners();
         break;
 
       default:
-        {
-          this.log.warn('Invalid comm box display mode set!');
-        }
+        this.log.warn('Invalid comm box display mode set!');
         break;
     }
   });
@@ -154,7 +148,7 @@ export class CommentatorBox implements OnInit, OnDestroy {
       this.commentatorBoxTimeData().hideDisplayIntervalInSeconds === 0 ||
       this.commentatorBoxTimeData().showDisplayIntervalInSeconds === 0
     ) {
-      this.commboxHidden.set(false);
+      this.commBoxHidden.set(false);
       return;
     }
 
@@ -165,7 +159,7 @@ export class CommentatorBox implements OnInit, OnDestroy {
    * Handles the interval when the display is currently shown and triggers timeout when it will get hidden again
    */
   private handleAutoHideInterval(): void {
-    this.commboxHidden.set(false);
+    this.commBoxHidden.set(false);
     this.autoHideDisplayTimeout = setTimeout(() => {
       this.handleAutoShowInterval();
     }, this.commentatorBoxTimeData().hideDisplayIntervalInSeconds * 1000);
@@ -175,7 +169,7 @@ export class CommentatorBox implements OnInit, OnDestroy {
    * Handles the interval when the display is currently hidden and triggers timeout when it will get shown again
    */
   private handleAutoShowInterval(): void {
-    this.commboxHidden.set(true);
+    this.commBoxHidden.set(true);
     this.autoShowDisplayTimeout = setTimeout(() => {
       this.handleAutoHideInterval();
     }, this.commentatorBoxTimeData().showDisplayIntervalInSeconds * 1000);
@@ -203,7 +197,7 @@ export class CommentatorBox implements OnInit, OnDestroy {
     clearTimeout(this.manualHideDisplayTimeout);
 
     this.log.trace('Commentator box hide click event received, hiding comm box');
-    this.commboxHidden.set(true);
+    this.commBoxHidden.set(true);
   };
 
   /**
@@ -213,7 +207,7 @@ export class CommentatorBox implements OnInit, OnDestroy {
     clearTimeout(this.manualHideDisplayTimeout);
 
     this.log.trace('Commentator box hide click event received, hiding comm box');
-    this.commboxHidden.set(false);
+    this.commBoxHidden.set(false);
   };
 
   /**
@@ -227,10 +221,10 @@ export class CommentatorBox implements OnInit, OnDestroy {
       hideIntervalInSeconds: hideIntervalInSeconds,
     });
 
-    this.commboxHidden.set(false);
+    this.commBoxHidden.set(false);
     this.manualHideDisplayTimeout = setTimeout(() => {
       this.log.trace('Interval finished, hiding comm box');
-      this.commboxHidden.set(true);
+      this.commBoxHidden.set(true);
     }, hideIntervalInSeconds);
   };
 
@@ -276,7 +270,7 @@ export class CommentatorBox implements OnInit, OnDestroy {
       this.connectEventListeners();
     }
 
-    this.commboxHidden.set(this.onScoreBox);
+    this.commBoxHidden.set(this.onScoreBox);
 
     this.stateService.loadInitialState();
     this.commentatorBoxTimeDataService.loadInitialState();
