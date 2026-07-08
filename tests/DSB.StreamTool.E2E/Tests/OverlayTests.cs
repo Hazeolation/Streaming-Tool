@@ -243,6 +243,7 @@ public partial class OverlayTests : PageTest
         await scoreBoxPage.CloseAsync();
     }
 
+    [Test]
     public async Task EndScreen_Socials_SocialsContentVisible()
     {
         await Page.GotoAsync(BaseUrl);
@@ -262,15 +263,16 @@ public partial class OverlayTests : PageTest
         var endScreenPage = await Page.Context.NewPageAsync();
         await endScreenPage.GotoAsync($"{BaseUrl}/overlay/end-screen");
 
-        await Expect(endScreenPage.Locator(".socials-text.twitter-handle")).Not.ToHaveClassAsync(new Regex(@"\bhide-social\b"));
-        await Expect(endScreenPage.Locator(".socials-text.twitter-handle")).ToContainTextAsync("@E2ETestDSB");
+        await Expect(endScreenPage.Locator(".socials-text.twitter-link")).ToBeAttachedAsync();
+        await Expect(endScreenPage.Locator(".socials-text.twitter-link")).ToContainTextAsync("@E2ETestDSB");
 
-        await Expect(endScreenPage.Locator(".socials-text.discord-handle")).Not.ToHaveClassAsync(new Regex(@"\bhide-social\b"));
+        await Expect(endScreenPage.Locator(".socials-text.discord-invite")).ToBeAttachedAsync();
         await Expect(endScreenPage.Locator(".socials-text.discord-invite")).ToContainTextAsync("discord.gg/e2eDiscordInv");
 
         await endScreenPage.CloseAsync();
     }
 
+    [Test]
     public async Task EndScreen_Socials_SocialsInvisibleOnEmptyInput()
     {
         await Page.GotoAsync(BaseUrl);
@@ -290,8 +292,8 @@ public partial class OverlayTests : PageTest
         var endScreenPage = await Page.Context.NewPageAsync();
         await endScreenPage.GotoAsync($"{BaseUrl}/overlay/end-screen");
 
-        await Expect(endScreenPage.Locator(".socials-text.twitter-handle")).ToHaveClassAsync(new Regex(@"\bhide-social\b"));
-        await Expect(endScreenPage.Locator(".socials-text.discord-invite")).ToHaveClassAsync(new Regex(@"\bhide-social\b"));
+        await Expect(endScreenPage.Locator(".socials-text.twitter-link")).Not.ToBeAttachedAsync();
+        await Expect(endScreenPage.Locator(".socials-text.discord-invite")).Not.ToBeAttachedAsync();
 
         await endScreenPage.CloseAsync();
     }
