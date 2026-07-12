@@ -64,15 +64,17 @@
   <section>
     <div class="swap-sides">
       <h2>Seiten wechseln</h2>
-      <label>
-        <input
-          type="checkbox"
-          [ngModel]="state().alphaIsLeft"
-          (ngModelChange)="
-            stateService.update({
-              alphaIsLeft: $event,
-            })
-          "
+      <label
+        (click)="
+          stateService.update({
+            alphaIsLeft: !state().alphaIsLeft,
+          })
+        "
+      >
+        <app-toggle-slider
+          #alphaLeftToggleSlider
+          class="toggle-slider-alpha-left"
+          [class.toggled]="state().alphaIsLeft"
         />
         Alpha links
       </label>
@@ -113,36 +115,50 @@
   </section>
   <section>
     <h2>Sichtbarkeit des Overlays</h2>
-    <button
-      [class.active]="state().showMapScreen"
+    <label
       (click)="
         stateService.update({
           showMapScreen: !state().showMapScreen,
         })
       "
     >
+      <app-toggle-slider
+        #showMapScreenToggleSlider
+        class="toggle-slider-show-map-screen"
+        [class.toggled]="state().showMapScreen"
+      />
       Kartenanzeige
-    </button>
-    <button
-      [class.active]="state().showScoreBox"
+    </label>
+
+    <label
       (click)="
         stateService.update({
           showScoreBox: !state().showScoreBox,
         })
       "
     >
+      <app-toggle-slider
+        #showScoreBoxToggleSlider
+        class="toggle-slider-show-score-box"
+        [class.toggled]="state().showScoreBox"
+      />
       Spielstand
-    </button>
-    <button
-      [class.active]="state().showCommentatorBox"
+    </label>
+
+    <label
       (click)="
         stateService.update({
           showCommentatorBox: !state().showCommentatorBox,
         })
       "
     >
+      <app-toggle-slider
+        #showCommentatorBoxToggleSlider
+        class="toggle-slider-show-commentator-box"
+        [class.toggled]="state().showCommentatorBox"
+      />
       Kommentatoren
-    </button>
+    </label>
   </section>
   <section>
     <h2>Ein/Ausblende-Zeiten Kommentatoren Box</h2>

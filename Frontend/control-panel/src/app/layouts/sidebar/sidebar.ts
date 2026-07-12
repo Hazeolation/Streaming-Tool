@@ -9,10 +9,11 @@ import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
+import { ToggleSlider } from '../../features/toggle-slider/toggle-slider';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [FormsModule],
+  imports: [FormsModule, ToggleSlider],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })
