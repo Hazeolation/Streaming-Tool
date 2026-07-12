@@ -131,6 +131,8 @@ export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
    * Angular lifecycle hook called when the component is destroyed.
    */
   ngOnDestroy(): void {
+    clearInterval(this.countdownInterval);
+
     this.log.trace('Start Screen destroyed');
     this.scope.dispose();
   }
