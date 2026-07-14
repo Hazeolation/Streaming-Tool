@@ -222,8 +222,8 @@ export class BroadcastStateService {
     { colorAlpha: '#DEC11B', colorBravo: '#B826F3' },
   ];
   colorLockColors: MatchColor[] = [
-    { colorAlpha: '#1516CE', colorBravo: '#FCAD24' },
-    { colorAlpha: '#1516CE', colorBravo: '#FCAD24' },
+    { colorAlpha: '#DBCA28', colorBravo: '#5533E1' },
+    { colorAlpha: '#F9AA22', colorBravo: '#165ADE' },
   ];
 
   /**
