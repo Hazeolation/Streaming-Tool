@@ -210,20 +210,20 @@ export class BroadcastStateService {
    * Available color data
    */
   matchColors: MatchColor[] = [
-    { colorAlpha: '#1516CE', colorBravo: '#FCAD24' },
-    { colorAlpha: '#C5DB39', colorBravo: '#832EFC' },
-    { colorAlpha: '#D6C712', colorBravo: '#4A1BFF' },
-    { colorAlpha: '#11BA9B', colorBravo: '#FE5735' },
-    { colorAlpha: '#0EB796', colorBravo: '#E93B71' },
-    { colorAlpha: '#E92C7E', colorBravo: '#1DA213' },
-    { colorAlpha: '#DEC11B', colorBravo: '#B826F3' },
-    { colorAlpha: '#9FD22F', colorBravo: '#CF2CB9' },
-    { colorAlpha: '#FC7E24', colorBravo: '#3F4AFD' },
-    { colorAlpha: '#F95D15', colorBravo: '#7D11D6' },
+    { id: 0, colorAlpha: '#1516CE', colorBravo: '#FCAD24' },
+    { id: 1, colorAlpha: '#C5DB39', colorBravo: '#832EFC' },
+    { id: 2, colorAlpha: '#D6C712', colorBravo: '#4A1BFF' },
+    { id: 3, colorAlpha: '#11BA9B', colorBravo: '#FE5735' },
+    { id: 4, colorAlpha: '#0EB796', colorBravo: '#E93B71' },
+    { id: 5, colorAlpha: '#E92C7E', colorBravo: '#1DA213' },
+    { id: 6, colorAlpha: '#DEC11B', colorBravo: '#B826F3' },
+    { id: 7, colorAlpha: '#9FD22F', colorBravo: '#CF2CB9' },
+    { id: 8, colorAlpha: '#FC7E24', colorBravo: '#3F4AFD' },
+    { id: 9, colorAlpha: '#F95D15', colorBravo: '#7D11D6' },
   ];
   colorLockColors: MatchColor[] = [
-    { colorAlpha: '#DBCA28', colorBravo: '#5533E1' },
-    { colorAlpha: '#F9AA22', colorBravo: '#165ADE' },
+    { id: 0, colorAlpha: '#DBCA28', colorBravo: '#5533E1' },
+    { id: 1, colorAlpha: '#F9AA22', colorBravo: '#165ADE' },
   ];
 
   /**
