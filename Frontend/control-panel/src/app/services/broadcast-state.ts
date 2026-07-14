@@ -7,6 +7,7 @@ import { Map } from '../models/map';
 import { Mode } from '../models/mode';
 import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
 import { LogService } from './log';
+import { MatchColor } from '../models/match-color';
 
 @Injectable({
   providedIn: 'root',
@@ -203,6 +204,26 @@ export class BroadcastStateService {
     { id: 6, name: 'Division 6' },
     { id: 7, name: 'Division 7' },
     { id: 8, name: 'Division 8' },
+  ];
+
+  /**
+   * Available color data
+   */
+  matchColors: MatchColor[] = [
+    { colorAlpha: '#1516CE', colorBravo: '#FCAD24' },
+    { colorAlpha: '#9FD22F', colorBravo: '#CF2CB9' },
+    { colorAlpha: '#C1D434', colorBravo: '#7E28FC' },
+    { colorAlpha: '#FC7E24', colorBravo: '#3F4AFD' },
+    { colorAlpha: '#F95D15', colorBravo: '#7D11D6' },
+    { colorAlpha: '#E92C7E', colorBravo: '#1DA213' },
+    { colorAlpha: '#0EB796', colorBravo: '#E93B71' },
+    { colorAlpha: '#11BA9B', colorBravo: '#FE5735' },
+    { colorAlpha: '#D6C712', colorBravo: '#4A1BFF' },
+    { colorAlpha: '#DEC11B', colorBravo: '#B826F3' },
+  ];
+  colorLockColors: MatchColor[] = [
+    { colorAlpha: '#1516CE', colorBravo: '#FCAD24' },
+    { colorAlpha: '#1516CE', colorBravo: '#FCAD24' },
   ];
 
   /**
