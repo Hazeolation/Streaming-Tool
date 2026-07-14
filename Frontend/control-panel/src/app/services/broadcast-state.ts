@@ -211,15 +211,15 @@ export class BroadcastStateService {
    */
   matchColors: MatchColor[] = [
     { colorAlpha: '#1516CE', colorBravo: '#FCAD24' },
+    { colorAlpha: '#C5DB39', colorBravo: '#832EFC' },
+    { colorAlpha: '#D6C712', colorBravo: '#4A1BFF' },
+    { colorAlpha: '#11BA9B', colorBravo: '#FE5735' },
+    { colorAlpha: '#0EB796', colorBravo: '#E93B71' },
+    { colorAlpha: '#E92C7E', colorBravo: '#1DA213' },
+    { colorAlpha: '#DEC11B', colorBravo: '#B826F3' },
     { colorAlpha: '#9FD22F', colorBravo: '#CF2CB9' },
-    { colorAlpha: '#C1D434', colorBravo: '#7E28FC' },
     { colorAlpha: '#FC7E24', colorBravo: '#3F4AFD' },
     { colorAlpha: '#F95D15', colorBravo: '#7D11D6' },
-    { colorAlpha: '#E92C7E', colorBravo: '#1DA213' },
-    { colorAlpha: '#0EB796', colorBravo: '#E93B71' },
-    { colorAlpha: '#11BA9B', colorBravo: '#FE5735' },
-    { colorAlpha: '#D6C712', colorBravo: '#4A1BFF' },
-    { colorAlpha: '#DEC11B', colorBravo: '#B826F3' },
   ];
   colorLockColors: MatchColor[] = [
     { colorAlpha: '#DBCA28', colorBravo: '#5533E1' },
