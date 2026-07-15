@@ -1,0 +1,48 @@
+button {
+  border-radius: 0.625rem;
+  background: #343744;
+  color: white;
+  cursor: pointer;
+  border: 0.125rem solid #343744;
+  padding: 0.25rem 0.75rem;
+  transition: border-color 50ms ease;
+  font-size: 1.125rem;
+}
+
+button:active {
+  border-color: #6d28d9;
+}
+
+h2 {
+  margin-bottom: 0;
+  font-weight: 400;
+}
+
+label {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  column-gap: 1rem;
+  font-size: 1.125rem;
+}
+
+mat-dialog-content {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 1rem;
+}
+
+.color-display__container {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  column-gap: 1rem;
+}
+
+.color-display {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background-color: black;
+  filter: drop-shadow(0.125rem 0.125rem 0.125rem rgba(0, 0, 0, 0.5));
+}
