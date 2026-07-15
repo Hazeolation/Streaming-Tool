@@ -84,7 +84,11 @@ public class BroadcastStateServiceTests
             ShowInfobox = false,
             Season = 11,
             Division = 3,
-            Maps = []
+            Maps = [],
+            Week = 1,
+            StartTime = new DateTime(2026, 8, 16),
+            CurrentColorsId = 7,
+            ColorLockActive = true
         };
 
         var result = await _service.UpdateStateAsync(dto);
@@ -103,6 +107,9 @@ public class BroadcastStateServiceTests
         Assert.That(result.ShowInfobox, Is.False);
         Assert.That(result.Season, Is.EqualTo(11));
         Assert.That(result.Division, Is.EqualTo(3));
+        Assert.That(result.StartTime, Is.EqualTo(new DateTime(2026, 8, 16)));
+        Assert.That(result.CurrentColorsId, Is.EqualTo(7));
+        Assert.That(result.ColorLockActive, Is.True);
     }
 
     [Test]
