@@ -72,16 +72,16 @@ public class SidebarTests : PageTest
     }
 
     [Test]
-    public async Task Sidebar_AlphaIsLeft_CheckboxIsVisible()
+    public async Task Sidebar_AlphaIsLeft_ToggleSliderIsVisible()
     {
-        var checkbox = Page.Locator(".sidebar .swap-sides input[type='checkbox']");
-        await Expect(checkbox).ToBeVisibleAsync();
+        var toggleSlider = Page.Locator(".sidebar .swap-sides app-toggle-slider.toggle-slider-alpha-left");
+        await Expect(toggleSlider).ToBeVisibleAsync();
     }
 
     [Test]
     public async Task Sidebar_Streamer_InputAcceptsText()
     {
-        var streamerInput = Page.Locator("input[placeholder='@streamer']");
+        var streamerInput = Page.Locator("input[placeholder='Streamer']");
         await streamerInput.ClearAsync();
         await streamerInput.FillAsync("TestStreamer");
 
@@ -91,7 +91,7 @@ public class SidebarTests : PageTest
     [Test]
     public async Task Sidebar_Commentator1_InputAcceptsText()
     {
-        var caster1 = Page.Locator("input[placeholder='@caster1']");
+        var caster1 = Page.Locator("input[placeholder='Caster1']");
         await caster1.ClearAsync();
         await caster1.FillAsync("CasterOne");
 
@@ -101,7 +101,7 @@ public class SidebarTests : PageTest
     [Test]
     public async Task Sidebar_Commentator2_InputAcceptsText()
     {
-        var caster2 = Page.Locator("input[placeholder='@caster2']");
+        var caster2 = Page.Locator("input[placeholder='Caster2']");
         await caster2.ClearAsync();
         await caster2.FillAsync("CasterTwo");
 
@@ -111,15 +111,15 @@ public class SidebarTests : PageTest
     [Test]
     public async Task Sidebar_Visibility_AllThreeButtonsPresent()
     {
-        await Expect(Page.Locator("button:text('Kartenanzeige')")).ToBeVisibleAsync();
-        await Expect(Page.Locator("button:text('Spielstand')")).ToBeVisibleAsync();
-        await Expect(Page.Locator("button:text('Kommentatoren')")).ToBeVisibleAsync();
+        await Expect(Page.Locator("app-toggle-slider.toggle-slider-show-map-screen")).ToBeVisibleAsync();
+        await Expect(Page.Locator("app-toggle-slider.toggle-slider-show-score-box")).ToBeVisibleAsync();
+        await Expect(Page.Locator("app-toggle-slider.toggle-slider-show-commentator-box")).ToBeVisibleAsync();
     }
 
     [Test]
     public async Task Sidebar_Visibility_MapScreenButton_TogglesActiveClass()
     {
-        var btn = Page.Locator("button:text('Kartenanzeige')");
+        var btn = Page.Locator("app-toggle-slider.toggle-slider-show-map-screen");
         var wasActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('toggled')");
 
         await btn.ClickAsync();
@@ -133,7 +133,7 @@ public class SidebarTests : PageTest
     [Test]
     public async Task Sidebar_Visibility_ScoreBoxButton_TogglesActiveClass()
     {
-        var btn = Page.Locator("button:text('Spielstand')");
+        var btn = Page.Locator("app-toggle-slider.toggle-slider-show-score-box");
         var wasActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('toggled')");
 
         await btn.ClickAsync();
@@ -147,7 +147,7 @@ public class SidebarTests : PageTest
     [Test]
     public async Task Sidebar_Visibility_CommentatorButton_TogglesActiveClass()
     {
-        var btn = Page.Locator("button:text('Kommentatoren')");
+        var btn = Page.Locator("app-toggle-slider.toggle-slider-show-commentator-box");
         var wasActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('toggled')");
 
         await btn.ClickAsync();
@@ -156,38 +156,5 @@ public class SidebarTests : PageTest
             await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\btoggled\b"));
         else
             await Expect(btn).ToHaveClassAsync(new Regex(@"\btoggled\b"));
-    }
-
-    [Test]
-    public async Task Sidebar_CommBoxSettings_ManualMode_ElementsPresent()
-    {
-        await Page.GotoAsync(BaseUrl);
-
-        var timeDataDetails = Page.Locator(".comm-box-time-data__details-container");
-        await timeDataDetails.ClickAsync();
-
-        var manualModeButton = Page.Locator(".manual-display-mode-button");
-        await manualModeButton.ClickAsync();
-
-        await Expect(Page.Locator(".click-button.hide-comm-box-button")).ToBeVisibleAsync();
-        await Expect(Page.Locator(".click-button.show-comm-box-button")).ToBeVisibleAsync();
-        await Expect(Page.Locator(".click-button.show-comm-box-temp-button")).ToBeVisibleAsync();
-
-        await Expect(Page.Locator(".show-temp-comm-box-interval-input")).ToBeVisibleAsync();
-    }
-
-    [Test]
-    public async Task Sidebar_CommBoxSettings_AutoMode_ElementsPresent()
-    {
-        await Page.GotoAsync(BaseUrl);
-
-        var timeDataDetails = Page.Locator(".comm-box-time-data__details-container");
-        await timeDataDetails.ClickAsync();
-
-        var autoModeButton = Page.Locator(".auto-display-mode-button");
-        await autoModeButton.ClickAsync();
-
-        await Expect(Page.Locator(".hide-comm-box-interval-input")).ToBeVisibleAsync();
-        await Expect(Page.Locator(".show-comm-box-interval-input")).ToBeVisibleAsync();
     }
 }

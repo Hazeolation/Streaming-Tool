@@ -12,10 +12,11 @@ import { LogScope } from '../../models/log-scope';
 import { CommBoxDisplayEvents } from '../../enums/comm-box-display-events';
 import { SignalrEvents } from '../../services/signalr-events';
 import { CommBoxDisplayMode } from '../../enums/comm-box-display-modes';
+import { ToggleSlider } from '../../features/toggle-slider/toggle-slider';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [FormsModule],
+  imports: [FormsModule, ToggleSlider],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })

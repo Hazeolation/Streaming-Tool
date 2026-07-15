@@ -160,7 +160,7 @@ public partial class OverlayTests : PageTest
     {
         // Navigate to dashboard and read current visibility state
         await Page.GotoAsync(BaseUrl);
-        var btn = Page.Locator("button:text('Spielstand')");
+        var btn = Page.Locator("app-toggle-slider.toggle-slider-show-score-box");
         var isCurrentlyActive = await btn.EvaluateAsync<bool>("el => el.classList.contains('toggled')");
 
         // Open the overlay in a second tab
@@ -203,15 +203,16 @@ public partial class OverlayTests : PageTest
         var endScreenPage = await Page.Context.NewPageAsync();
         await endScreenPage.GotoAsync($"{BaseUrl}/overlay/end-screen");
 
-        await Expect(endScreenPage.Locator(".socials-text.twitter-handle")).Not.ToHaveClassAsync(new Regex(@"\bhide-social\b"));
-        await Expect(endScreenPage.Locator(".socials-text.twitter-handle")).ToContainTextAsync("@E2ETestDSB");
+        await Expect(endScreenPage.Locator(".socials-text.twitter-link")).ToBeAttachedAsync();
+        await Expect(endScreenPage.Locator(".socials-text.twitter-link")).ToContainTextAsync("@E2ETestDSB");
 
-        await Expect(endScreenPage.Locator(".socials-text.discord-handle")).Not.ToHaveClassAsync(new Regex(@"\bhide-social\b"));
+        await Expect(endScreenPage.Locator(".socials-text.discord-invite")).ToBeAttachedAsync();
         await Expect(endScreenPage.Locator(".socials-text.discord-invite")).ToContainTextAsync("discord.gg/e2eDiscordInv");
 
         await endScreenPage.CloseAsync();
     }
 
+    [Test]
     public async Task EndScreen_Socials_SocialsInvisibleOnEmptyInput()
     {
         await Page.GotoAsync(BaseUrl);
@@ -231,8 +232,8 @@ public partial class OverlayTests : PageTest
         var endScreenPage = await Page.Context.NewPageAsync();
         await endScreenPage.GotoAsync($"{BaseUrl}/overlay/end-screen");
 
-        await Expect(endScreenPage.Locator(".socials-text.twitter-handle")).ToHaveClassAsync(new Regex(@"\bhide-social\b"));
-        await Expect(endScreenPage.Locator(".socials-text.discord-invite")).ToHaveClassAsync(new Regex(@"\bhide-social\b"));
+        await Expect(endScreenPage.Locator(".socials-text.twitter-link")).Not.ToBeAttachedAsync();
+        await Expect(endScreenPage.Locator(".socials-text.discord-invite")).Not.ToBeAttachedAsync();
 
         await endScreenPage.CloseAsync();
     }

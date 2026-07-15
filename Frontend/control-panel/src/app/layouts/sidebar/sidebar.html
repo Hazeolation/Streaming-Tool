@@ -64,15 +64,17 @@
   <section>
     <div class="swap-sides">
       <h2>Seiten wechseln</h2>
-      <label>
-        <input
-          type="checkbox"
-          [ngModel]="state().alphaIsLeft"
-          (ngModelChange)="
-            stateService.update({
-              alphaIsLeft: $event,
-            })
-          "
+      <label
+        (click)="
+          stateService.update({
+            alphaIsLeft: !state().alphaIsLeft,
+          })
+        "
+      >
+        <app-toggle-slider
+          #alphaLeftToggleSlider
+          class="toggle-slider-alpha-left"
+          [class.toggled]="state().alphaIsLeft"
         />
         Alpha links
       </label>
@@ -81,7 +83,7 @@
   <section>
     <h2>Streamer</h2>
     <input
-      placeholder="@streamer"
+      placeholder="Streamer"
       [ngModel]="state().streamer"
       (ngModelChange)="
         stateService.update({
@@ -93,7 +95,7 @@
   <section>
     <h2>Kommentatoren</h2>
     <input
-      placeholder="@caster1"
+      placeholder="Caster1"
       [ngModel]="state().commentator1"
       (ngModelChange)="
         stateService.update({
@@ -102,7 +104,7 @@
       "
     />
     <input
-      placeholder="@caster2"
+      placeholder="Caster2"
       [ngModel]="state().commentator2"
       (ngModelChange)="
         stateService.update({
@@ -113,39 +115,50 @@
   </section>
   <section>
     <h2>Sichtbarkeit des Overlays</h2>
-    <button
-      class="toggle-button"
-      [class.toggled]="state().showMapScreen"
+    <label
       (click)="
         stateService.update({
           showMapScreen: !state().showMapScreen,
         })
       "
     >
+      <app-toggle-slider
+        #showMapScreenToggleSlider
+        class="toggle-slider-show-map-screen"
+        [class.toggled]="state().showMapScreen"
+      />
       Kartenanzeige
-    </button>
-    <button
-      class="toggle-button"
-      [class.toggled]="state().showScoreBox"
+    </label>
+
+    <label
       (click)="
         stateService.update({
           showScoreBox: !state().showScoreBox,
         })
       "
     >
+      <app-toggle-slider
+        #showScoreBoxToggleSlider
+        class="toggle-slider-show-score-box"
+        [class.toggled]="state().showScoreBox"
+      />
       Spielstand
-    </button>
-    <button
-      class="toggle-button"
-      [class.toggled]="state().showCommentatorBox"
+    </label>
+
+    <label
       (click)="
         stateService.update({
           showCommentatorBox: !state().showCommentatorBox,
         })
       "
     >
+      <app-toggle-slider
+        #showCommentatorBoxToggleSlider
+        class="toggle-slider-show-commentator-box"
+        [class.toggled]="state().showCommentatorBox"
+      />
       Kommentatoren
-    </button>
+    </label>
   </section>
   <section>
     <h2>Ein- / Ausblenden Kommentatorenbox</h2>
