@@ -266,6 +266,8 @@ ng test path-to-test/[name].spec.ts
 | `should add maps with increasing order numbers`      | Checks whether each new map added receives an incremented `order` value.                                                    |
 | `should remove a map and reorder remaining maps`     | Checks whether `removeMap()` removes a map, reorders remaining maps, recalculates scores, and persists the updated state.   |
 | `should expose available maps`                       | Checks whether the service exposes the predefined list of available maps.                                                   |
+| `should expose match colors`                         | Checks whether the service exposes the predefined list of available match colors                                            |
+| `should expose color lock colors`                    | Checks whether the service exposes the predefined list of available color lock colors                                       |
 | `should expose available modes`                      | Checks whether the service exposes the predefined list of available game modes.                                             |
 | `should expose available divisions`                  | Checks whether the service exposes the predefined list of available divisions.                                              |
 
