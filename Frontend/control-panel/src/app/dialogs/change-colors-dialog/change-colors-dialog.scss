@@ -26,6 +26,10 @@ label {
   font-size: 1.125rem;
 }
 
+label:hover {
+  cursor: pointer;
+}
+
 mat-dialog-content {
   display: flex;
   flex-flow: column nowrap;
