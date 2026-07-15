@@ -1,9 +1,17 @@
-@let visibleColors = stateService.colorLockActive() ? colorLockColors : matchColors;
+@let visibleColors =
+  state().colorLockActive ? stateService.colorLockColors : stateService.matchColors;
 <h1 mat-dialog-title>Farb-Einstellungen</h1>
 <mat-dialog-content>
-  <label (click)="stateService.colorLockActive.set(!stateService.colorLockActive())">
+  <label
+    (click)="
+      stateService.update({
+        colorLockActive: !state().colorLockActive,
+        currentColorsId: 0,
+      })
+    "
+  >
     Color Lock
-    <app-toggle-slider [class.toggled]="stateService.colorLockActive()"></app-toggle-slider>
+    <app-toggle-slider [class.toggled]="state().colorLockActive"></app-toggle-slider>
   </label>
   <h2>Farben</h2>
   @for (color of visibleColors; track color.id) {
@@ -11,8 +19,12 @@
       <div class="color-display" [ngStyle]="{ 'background-color': color.colorAlpha }"></div>
       <div class="color-display" [ngStyle]="{ 'background-color': color.colorBravo }"></div>
       <app-toggle-slider
-        [class.toggled]="stateService.selectedColor() === color.id"
-        (onToggleSliderClick)="handleColorSliderClick(color.id)"
+        [class.toggled]="state().currentColorsId === color.id"
+        (onToggleSliderClick)="
+          stateService.update({
+            currentColorsId: color.id,
+          })
+        "
       ></app-toggle-slider>
     </div>
   }
