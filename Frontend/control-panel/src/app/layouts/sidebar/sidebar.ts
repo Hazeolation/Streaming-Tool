@@ -10,6 +10,8 @@ import { CommentatorBoxTimeDataService } from '../../services/commentator-box-ti
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
 import { ToggleSlider } from '../../features/toggle-slider/toggle-slider';
+import { MatDialog } from '@angular/material/dialog';
+import { ChangeColorsDialog } from '../../dialogs/change-colors-dialog/change-colors-dialog';
 
 @Component({
   selector: 'app-sidebar',
@@ -27,6 +29,8 @@ export class Sidebar implements OnInit, OnDestroy {
    * Scoped logger instance used for sidebar-specific logs.
    */
   private readonly scope: LogScope = this.log.beginScope('Sidebar');
+
+  private readonly dialog: MatDialog = inject(MatDialog);
 
   /**
    * Service that manages broadcast state and division data.
@@ -65,6 +69,11 @@ export class Sidebar implements OnInit, OnDestroy {
    * Available divisions for the broadcast state.
    */
   availableDivisions: Division[] = this.stateService.availableDivisions;
+
+  handleColorSettingsButtonClick(): void {
+    this.dialog.closeAll();
+    this.dialog.open(ChangeColorsDialog, { panelClass: 'custom-dialog' });
+  }
 
   /**
    * Initialize the sidebar and load initial service state.

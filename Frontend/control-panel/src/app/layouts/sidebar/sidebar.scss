@@ -58,8 +58,14 @@ button {
   cursor: pointer;
 }
 
-button.active {
-  background: #6d28d9;
+.click-button {
+  border: 0.125rem solid #343744;
+  padding: 0.625rem;
+  transition: border-color 50ms ease;
+}
+
+.click-button:active {
+  border-color: #6d28d9;
 }
 
 .swap-sides h2 {
