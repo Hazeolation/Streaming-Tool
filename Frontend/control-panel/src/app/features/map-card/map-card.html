@@ -4,7 +4,7 @@
     <div class="controls" [class.alpha-is-left]="state().alphaIsLeft">
       <button
         class="team-button"
-        [class.map-won]="map.winner === 'alpha'"
+        [class.toggled]="map.winner === 'alpha'"
         [ngClass]="state().alphaIsLeft ? 'button-alpha-color' : 'button-bravo-color'"
         [disabled]="!map.isVisible"
         (click)="handleWinnerSelection('alpha')"
@@ -13,7 +13,7 @@
       </button>
       <button
         class="team-button"
-        [class.map-won]="map.winner === 'bravo'"
+        [class.toggled]="map.winner === 'bravo'"
         [ngClass]="state().alphaIsLeft ? 'button-bravo-color' : 'button-alpha-color'"
         [disabled]="!map.isVisible"
         (click)="handleWinnerSelection('bravo')"
