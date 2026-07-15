@@ -31,6 +31,12 @@ namespace DSB.StreamBackend.Migrations
                     table.PrimaryKey("PK_Socials", x => x.Id);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Socials",
+                columns: new[] { "Id", "XHandle", "DiscordInvite" },
+                values: new object[] { 1, string.Empty, string.Empty }
+            );
+
             migrationBuilder.UpdateData(
                 table: "BroadcastStates",
                 keyColumn: "Id",
