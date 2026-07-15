@@ -1,11 +1,8 @@
 @use '@angular/material' as mat;
 
 :root {
-  /* Colors are directly pulled from Inkipedia
-   * https://splatoonwiki.org/wiki/Ink/Splatoon_3
-   */
-  --team-alpha-color: #f2dc19;
-  --team-bravo-color: #4917de;
+  --team-alpha-color: white;
+  --team-bravo-color: black;
 
   --division-1-color: #ff0000;
   --division-2-color: #ff8800;
