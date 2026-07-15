@@ -1,9 +1,5 @@
 <div class="sidebar">
   <section>
-    <h2>Farben</h2>
-    <button class="click-button" (click)="handleColorSettingsButtonClick()">Einstellungen</button>
-  </section>
-  <section>
     <h2>Division</h2>
     <select
       [ngModel]="state().division"
@@ -64,6 +60,13 @@
       "
       maxLength="30"
     />
+  </section>
+  <section>
+    <h2>Farben</h2>
+    @if (!state().colorLockActive) {
+      <button class="click-button" (click)="handleNextColorButtonClick()">Nächste Farbe</button>
+    }
+    <button class="click-button" (click)="handleColorSettingsButtonClick()">Einstellungen</button>
   </section>
   <section>
     <div class="swap-sides">

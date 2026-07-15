@@ -30,6 +30,9 @@ export class Sidebar implements OnInit, OnDestroy {
    */
   private readonly scope: LogScope = this.log.beginScope('Sidebar');
 
+  /**
+   * Dialog material instance that handles opening and closing of dialogs
+   */
   private readonly dialog: MatDialog = inject(MatDialog);
 
   /**
@@ -70,9 +73,24 @@ export class Sidebar implements OnInit, OnDestroy {
    */
   availableDivisions: Division[] = this.stateService.availableDivisions;
 
+  /**
+   * Handle click event for next color button that advances the current color id by one
+   */
+  handleNextColorButtonClick(): void {
+    let currentColorsId = this.state().currentColorsId + 1;
+    if (currentColorsId >= this.stateService.matchColors.length) {
+      currentColorsId = 0;
+    }
+
+    this.stateService.update({ currentColorsId: currentColorsId });
+  }
+
+  /**
+   * Handle click event for color settings button that opens our dialog
+   */
   handleColorSettingsButtonClick(): void {
     this.dialog.closeAll();
-    this.dialog.open(ChangeColorsDialog, { panelClass: 'custom-dialog' });
+    this.dialog.open(ChangeColorsDialog, { panelClass: 'color-settings-dialog' });
   }
 
   /**
