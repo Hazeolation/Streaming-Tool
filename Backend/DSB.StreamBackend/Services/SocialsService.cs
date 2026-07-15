@@ -90,8 +90,9 @@ public class SocialsService(StreamToolDbContext db, ILogService log)
 
         var entity = await db.Socials.FirstOrDefaultAsync(x => x.Id == 1);
 
-        if (entity != null)
+        if (entity is not null)
         {
+            await log.TraceAsync("Socials entity exists");
             return entity;
         }
 

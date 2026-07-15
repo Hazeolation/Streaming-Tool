@@ -23,6 +23,12 @@ namespace DSB.StreamBackend.Migrations
                 {
                     table.PrimaryKey("PK_CommentatorBoxTimeData", x => x.Id);
                 });
+
+            migrationBuilder.InsertData(
+                table: "CommentatorBoxTimeData",
+                columns: new[] { "Id", "ShowDisplayIntervalInSeconds", "HideDisplayIntervalInSeconds" },
+                values: new object[] { 1, 5, 50 }
+            );
         }
 
         /// <inheritdoc />

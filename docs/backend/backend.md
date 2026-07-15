@@ -21,8 +21,10 @@ DSB.StreamBackend/
 │   ├── CommentatorBoxTimedataController.cs
 │   └── SocialsController.cs
 ├── Hubs/
-│   ├── IOverlayClient.cs                   # SignalR-Interface
-│   └── OverlayHub.cs                       # SignalR-Hub
+│   ├── EventHub.cs                         # SignalR-Hub for Events
+│   ├── IEventClient.cs                     # SignalR-Interface for Events
+│   ├── IOverlayClient.cs                   # SignalR-Interface for Overlays
+│   └── OverlayHub.cs                       # SignalR-Hub for Overlays
 ├── Services/                               # Business Logic + DB Access
 │   ├── BroadcastStateService.cs
 │   ├── CommentatorBoxTimeDataService.cs
@@ -98,11 +100,12 @@ Foreign Key `BroadcastStateEntityId → BroadcastStates.Id` with `ON DELETE CASC
 
 ### `CommentatorBoxTimeData` (1 Column)
 
-| Column                         | Type  | Description                                                                  |
-| ------------------------------ | ----- | ---------------------------------------------------------------------------- |
-| `Id`                           | `int` | Always `1` (Singleton)                                                       |
-| `ShowDisplayIntervalInSeconds` | `int` | How long the commentator box gets displayed on scorebox overlay (In seconds) |
-| `HideDisplayIntervalInSeconds` | `int` | How long the commentator box is hidden on scorebox overlay (In seconds)      |
+| Column                         | Type  | Description                                                                                       |
+| ------------------------------ | ----- | ------------------------------------------------------------------------------------------------- |
+| `Id`                           | `int` | Always `1` (Singleton)                                                                            |
+| `ShowDisplayIntervalInSeconds` | `int` | How long the commentator box gets displayed on scorebox overlay (In seconds)                      |
+| `HideDisplayIntervalInSeconds` | `int` | How long the commentator box is hidden on scorebox overlay (In seconds)                           |
+| `DisplayMode`                  | `int` | Sets the blending mode in which the commentator box gets shown. `0` for manual, `1` for automatic |
 
 ---
 

@@ -63,5 +63,6 @@ using (var scope = app.Services.CreateScope())
 app.MapControllers();
 
 app.MapHub<OverlayHub>("/overlayHub");
+app.MapHub<EventHub>("/eventHub");
 
 app.Run();

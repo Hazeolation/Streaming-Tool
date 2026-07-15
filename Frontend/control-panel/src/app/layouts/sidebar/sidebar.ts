@@ -9,6 +9,9 @@ import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
+import { CommBoxDisplayEvents } from '../../enums/comm-box-display-events';
+import { SignalrEvents } from '../../services/signalr-events';
+import { CommBoxDisplayMode } from '../../enums/comm-box-display-modes';
 import { ToggleSlider } from '../../features/toggle-slider/toggle-slider';
 
 @Component({
@@ -18,6 +21,11 @@ import { ToggleSlider } from '../../features/toggle-slider/toggle-slider';
   styleUrl: './sidebar.scss',
 })
 export class Sidebar implements OnInit, OnDestroy {
+  /**
+   * Instance for transmitting SignalrEvents
+   */
+  private signalrEvents: SignalrEvents = inject(SignalrEvents);
+
   /**
    * Logger instance for sidebar lifecycle and actions.
    */
@@ -67,6 +75,36 @@ export class Sidebar implements OnInit, OnDestroy {
   availableDivisions: Division[] = this.stateService.availableDivisions;
 
   /**
+   * Click event handling for the hide commentator box button
+   */
+  handleHideButtonClick(): void {
+    this.log.trace('Firing click event for commentator box display button to Signalr EventHub', {
+      type: CommBoxDisplayEvents.CommBoxHideButtonClicked,
+    });
+    this.signalrEvents.connection?.invoke(CommBoxDisplayEvents.CommBoxHideButtonClicked);
+  }
+
+  /**
+   * Click event handling for the show commentator box button
+   */
+  handleShowButtonClick(): void {
+    this.log.trace('Firing click event for commentator box display button to Signalr EventHub', {
+      type: CommBoxDisplayEvents.CommBoxHideButtonClicked,
+    });
+    this.signalrEvents.connection?.invoke(CommBoxDisplayEvents.CommBoxShowButtonClicked);
+  }
+
+  /**
+   * Click event handling for the show commentator box temporarily button
+   */
+  handleShowTempButtonClick(): void {
+    this.log.trace('Firing click event for commentator box display button to Signalr EventHub', {
+      type: CommBoxDisplayEvents.CommBoxHideButtonClicked,
+    });
+    this.signalrEvents.connection?.invoke(CommBoxDisplayEvents.CommBoxShowTempButtonClicked);
+  }
+
+  /**
    * Initialize the sidebar and load initial service state.
    * @returns void
    */
@@ -81,6 +119,7 @@ export class Sidebar implements OnInit, OnDestroy {
       this.log.debug('Initial state load triggered', {
         hasStateService: !!this.stateService,
         hasSocialsService: !!this.socialsService,
+        hasTimeDataService: !!this.commentatorBoxTimeDataService,
       });
     } catch (err) {
       this.log.error('Sidebar initialization failed', err);
@@ -94,5 +133,12 @@ export class Sidebar implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.log.trace('Sidebar destroyed');
     this.scope.dispose();
+  }
+
+  /**
+   * Getter that returns property of `CommBoxDisplayMode` type to access enum on HTML
+   */
+  get commBoxDisplayMode(): typeof CommBoxDisplayMode {
+    return CommBoxDisplayMode;
   }
 }

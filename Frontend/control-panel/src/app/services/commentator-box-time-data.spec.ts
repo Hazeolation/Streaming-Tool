@@ -5,6 +5,7 @@ import { CommentatorBoxTimeData } from '../models/commentator-box-time-data';
 import { signal } from '@angular/core';
 import { of } from 'rxjs';
 import { Signalr } from './signalr';
+import { CommBoxDisplayMode } from '../enums/comm-box-display-modes';
 
 describe('CommentatorBoxTimeData', () => {
   let timeData: CommentatorBoxTimeDataService;
@@ -12,6 +13,7 @@ describe('CommentatorBoxTimeData', () => {
   const defaultTimeData = {
     hideDisplayIntervalInSeconds: 0,
     showDisplayIntervalInSeconds: 0,
+    displayMode: CommBoxDisplayMode.Manual,
   };
 
   const mockApi = {
@@ -80,12 +82,14 @@ describe('CommentatorBoxTimeData', () => {
       ...defaultTimeData,
       showDisplayIntervalInSeconds: 35,
       hideDisplayIntervalInSeconds: 23,
+      displayMode: CommBoxDisplayMode.Auto,
     });
 
     const expectedTimeData: CommentatorBoxTimeData = {
       ...defaultTimeData,
       showDisplayIntervalInSeconds: 35,
       hideDisplayIntervalInSeconds: 23,
+      displayMode: CommBoxDisplayMode.Auto,
     };
 
     expect(timeData.commentatorBoxTimeData()).toEqual(expectedTimeData);

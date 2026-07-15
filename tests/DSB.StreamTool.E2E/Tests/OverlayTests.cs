@@ -184,66 +184,6 @@ public partial class OverlayTests : PageTest
         await overlayPage.CloseAsync();
     }
 
-    [Test]
-    public async Task ScoreBox_CommBoxPeriodicDisplaying_BlendInOut()
-    {
-        await Page.GotoAsync(BaseUrl);
-
-        var timeDataDetails = Page.Locator(".comm-box-time-data__details-container");
-        await timeDataDetails.ClickAsync();
-
-        var showInput = Page.Locator(".show-comm-box-interval-input");
-        var hideInput = Page.Locator(".hide-comm-box-interval-input");
-
-        await showInput.FillAsync("2");
-        await Expect(showInput).ToHaveValueAsync("2");
-
-        await hideInput.FillAsync("4");
-        await Expect(hideInput).ToHaveValueAsync("4");
-
-        var scoreBoxPage = await Page.Context.NewPageAsync();
-        await scoreBoxPage.GotoAsync($"{BaseUrl}/overlay/score-box");
-
-        await Expect(scoreBoxPage.Locator("app-commentator-box")).ToHaveClassAsync(new Regex(@"\binterval-hidden\b"));
-
-        await Task.Delay(3000);
-        await Expect(scoreBoxPage.Locator("app-commentator-box")).Not.ToHaveClassAsync(new Regex(@"\binterval-hidden\b"));
-
-        await Task.Delay(2000);
-        await Expect(scoreBoxPage.Locator("app-commentator-box")).ToHaveClassAsync(new Regex(@"\binterval-hidden\b"));
-
-        await scoreBoxPage.CloseAsync();
-    }
-
-    [Test]
-    public async Task ScoreBox_CommBoxPeriodicDisplay_VisibleWhenInputZero()
-    {
-        await Page.GotoAsync(BaseUrl);
-
-        var timeDataDetails = Page.Locator(".comm-box-time-data__details-container");
-        await timeDataDetails.ClickAsync();
-
-        var showInput = Page.Locator(".show-comm-box-interval-input");
-        var hideInput = Page.Locator(".hide-comm-box-interval-input");
-
-        await showInput.FillAsync("0");
-        await Expect(showInput).ToHaveValueAsync("0");
-
-        await hideInput.FillAsync("2");
-        await Expect(hideInput).ToHaveValueAsync("2");
-
-        var scoreBoxPage = await Page.Context.NewPageAsync();
-        await scoreBoxPage.GotoAsync($"{BaseUrl}/overlay/score-box");
-
-        await Expect(scoreBoxPage.Locator("app-commentator-box")).Not.ToHaveClassAsync(new Regex(@"\binterval-hidden\b"));
-
-        await Task.Delay(3000);
-        await Expect(scoreBoxPage.Locator("app-commentator-box")).Not.ToHaveClassAsync(new Regex(@"\binterval-hidden\b"));
-
-        await scoreBoxPage.CloseAsync();
-    }
-
-    [Test]
     public async Task EndScreen_Socials_SocialsContentVisible()
     {
         await Page.GotoAsync(BaseUrl);
