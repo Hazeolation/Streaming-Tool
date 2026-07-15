@@ -8,6 +8,7 @@ import { Socials } from './models/socials';
 import { CommentatorBoxTimeData } from './models/commentator-box-time-data';
 import { SocialsService } from './services/socials';
 import { CommentatorBoxTimeDataService } from './services/commentator-box-time-data';
+import { CommBoxDisplayMode } from './enums/comm-box-display-modes';
 
 describe('App', () => {
   const mockState = signal<BroadcastState>({
@@ -40,6 +41,7 @@ describe('App', () => {
   const mockTimeData = signal<CommentatorBoxTimeData>({
     hideDisplayIntervalInSeconds: 6,
     showDisplayIntervalInSeconds: 4,
+    displayMode: CommBoxDisplayMode.Manual,
   });
 
   beforeEach(async () => {

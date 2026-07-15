@@ -1,6 +1,7 @@
 using DSB.StreamBackend.Context;
 using DSB.StreamBackend.Controllers;
 using DSB.StreamBackend.Dtos;
+using DSB.StreamBackend.Enums;
 using DSB.StreamBackend.Hubs;
 using DSB.StreamBackend.Logging;
 using DSB.StreamBackend.Services;
@@ -67,8 +68,9 @@ public class CommentatorBoxTimeDataControllerTests
         var ok = (OkObjectResult)result.Result!;
         var dto = (CommentatorBoxTimeDataDto)ok.Value!;
 
-        Assert.That(dto.ShowDisplayIntervalInSeconds, Is.EqualTo(5));
-        Assert.That(dto.HideDisplayIntervalInSeconds, Is.EqualTo(50));
+        Assert.That(dto.ShowDisplayIntervalInSeconds, Is.EqualTo(50));
+        Assert.That(dto.HideDisplayIntervalInSeconds, Is.EqualTo(5));
+        Assert.That(dto.DisplayMode, Is.EqualTo((int)CommBoxDisplayMode.Manual));
     }
 
     [Test]
@@ -76,7 +78,9 @@ public class CommentatorBoxTimeDataControllerTests
     {
         var dto = new CommentatorBoxTimeDataDto
         {
-            ShowDisplayIntervalInSeconds = 200
+            ShowDisplayIntervalInSeconds = 200,
+            HideDisplayIntervalInSeconds = 50,
+            DisplayMode = (int)CommBoxDisplayMode.Automatic
         };
 
         var result = await _controller.UpdateCommentatorBoxTimeData(dto);
@@ -86,7 +90,8 @@ public class CommentatorBoxTimeDataControllerTests
         var updated = (CommentatorBoxTimeDataDto)ok.Value!;
 
         Assert.That(updated.ShowDisplayIntervalInSeconds, Is.EqualTo(200));
-        Assert.That(updated.HideDisplayIntervalInSeconds, Is.EqualTo(0));
+        Assert.That(updated.HideDisplayIntervalInSeconds, Is.EqualTo(50));
+        Assert.That(updated.DisplayMode, Is.EqualTo((int)CommBoxDisplayMode.Automatic));
     }
 
     [Test]
@@ -113,7 +118,8 @@ public class CommentatorBoxTimeDataControllerTests
         var dto = new CommentatorBoxTimeDataDto
         {
             ShowDisplayIntervalInSeconds = 20,
-            HideDisplayIntervalInSeconds = 40
+            HideDisplayIntervalInSeconds = 40,
+            DisplayMode = (int)CommBoxDisplayMode.Automatic
         };
 
         await _controller.UpdateCommentatorBoxTimeData(dto);
@@ -121,5 +127,6 @@ public class CommentatorBoxTimeDataControllerTests
         Assert.That(capturedTimeData, Is.Not.Null);
         Assert.That(capturedTimeData!.ShowDisplayIntervalInSeconds, Is.EqualTo(20));
         Assert.That(capturedTimeData!.HideDisplayIntervalInSeconds, Is.EqualTo(40));
+        Assert.That(capturedTimeData!.DisplayMode, Is.EqualTo((int)CommBoxDisplayMode.Automatic));
     }
 }

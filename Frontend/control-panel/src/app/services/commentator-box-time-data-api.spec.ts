@@ -4,6 +4,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { CommentatorBoxTimeData } from '../models/commentator-box-time-data';
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
+import { CommBoxDisplayMode } from '../enums/comm-box-display-modes';
 
 describe('CommentatorBoxTimeDataApi', () => {
   let service: CommentatorBoxTimeDataApi;
@@ -14,6 +15,7 @@ describe('CommentatorBoxTimeDataApi', () => {
   const mockTimeData: CommentatorBoxTimeData = {
     showDisplayIntervalInSeconds: 100,
     hideDisplayIntervalInSeconds: 50,
+    displayMode: CommBoxDisplayMode.Manual,
   };
 
   beforeEach(async () => {

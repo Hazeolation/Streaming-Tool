@@ -3,6 +3,7 @@ using System;
 using DSB.StreamBackend.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DSB.StreamBackend.Migrations
 {
     [DbContext(typeof(StreamToolDbContext))]
-    partial class StreamToolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260703160948_fixConstraintsAndTimeDataProperties")]
+    partial class fixConstraintsAndTimeDataProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
@@ -26,9 +29,6 @@ namespace DSB.StreamBackend.Migrations
                     b.Property<bool>("AlphaIsLeft")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("ColorLockActive")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Commentator1")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -36,9 +36,6 @@ namespace DSB.StreamBackend.Migrations
                     b.Property<string>("Commentator2")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("CurrentColorsId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Division")
                         .HasColumnType("INTEGER");
@@ -91,10 +88,8 @@ namespace DSB.StreamBackend.Migrations
                         {
                             Id = 1,
                             AlphaIsLeft = true,
-                            ColorLockActive = false,
                             Commentator1 = "",
                             Commentator2 = "",
-                            CurrentColorsId = 0,
                             Division = 1,
                             ScoreAlpha = 0,
                             ScoreBravo = 0,

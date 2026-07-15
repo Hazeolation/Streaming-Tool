@@ -25,7 +25,8 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db, ILogService l
             await log.InfoAsync("Commentator box time data loaded", new
             {
                 entity.ShowDisplayIntervalInSeconds,
-                entity.HideDisplayIntervalInSeconds
+                entity.HideDisplayIntervalInSeconds,
+                entity.DisplayMode
             });
 
             return ToDto(entity);
@@ -56,12 +57,15 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db, ILogService l
 
             entity.ShowDisplayIntervalInSeconds = dto.ShowDisplayIntervalInSeconds;
 
+            entity.DisplayMode = dto.DisplayMode;
+
             await db.SaveChangesAsync();
 
             await log.InfoAsync("Commentator box time data updated", new
             {
                 entity.ShowDisplayIntervalInSeconds,
-                entity.HideDisplayIntervalInSeconds
+                entity.HideDisplayIntervalInSeconds,
+                entity.DisplayMode
             });
 
             return ToDto(entity);
@@ -81,16 +85,20 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db, ILogService l
     {
         await log.TraceAsync("Loading commentator box time entity");
 
-        CommentatorBoxTimeDataEntity? entity = await db.CommentatorBoxTimeData.FirstOrDefaultAsync();
+        CommentatorBoxTimeDataEntity? entity = await db.CommentatorBoxTimeData.FirstOrDefaultAsync(x => x.Id == 1);
 
         if (entity is not null)
         {
+            await log.TraceAsync("Time data entity exists");
             return entity;
         }
 
         await log.WarningAsync("Commentator box time data not found, creating default");
 
-        entity = new CommentatorBoxTimeDataEntity();
+        entity = new CommentatorBoxTimeDataEntity
+        {
+            Id = 1
+        };
 
         db.CommentatorBoxTimeData.Add(entity);
 
@@ -111,7 +119,8 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db, ILogService l
         return new CommentatorBoxTimeDataDto
         {
             HideDisplayIntervalInSeconds = entity.HideDisplayIntervalInSeconds,
-            ShowDisplayIntervalInSeconds = entity.ShowDisplayIntervalInSeconds
+            ShowDisplayIntervalInSeconds = entity.ShowDisplayIntervalInSeconds,
+            DisplayMode = entity.DisplayMode
         };
     }
 }

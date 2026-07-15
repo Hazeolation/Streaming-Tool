@@ -30,32 +30,45 @@ section,
 .commentator-box-display-inputs__container {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.75rem;
+}
+
+.commentator-box-display-inputs__container {
+  padding-top: 1rem;
 }
 
 input {
-  padding: 12px;
+  padding: 0.75rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   background: #343744;
   color: white;
 }
 
 select {
-  padding: 12px;
+  padding: 0.75rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   background: #343744;
   color: white;
 }
 
 button {
-  padding: 12px;
+  box-sizing: border-box;
+  padding: 0.75rem;
   border: none;
-  border-radius: 10px;
-  background: #343744;
+  border-radius: 0.625rem;
+  background-color: #343744;
   color: white;
   cursor: pointer;
+}
+
+.toggle-button {
+  transition: background-color 150ms ease;
+}
+
+.toggle-button.toggled {
+  background-color: #6d28d9;
 }
 
 .click-button {
@@ -68,6 +81,17 @@ button {
   border-color: #6d28d9;
 }
 
+.comm-box-display-state-buttons__container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  column-gap: 1rem;
+}
+
+.display-mode-button {
+  flex: 1;
+}
+
 .swap-sides h2 {
   margin-bottom: 0.75rem;
 }
@@ -75,8 +99,8 @@ button {
 label {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 18px;
+  gap: 0.75rem;
+  font-size: 1.125rem;
   font-weight: 700;
   color: white;
   cursor: pointer;
@@ -84,11 +108,11 @@ label {
 
 input[type='checkbox'] {
   appearance: none;
-  width: 22px;
-  height: 22px;
+  width: 1.375rem;
+  height: 1.375rem;
   border: none;
-  margin-top: 12px;
-  border-radius: 6px;
+  margin-top: 0.75rem;
+  border-radius: 0.375rem;
   background: #1e1f26;
   cursor: pointer;
   position: relative;
@@ -109,9 +133,9 @@ input[type='checkbox']:checked::after {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 6px;
-  height: 12px;
+  width: 0.375rem;
+  height: 0.75rem;
   border: solid white;
-  border-width: 0 3px 3px 0;
+  border-width: 0 0.1875rem 0.1875rem 0;
   transform: translate(-50%, -58%) rotate(45deg);
 }

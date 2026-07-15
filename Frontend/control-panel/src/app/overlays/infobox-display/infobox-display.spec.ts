@@ -10,6 +10,7 @@ import { SocialsService } from '../../services/socials';
 import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { Socials } from '../../models/socials';
 import { LogService } from '../../services/log';
+import { CommBoxDisplayMode } from '../../enums/comm-box-display-modes';
 
 describe('InfoboxDisplay', () => {
   let component: InfoboxDisplay;
@@ -41,6 +42,7 @@ describe('InfoboxDisplay', () => {
   const mockTimeData = signal<CommentatorBoxTimeData>({
     showDisplayIntervalInSeconds: 1,
     hideDisplayIntervalInSeconds: 2,
+    displayMode: CommBoxDisplayMode.Manual,
   });
   const mockSocials = signal<Socials>({
     xHandle: '@Temp',

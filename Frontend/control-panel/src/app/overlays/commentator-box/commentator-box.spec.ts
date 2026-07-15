@@ -10,6 +10,7 @@ import { CommentatorBoxTimeDataService } from '../../services/commentator-box-ti
 import { SocialsService } from '../../services/socials';
 import { Socials } from '../../models/socials';
 import { LogService } from '../../services/log';
+import { CommBoxDisplayMode } from '../../enums/comm-box-display-modes';
 
 describe('CommentatorBox', () => {
   let component: CommentatorBox;
@@ -40,6 +41,7 @@ describe('CommentatorBox', () => {
   const defaultTimeData: CommentatorBoxTimeData = {
     showDisplayIntervalInSeconds: 1,
     hideDisplayIntervalInSeconds: 2,
+    displayMode: CommBoxDisplayMode.Manual,
   };
 
   const mockState = signal<BroadcastState>(defaultState);
@@ -150,9 +152,10 @@ describe('CommentatorBox', () => {
 
   it('should reflect commentator box time data changes from CommentatorBoxTimeDataService', () => {
     const updatedTimeData: CommentatorBoxTimeData = {
-      ...defaultState,
+      ...defaultTimeData,
       showDisplayIntervalInSeconds: 6,
       hideDisplayIntervalInSeconds: 12,
+      displayMode: CommBoxDisplayMode.Auto,
     };
 
     mockTimeData.set(updatedTimeData);
@@ -160,5 +163,6 @@ describe('CommentatorBox', () => {
     expect(component.commentatorBoxTimeData()).toEqual(updatedTimeData);
     expect(component.commentatorBoxTimeData().hideDisplayIntervalInSeconds).toBe(12);
     expect(component.commentatorBoxTimeData().showDisplayIntervalInSeconds).toBe(6);
+    expect(component.commentatorBoxTimeData().displayMode).toBe(CommBoxDisplayMode.Auto);
   });
 });

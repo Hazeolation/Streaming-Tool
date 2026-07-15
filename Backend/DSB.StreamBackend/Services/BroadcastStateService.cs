@@ -116,7 +116,7 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
             .Include(x => x.Maps)
             .FirstOrDefaultAsync(x => x.Id == 1);
 
-        if (entity != null)
+        if (entity is not null)
         {
             await log.TraceAsync("Broadcast state exists");
             return entity;
