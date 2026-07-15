@@ -232,6 +232,20 @@ describe('BroadcastStateService', () => {
     });
   });
 
+  it('should expose match colors', () => {
+    expect(service.matchColors.length).toBeGreaterThan(0);
+    expect(service.matchColors[0]).toEqual({ id: 0, colorAlpha: '#1516CE', colorBravo: '#FCAD24' });
+  });
+
+  it('should expose color lock colors', () => {
+    expect(service.colorLockColors.length).toBeGreaterThan(0);
+    expect(service.colorLockColors[0]).toEqual({
+      id: 0,
+      colorAlpha: '#DBCA28',
+      colorBravo: '#5533E1',
+    });
+  });
+
   it('should expose available modes', () => {
     expect(service.availableModes).toEqual([
       {
