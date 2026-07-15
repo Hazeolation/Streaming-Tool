@@ -225,6 +225,8 @@ export class BroadcastStateService {
     { id: 0, colorAlpha: '#DBCA28', colorBravo: '#5533E1' },
     { id: 1, colorAlpha: '#F9AA22', colorBravo: '#165ADE' },
   ];
+  colorLockActive: WritableSignal<boolean> = signal<boolean>(false);
+  selectedColor: WritableSignal<number> = signal<number>(0);
 
   /**
    * Main state
