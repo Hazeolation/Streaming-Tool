@@ -29,6 +29,8 @@ describe('BroadcastStateService', () => {
     division: 1,
     startTime: new Date(0),
     week: 1,
+    currentColorsId: 0,
+    colorLockActive: false,
   };
 
   const mockApi = {

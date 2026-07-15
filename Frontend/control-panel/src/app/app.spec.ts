@@ -28,6 +28,8 @@ describe('App', () => {
     division: 3,
     startTime: new Date(),
     week: 1,
+    currentColorsId: 0,
+    colorLockActive: false,
   });
 
   const mockSocials = signal<Socials>({

@@ -27,6 +27,8 @@ describe('StartScreen', () => {
     division: 1,
     startTime: new Date(),
     week: 1,
+    currentColorsId: 0,
+    colorLockActive: false,
   };
 
   const mockState = signal<BroadcastState>(defaultState);
