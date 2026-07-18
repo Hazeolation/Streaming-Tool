@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>Socials</h1>
+<mat-dialog-content>
+  <h2>Twitter/X</h2>
+  <input
+    class="twitter-handle-input"
+    placeholder="@TwitterHandle"
+    [ngModel]="socials().xHandle"
+    (ngModelChange)="
+      socialsService.update({
+        xHandle: $event,
+      })
+    "
+  />
+
+  <h2>Discord-Invite</h2>
+  <input
+    class="discord-invite-input"
+    placeholder="Invite"
+    [ngModel]="socials().discordInvite"
+    (ngModelChange)="
+      socialsService.update({
+        discordInvite: $event,
+      })
+    "
+  />
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-dialog-close>✖</button>
+</mat-dialog-actions>
