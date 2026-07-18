@@ -83,6 +83,7 @@ Key properties:
 - `showMapScreen`, `showScoreBox`, `showCommentatorBox`, `showInfobox`
 - `maps` (`MapState[]`)
 - `season`, `division`, `week`
+- `currentColorsId`, `colorLockActive`
 
 ### `CommentatorBoxTimeData`
 

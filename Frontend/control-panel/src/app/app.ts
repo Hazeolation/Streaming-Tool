@@ -79,9 +79,34 @@ export class App implements OnDestroy {
   });
 
   /**
+   * Effect that watches for match color changes and updates our custom CSS properties
+   * `--team-alpha-color` is the color variable for the currently active team alpha color
+   * `--team-bravo-color` is the color variable for the currently active team bravo color
+   * This ensures the current team ink colors always reflect the current match colors
+   */
+  private matchColorsEffect = afterRenderEffect(() => {
+    const currentColorsId = this.state().currentColorsId;
+    const currentColors = this.state().colorLockActive
+      ? this.stateService.colorLockColors
+      : this.stateService.matchColors;
+
+    if (currentColorsId === null || !currentColors) return;
+
+    document.documentElement.style.setProperty(
+      '--team-alpha-color',
+      currentColors[currentColorsId].colorAlpha,
+    );
+    document.documentElement.style.setProperty(
+      '--team-bravo-color',
+      currentColors[currentColorsId].colorBravo,
+    );
+  });
+
+  /**
    * Destroys all effects on component destroy
    */
   ngOnDestroy(): void {
     this.divisionColorEffect.destroy();
+    this.matchColorsEffect.destroy();
   }
 }

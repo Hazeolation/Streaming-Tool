@@ -62,6 +62,18 @@
     />
   </section>
   <section>
+    <h2>Farben</h2>
+    @if (!state().colorLockActive) {
+      <button class="click-button" (click)="handleNextColorButtonClick()">Nächste Farbe</button>
+    }
+    <button
+      class="click-button open-colors-settings-dialog-button"
+      (click)="handleColorSettingsButtonClick()"
+    >
+      Einstellungen
+    </button>
+  </section>
+  <section>
     <div class="swap-sides">
       <h2>Seiten wechseln</h2>
       <label

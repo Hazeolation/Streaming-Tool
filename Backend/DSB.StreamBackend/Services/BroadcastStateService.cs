@@ -81,6 +81,9 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
 
             entity.StartTime = dto.StartTime;
 
+            entity.CurrentColorsId = dto.CurrentColorsId;
+            entity.ColorLockActive = dto.ColorLockActive;
+
             UpdateMaps(entity, dto.Maps);
 
             await db.SaveChangesAsync();
@@ -257,7 +260,9 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
             Season = entity.Season,
             Division = entity.Division,
             Week = entity.Week,
-            StartTime = entity.StartTime
+            StartTime = entity.StartTime,
+            CurrentColorsId = entity.CurrentColorsId,
+            ColorLockActive = entity.ColorLockActive
         };
     }
 }

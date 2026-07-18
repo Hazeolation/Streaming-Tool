@@ -59,22 +59,25 @@ The entire Broadcast State is held in the database as **a single row** (`Broadca
 
 ### `BroadcastStates` (1 Column)
 
-| Column               | Type     | Description            |
-| -------------------- | -------- | ---------------------- |
-| `Id`                 | `int`    | Always `1` (Singleton) |
-| `TeamAlphaName`      | `string` | Name Team Alpha        |
-| `TeamBravoName`      | `string` | Name Team Bravo        |
-| `AlphaIsLeft`        | `bool`   | Side Display Alpha     |
-| `ScoreAlpha`         | `int`    | Point Score Alpha      |
-| `ScoreBravo`         | `int`    | Point Score Bravo      |
-| `Streamer`           | `string` | Streamer Name          |
-| `Commentator1/2`     | `string` | Commentator Names      |
-| `ShowMapScreen`      | `bool`   | Overlay Visibility     |
-| `ShowScoreBox`       | `bool`   |                        |
-| `ShowCommentatorBox` | `bool`   |                        |
-| `ShowInfobox`        | `bool`   |                        |
-| `Season`             | `int`    | Current Season         |
-| `Division`           | `int`    | Current Division       |
+| Column               | Type       | Description                              |
+| -------------------- | ---------- | ---------------------------------------- |
+| `Id`                 | `int`      | Always `1` (Singleton)                   |
+| `TeamAlphaName`      | `string`   | Name Team Alpha                          |
+| `TeamBravoName`      | `string`   | Name Team Bravo                          |
+| `AlphaIsLeft`        | `bool`     | Side Display Alpha                       |
+| `ScoreAlpha`         | `int`      | Point Score Alpha                        |
+| `ScoreBravo`         | `int`      | Point Score Bravo                        |
+| `Streamer`           | `string`   | Streamer Name                            |
+| `Commentator1/2`     | `string`   | Commentator Names                        |
+| `ShowMapScreen`      | `bool`     | Overlay Visibility                       |
+| `ShowScoreBox`       | `bool`     |                                          |
+| `ShowCommentatorBox` | `bool`     |                                          |
+| `ShowInfobox`        | `bool`     |                                          |
+| `Season`             | `int`      | Current Season                           |
+| `Division`           | `int`      | Current Division                         |
+| `StartTime`          | `DateTime` | Start time of the next match             |
+| `CurrentColorsId`    | `int`      | Current id of the displayed match colors |
+| `ColorLockActive`    | `boolean`  |                                          |
 
 ### `MapStates` (0..N Columns)
 

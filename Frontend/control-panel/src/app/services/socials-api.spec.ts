@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { SocialsApi } from './socials-api';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Socials } from '../models/socials';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('SocialsApi', () => {
   let service: SocialsApi;
@@ -21,7 +21,7 @@ describe('SocialsApi', () => {
 
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
-      providers: [SocialsApi, provideHttpClient(withFetch()), provideHttpClientTesting()],
+      providers: [SocialsApi, provideHttpClient(), provideHttpClientTesting()],
     });
 
     service = TestBed.inject(SocialsApi);

@@ -29,6 +29,8 @@ describe('EndScreen', () => {
     division: 1,
     startTime: new Date(),
     week: 1,
+    currentColorsId: 0,
+    colorLockActive: false,
   };
 
   const defaultSocials: Socials = {

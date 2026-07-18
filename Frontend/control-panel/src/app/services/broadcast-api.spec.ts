@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { beforeEach, afterEach, describe, expect, it } from 'vitest';
 
 import { BroadcastApi } from './broadcast-api';
@@ -30,6 +30,8 @@ describe('BroadcastApi', () => {
     division: 1,
     startTime: new Date(),
     week: 1,
+    currentColorsId: 0,
+    colorLockActive: false,
   };
 
   beforeEach(async () => {
@@ -37,7 +39,7 @@ describe('BroadcastApi', () => {
 
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
-      providers: [BroadcastApi, provideHttpClient(withFetch()), provideHttpClientTesting()],
+      providers: [BroadcastApi, provideHttpClient(), provideHttpClientTesting()],
     });
 
     service = TestBed.inject(BroadcastApi);

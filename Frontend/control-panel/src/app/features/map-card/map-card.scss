@@ -100,14 +100,12 @@ select {
   border: 0.125rem solid var(--team-bravo-color);
 }
 
-.map-won.button-alpha-color {
+.toggled.button-alpha-color {
   background: var(--team-alpha-color);
-  color: black;
 }
 
-.map-won.button-bravo-color {
+.toggled.button-bravo-color {
   background: var(--team-bravo-color);
-  color: white;
 }
 
 .edit-button {

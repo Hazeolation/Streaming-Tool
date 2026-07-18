@@ -27,7 +27,7 @@ namespace DSB.StreamBackend.Migrations
             migrationBuilder.InsertData(
                 table: "CommentatorBoxTimeData",
                 columns: new[] { "Id", "ShowDisplayIntervalInSeconds", "HideDisplayIntervalInSeconds" },
-                values: new object[] { 1, 5, 50 }
+                values: new object[] { 1, 50, 5 }
             );
         }
 

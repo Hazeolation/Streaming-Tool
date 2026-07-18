@@ -3,6 +3,7 @@ using System;
 using DSB.StreamBackend.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DSB.StreamBackend.Migrations
 {
     [DbContext(typeof(StreamToolDbContext))]
-    partial class StreamToolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260715064427_addMatchColorSwitching")]
+    partial class addMatchColorSwitching
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
@@ -117,9 +120,6 @@ namespace DSB.StreamBackend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("DisplayMode")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("HideDisplayIntervalInSeconds")
                         .HasColumnType("INTEGER");
 
@@ -129,15 +129,6 @@ namespace DSB.StreamBackend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CommentatorBoxTimeData");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DisplayMode = 0,
-                            HideDisplayIntervalInSeconds = 5,
-                            ShowDisplayIntervalInSeconds = 50
-                        });
                 });
 
             modelBuilder.Entity("DSB.StreamBackend.Models.MapStateEntity", b =>
@@ -201,14 +192,6 @@ namespace DSB.StreamBackend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Socials");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DiscordInvite = "",
-                            XHandle = ""
-                        });
                 });
 
             modelBuilder.Entity("DSB.StreamBackend.Models.MapStateEntity", b =>

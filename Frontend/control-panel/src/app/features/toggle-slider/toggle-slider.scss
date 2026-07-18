@@ -26,6 +26,10 @@
   transition: left 150ms ease;
 }
 
+.toggle-slider__container:hover {
+  cursor: pointer;
+}
+
 :host(.toggled) .toggle-slider__container {
   background-color: #6d28d9;
 }

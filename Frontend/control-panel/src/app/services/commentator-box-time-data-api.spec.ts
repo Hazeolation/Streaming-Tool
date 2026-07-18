@@ -3,7 +3,7 @@ import { CommentatorBoxTimeDataApi } from './commentator-box-time-data-api';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { CommentatorBoxTimeData } from '../models/commentator-box-time-data';
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { CommBoxDisplayMode } from '../enums/comm-box-display-modes';
 
 describe('CommentatorBoxTimeDataApi', () => {
@@ -23,11 +23,7 @@ describe('CommentatorBoxTimeDataApi', () => {
 
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
-      providers: [
-        CommentatorBoxTimeDataApi,
-        provideHttpClient(withFetch()),
-        provideHttpClientTesting(),
-      ],
+      providers: [CommentatorBoxTimeDataApi, provideHttpClient(), provideHttpClientTesting()],
     });
 
     service = TestBed.inject(CommentatorBoxTimeDataApi);

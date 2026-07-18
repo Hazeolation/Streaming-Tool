@@ -95,4 +95,14 @@ public class BroadcastStateEntity
     /// Gets or sets the start time of the match
     /// </summary>
     public DateTime StartTime { get; set; }
+
+    /// <summary>
+    /// Gets or sets the current id of a `MatchColor` object in FE
+    /// </summary>
+    public int CurrentColorsId { get; set; } = 0;
+
+    /// <summary>
+    /// Gets or sets if color lock is currently active or not
+    /// </summary>
+    public bool ColorLockActive { get; set; } = false;
 }

@@ -29,6 +29,8 @@ describe('BroadcastStateService', () => {
     division: 1,
     startTime: new Date(0),
     week: 1,
+    currentColorsId: 0,
+    colorLockActive: false,
   };
 
   const mockApi = {
@@ -227,6 +229,20 @@ describe('BroadcastStateService', () => {
       id: 'scorch-gorge',
       mapName: 'Sengkluft',
       imageUrl: 'assets/maps/scorch-gorge.png',
+    });
+  });
+
+  it('should expose match colors', () => {
+    expect(service.matchColors.length).toBeGreaterThan(0);
+    expect(service.matchColors[0]).toEqual({ id: 0, colorAlpha: '#1516CE', colorBravo: '#FCAD24' });
+  });
+
+  it('should expose color lock colors', () => {
+    expect(service.colorLockColors.length).toBeGreaterThan(0);
+    expect(service.colorLockColors[0]).toEqual({
+      id: 0,
+      colorAlpha: '#DBCA28',
+      colorBravo: '#5533E1',
     });
   });
 
