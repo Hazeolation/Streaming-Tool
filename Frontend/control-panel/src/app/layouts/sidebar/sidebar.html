@@ -263,35 +263,13 @@
     </details>
   </section>
   <section>
-    <h2>Socials</h2>
-    <details class="socials__details-container">
-      <summary>Socials</summary>
-      <div class="socials-inputs__container">
-        <h3>Twitter/X</h3>
-        <input
-          class="twitter-handle-input"
-          placeholder="@TwitterHandle"
-          [ngModel]="socials().xHandle"
-          (ngModelChange)="
-            socialsService.update({
-              xHandle: $event,
-            })
-          "
-        />
-
-        <h3>Discord-Invite</h3>
-        <input
-          class="discord-invite-input"
-          placeholder="Invite"
-          [ngModel]="socials().discordInvite"
-          (ngModelChange)="
-            socialsService.update({
-              discordInvite: $event,
-            })
-          "
-        />
-      </div>
-    </details>
+    <h2>Restliche Einstellungen</h2>
+    <button
+      class="click-button open-socials-dialog-button"
+      (click)="handleSocialsSettingsButtonClick()"
+    >
+      Socials Einstellungen
+    </button>
   </section>
   <img src="assets/dsb/DSB_Logo.png" width="100px" />
 </div>

@@ -3,8 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { BroadcastState } from '../../models/broadcast-state';
 import { Division } from '../../models/division';
 import { BroadcastStateService } from '../../services/broadcast-state';
-import { Socials } from '../../models/socials';
-import { SocialsService } from '../../services/socials';
 import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
 import { LogService } from '../../services/log';
@@ -15,6 +13,7 @@ import { CommBoxDisplayMode } from '../../enums/comm-box-display-modes';
 import { ToggleSlider } from '../../features/toggle-slider/toggle-slider';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangeColorsDialog } from '../../dialogs/change-colors-dialog/change-colors-dialog';
+import { SocialsDialog } from '../../dialogs/socials-dialog/socials-dialog';
 
 @Component({
   selector: 'app-sidebar',
@@ -49,11 +48,6 @@ export class Sidebar implements OnInit, OnDestroy {
   stateService: BroadcastStateService = inject(BroadcastStateService);
 
   /**
-   * Service that manages social data for the sidebar.
-   */
-  socialsService: SocialsService = inject(SocialsService);
-
-  /**
    * Service that manages commentator box time data.
    */
   commentatorBoxTimeDataService: CommentatorBoxTimeDataService = inject(
@@ -64,11 +58,6 @@ export class Sidebar implements OnInit, OnDestroy {
    * Writable signal representing the current broadcast state.
    */
   state: WritableSignal<BroadcastState> = this.stateService.state;
-
-  /**
-   * Writable signal representing the current social data.
-   */
-  socials: WritableSignal<Socials> = this.socialsService.socials;
 
   /**
    * Writable signal representing the commentator box time data.
@@ -94,11 +83,19 @@ export class Sidebar implements OnInit, OnDestroy {
   }
 
   /**
-   * Handle click event for color settings button that opens our dialog
+   * Handle click event for color settings button that opens the dialog
    */
   handleColorSettingsButtonClick(): void {
     this.dialog.closeAll();
     this.dialog.open(ChangeColorsDialog, { panelClass: 'color-settings-dialog' });
+  }
+
+  /**
+   * Handle click event for socials settings that opens the dialog
+   */
+  handleSocialsSettingsButtonClick(): void {
+    this.dialog.closeAll();
+    this.dialog.open(SocialsDialog, { panelClass: 'socials-dialog' });
   }
 
   /**
@@ -140,12 +137,10 @@ export class Sidebar implements OnInit, OnDestroy {
 
     try {
       this.stateService.loadInitialState();
-      this.socialsService.loadInitialState();
       this.commentatorBoxTimeDataService.loadInitialState();
 
       this.log.debug('Initial state load triggered', {
         hasStateService: !!this.stateService,
-        hasSocialsService: !!this.socialsService,
         hasTimeDataService: !!this.commentatorBoxTimeDataService,
       });
     } catch (err) {
