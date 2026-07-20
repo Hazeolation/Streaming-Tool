@@ -19,18 +19,6 @@ h2 {
   padding-bottom: 0.5rem;
 }
 
-label {
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  column-gap: 1rem;
-  font-size: 1.125rem;
-}
-
-label:hover {
-  cursor: pointer;
-}
-
 mat-dialog-content {
   display: flex;
   flex-flow: column nowrap;
