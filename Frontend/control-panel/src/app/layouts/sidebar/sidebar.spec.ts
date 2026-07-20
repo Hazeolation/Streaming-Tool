@@ -112,14 +112,4 @@ describe('Sidebar', () => {
 
     expect(component.state()).toEqual(updatedState);
   });
-
-  it('should expose available divisions from BroadcastStateService', () => {
-    expect(component.availableDivisions).toBe(mockStateService.availableDivisions);
-
-    expect(component.availableDivisions).toEqual([
-      { id: 1, name: 'Division 1' },
-      { id: 2, name: 'Division 2' },
-      { id: 3, name: 'Division 3' },
-    ]);
-  });
 });

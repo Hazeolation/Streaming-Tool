@@ -1,7 +1,6 @@
 import { Component, inject, WritableSignal, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BroadcastState } from '../../models/broadcast-state';
-import { Division } from '../../models/division';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
@@ -14,6 +13,7 @@ import { ToggleSlider } from '../../features/toggle-slider/toggle-slider';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangeColorsDialog } from '../../dialogs/change-colors-dialog/change-colors-dialog';
 import { SocialsDialog } from '../../dialogs/socials-dialog/socials-dialog';
+import { TourneySettingsDialog } from '../../dialogs/tourney-settings-dialog/tourney-settings-dialog';
 
 @Component({
   selector: 'app-sidebar',
@@ -66,11 +66,6 @@ export class Sidebar implements OnInit, OnDestroy {
     this.commentatorBoxTimeDataService.commentatorBoxTimeData;
 
   /**
-   * Available divisions for the broadcast state.
-   */
-  availableDivisions: Division[] = this.stateService.availableDivisions;
-
-  /**
    * Handle click event for next color button that advances the current color id by one
    */
   handleNextColorButtonClick(): void {
@@ -96,6 +91,14 @@ export class Sidebar implements OnInit, OnDestroy {
   handleSocialsSettingsButtonClick(): void {
     this.dialog.closeAll();
     this.dialog.open(SocialsDialog, { panelClass: 'socials-dialog' });
+  }
+
+  /**
+   * Handle click event for tourney settings that opens the dialog
+   */
+  handleTourneySettingsButtonClick(): void {
+    this.dialog.closeAll();
+    this.dialog.open(TourneySettingsDialog, { panelClass: 'tourney-settings-dialog' });
   }
 
   /**
