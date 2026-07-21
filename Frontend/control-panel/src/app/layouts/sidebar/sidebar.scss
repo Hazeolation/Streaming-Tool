@@ -1,9 +1,9 @@
 .sidebar {
   height: 100vh;
   display: flex;
-  flex-direction: column;
-  gap: 24px;
-  padding: 20px 30px 20px 30px;
+  flex-flow: column nowrap;
+  row-gap: 1.5rem;
+  padding: 1.25rem 1.875rem;
   background: #f3b038;
   background: linear-gradient(
     0deg,
