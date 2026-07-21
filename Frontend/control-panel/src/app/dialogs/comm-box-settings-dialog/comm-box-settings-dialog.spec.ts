@@ -46,6 +46,10 @@ describe('CommBoxSettingsDialog', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should inject CommentatorBoxTimeDataService', () => {
+    expect(component.commentatorBoxTimeDataService).toBe(mockTimeDataService);
+  });
+
   it('should expose time data signal from CommentatorBoxTimeDataService', () => {
     expect(component.commentatorBoxTimeData).toBe(mockTimeDataService.commentatorBoxTimeData);
     expect(component.commentatorBoxTimeData()).toEqual(defaultTimeData);

@@ -44,6 +44,10 @@ describe('SocialsDialog', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should inject SocialsService', () => {
+    expect(component.socialsService).toBe(mockSocialsService);
+  });
+
   it('should expose socials signal from SocialsService', () => {
     expect(component.socials).toBe(mockSocialsService.socials);
     expect(component.socials()).toEqual(defaultSocials);

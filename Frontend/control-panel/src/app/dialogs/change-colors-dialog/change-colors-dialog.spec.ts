@@ -61,6 +61,10 @@ describe('ChangeColorsDialog', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should inject BroadcastStateService', () => {
+    expect(component.stateService).toBe(mockStateService);
+  });
+
   it('should expose state signal from BroadcastStateService', () => {
     expect(component.state).toBe(mockStateService.state);
     expect(component.state()).toEqual(defaultState);
