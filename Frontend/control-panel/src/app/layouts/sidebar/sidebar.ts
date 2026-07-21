@@ -74,6 +74,10 @@ export class Sidebar implements OnInit, OnDestroy {
       currentColorsId = 0;
     }
 
+    this.log.trace('Updating match colors to next color in list', {
+      previousColorsId: this.state().currentColorsId,
+      currentColorsId,
+    });
     this.stateService.update({ currentColorsId: currentColorsId });
   }
 
@@ -82,6 +86,7 @@ export class Sidebar implements OnInit, OnDestroy {
    */
   handleColorSettingsButtonClick(): void {
     this.dialog.closeAll();
+    this.log.trace('Opening dialog for colors settings');
     this.dialog.open(ChangeColorsDialog, { panelClass: 'color-settings-dialog' });
   }
 
@@ -90,6 +95,7 @@ export class Sidebar implements OnInit, OnDestroy {
    */
   handleSocialsSettingsButtonClick(): void {
     this.dialog.closeAll();
+    this.log.trace('Opening dialog for socials settings');
     this.dialog.open(SocialsDialog, { panelClass: 'socials-dialog' });
   }
 
@@ -98,6 +104,7 @@ export class Sidebar implements OnInit, OnDestroy {
    */
   handleTourneySettingsButtonClick(): void {
     this.dialog.closeAll();
+    this.log.trace('Opening dialog for tourney settings');
     this.dialog.open(TourneySettingsDialog, { panelClass: 'tourney-settings-dialog' });
   }
 
