@@ -15,6 +15,7 @@ import { ChangeColorsDialog } from '../../dialogs/change-colors-dialog/change-co
 import { SocialsDialog } from '../../dialogs/socials-dialog/socials-dialog';
 import { TourneySettingsDialog } from '../../dialogs/tourney-settings-dialog/tourney-settings-dialog';
 import { StreamerCommsDialog } from '../../dialogs/streamer-comms-dialog/streamer-comms-dialog';
+import { CommBoxSettingsDialog } from '../../dialogs/comm-box-settings-dialog/comm-box-settings-dialog';
 
 @Component({
   selector: 'app-sidebar',
@@ -114,8 +115,17 @@ export class Sidebar implements OnInit, OnDestroy {
    */
   handleStreamerCommsButtonClick(): void {
     this.dialog.closeAll();
-    this.log.trace('Opening dialog for setting stramer and commentators');
+    this.log.trace('Opening dialog for setting streamer and commentators');
     this.dialog.open(StreamerCommsDialog, { panelClass: 'streamer-comms-dialog' });
+  }
+
+  /**
+   * Handle click event for commentator box display settings button that opens the dialog
+   */
+  handleCommBoxSettingsButtonClick(): void {
+    this.dialog.closeAll();
+    this.log.trace('Opening dialog for commentator box display settings');
+    this.dialog.open(CommBoxSettingsDialog, { panelClass: 'comm-box-settings-dialog' });
   }
 
   /**

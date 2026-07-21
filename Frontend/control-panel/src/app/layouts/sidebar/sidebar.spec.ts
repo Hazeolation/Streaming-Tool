@@ -7,6 +7,7 @@ import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
 import { Division } from '../../models/division';
 import { LogService } from '../../services/log';
+import { CommBoxDisplayMode } from '../../enums/comm-box-display-modes';
 
 describe('Sidebar', () => {
   let component: Sidebar;
@@ -111,5 +112,9 @@ describe('Sidebar', () => {
     mockState.set(updatedState);
 
     expect(component.state()).toEqual(updatedState);
+  });
+
+  it('should reflect commBoxDisplayMode enum property', () => {
+    expect(component.commBoxDisplayMode).toEqual(CommBoxDisplayMode);
   });
 });
