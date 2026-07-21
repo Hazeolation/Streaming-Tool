@@ -52,39 +52,6 @@
     </div>
   </section>
   <section>
-    <h2>Streamer</h2>
-    <input
-      placeholder="Streamer"
-      [ngModel]="state().streamer"
-      (ngModelChange)="
-        stateService.update({
-          streamer: $event,
-        })
-      "
-    />
-  </section>
-  <section>
-    <h2>Kommentatoren</h2>
-    <input
-      placeholder="Caster1"
-      [ngModel]="state().commentator1"
-      (ngModelChange)="
-        stateService.update({
-          commentator1: $event,
-        })
-      "
-    />
-    <input
-      placeholder="Caster2"
-      [ngModel]="state().commentator2"
-      (ngModelChange)="
-        stateService.update({
-          commentator2: $event,
-        })
-      "
-    />
-  </section>
-  <section>
     <h2>Sichtbarkeit des Overlays</h2>
     <label
       (click)="
@@ -228,6 +195,12 @@
       (click)="handleTourneySettingsButtonClick()"
     >
       Turniereinstellungen
+    </button>
+    <button
+      class="click-button open-streamer-comms-dialog-button"
+      (click)="handleStreamerCommsButtonClick()"
+    >
+      Streamer & Kommentatoren
     </button>
     <button
       class="click-button open-socials-dialog-button"

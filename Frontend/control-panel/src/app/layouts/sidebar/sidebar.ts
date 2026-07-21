@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ChangeColorsDialog } from '../../dialogs/change-colors-dialog/change-colors-dialog';
 import { SocialsDialog } from '../../dialogs/socials-dialog/socials-dialog';
 import { TourneySettingsDialog } from '../../dialogs/tourney-settings-dialog/tourney-settings-dialog';
+import { StreamerCommsDialog } from '../../dialogs/streamer-comms-dialog/streamer-comms-dialog';
 
 @Component({
   selector: 'app-sidebar',
@@ -91,7 +92,7 @@ export class Sidebar implements OnInit, OnDestroy {
   }
 
   /**
-   * Handle click event for socials settings that opens the dialog
+   * Handle click event for socials settings button that opens the dialog
    */
   handleSocialsSettingsButtonClick(): void {
     this.dialog.closeAll();
@@ -100,12 +101,21 @@ export class Sidebar implements OnInit, OnDestroy {
   }
 
   /**
-   * Handle click event for tourney settings that opens the dialog
+   * Handle click event for tourney settings button that opens the dialog
    */
   handleTourneySettingsButtonClick(): void {
     this.dialog.closeAll();
     this.log.trace('Opening dialog for tourney settings');
     this.dialog.open(TourneySettingsDialog, { panelClass: 'tourney-settings-dialog' });
+  }
+
+  /**
+   * Handle click event for streamer and commentators button that opens the dialog
+   */
+  handleStreamerCommsButtonClick(): void {
+    this.dialog.closeAll();
+    this.log.trace('Opening dialog for setting stramer and commentators');
+    this.dialog.open(StreamerCommsDialog, { panelClass: 'streamer-comms-dialog' });
   }
 
   /**
