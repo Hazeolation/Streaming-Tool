@@ -101,22 +101,32 @@
     </label>
   </section>
 
-  @if (commentatorBoxTimeData().displayMode === commBoxDisplayMode.Manual) {
-    <section>
-      <h2>Ein- / Ausblenden Kommentatorenbox</h2>
-      <button class="click-button hide-comm-box-button" (click)="handleHideButtonClick()">
-        Ausblenden
-      </button>
+  <section>
+    <h2>Ein- / Ausblenden Kommentatorenbox</h2>
+    <button
+      class="click-button hide-comm-box-button"
+      [disabled]="commentatorBoxTimeData().displayMode !== commBoxDisplayMode.Manual"
+      (click)="handleHideButtonClick()"
+    >
+      Ausblenden
+    </button>
 
-      <button class="click-button show-comm-box-button" (click)="handleShowButtonClick()">
-        Einblenden
-      </button>
+    <button
+      class="click-button show-comm-box-button"
+      [disabled]="commentatorBoxTimeData().displayMode !== commBoxDisplayMode.Manual"
+      (click)="handleShowButtonClick()"
+    >
+      Einblenden
+    </button>
 
-      <button class="click-button show-comm-box-temp-button" (click)="handleShowTempButtonClick()">
-        Temporär Einblenden
-      </button>
-    </section>
-  }
+    <button
+      class="click-button show-comm-box-temp-button"
+      [disabled]="commentatorBoxTimeData().displayMode !== commBoxDisplayMode.Manual"
+      (click)="handleShowTempButtonClick()"
+    >
+      Temporär Einblenden
+    </button>
+  </section>
 
   <section>
     <h2>Restliche Einstellungen</h2>

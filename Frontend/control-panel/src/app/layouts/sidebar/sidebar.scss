@@ -53,6 +53,9 @@ button {
   border-radius: 0.625rem;
   background-color: #343744;
   color: white;
+}
+
+button:hover {
   cursor: pointer;
 }
 
@@ -72,6 +75,18 @@ button {
 
 .click-button:active {
   border-color: #6d28d9;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+button:disabled:hover {
+  cursor: not-allowed;
+}
+
+button.click-button:disabled:active {
+  border-color: #343744;
 }
 
 .swap-sides h2 {
