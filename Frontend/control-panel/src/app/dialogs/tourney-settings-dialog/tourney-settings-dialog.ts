@@ -3,10 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-tourney-settings-dialog',
-  imports: [MatDialogModule, FormsModule],
+  imports: [MatDialogModule, FormsModule, TranslocoDirective],
   templateUrl: './tourney-settings-dialog.html',
   styleUrl: './tourney-settings-dialog.scss',
 })

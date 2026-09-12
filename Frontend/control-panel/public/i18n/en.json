@@ -45,6 +45,9 @@
   "text.session-no-requests": "No API requests in this session yet.",
   "text.season": "Season",
   "text.week": "Week",
+  "text.tourney-settings": "Tournament Settings",
+  "text.tourney-format": "Tournament Format",
+  "text.start-time": "Start Time",
 
   "button.next-color": "Next Color",
   "button.show-commbox-temp": "{{text.show-commbox}} Temporarily",
@@ -56,6 +59,8 @@
   "button.create": "Create",
   "button.clear": "Clear",
   "button.dismiss": "Dismiss",
+  "button.standard": "Standard",
+  "button.league": "League",
 
   "input.placeholder.api-key-name": "Name (e.g. Stream Deck)",
 
