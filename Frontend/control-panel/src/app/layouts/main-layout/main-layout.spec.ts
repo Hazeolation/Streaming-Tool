@@ -23,10 +23,6 @@ class MockSidebar {}
 })
 class MockTopbar {}
 
-// Remove this once marked-katex-extension import error is fixed
-vi.mock('ngx-markdown', () => ({
-  default: {},
-}));
 describe('MainLayout', () => {
   let component: MainLayout;
   let fixture: ComponentFixture<MainLayout>;
